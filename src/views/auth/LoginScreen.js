@@ -1,28 +1,58 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Form, Button, Row, Col } from "react-bootstrap";
-
 import FormContainer from "../../components/layout-components/FormContainer";
+import Message from "../../components/shared-components/ErrorMessage";
+import Loader from "../../components/shared-components/Spinner";
+import { resetAuthType, signIn } from "../../redux/actions/Auth";
+import { USER_LOGIN_SUCCESS } from "../../redux/constants/Auth";
 
-const LoginScreen = ({ location, history }) => {
-  const [email, setEmail] = useState("");
+const LoginScreen = (props) => {
+  const {
+    signIn,
+    resetAuthType,
+    type,
+    loading,
+    error,
+    user,
+    location,
+    history,
+  } = props;
+
+  const redirect = location.search ? location.search.split("=")[1] : "/";
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const submitHandler = (e) => {
     e.preventDefault();
+    signIn(username, password);
   };
+
+  useEffect(() => {
+    switch (type) {
+      case USER_LOGIN_SUCCESS:
+        history.push(redirect);
+        break;
+    }
+    resetAuthType();
+  }, [type]);
 
   return (
     <FormContainer>
       <h1>Sign In</h1>
+      {error && (
+        <Message variant="danger">Invalid username or password</Message>
+      )}
+      {loading && <Loader />}
       <Form onSubmit={submitHandler}>
-        <Form.Group controlId="email">
+        <Form.Group controlId="username">
           <Form.Label>Username</Form.Label>
           <Form.Control
-            type="email"
+            type="input"
             placeholder="Enter username"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="password">
@@ -46,11 +76,25 @@ const LoginScreen = ({ location, history }) => {
       </Form>
       <Row className="py-3">
         <Col>
-          New Customer? <Link>Register</Link>
+          New Customer? <Link to="/register">Register</Link>
         </Col>
       </Row>
     </FormContainer>
   );
 };
 
-export default LoginScreen;
+const mapStateToProps = ({ auth }) => {
+  return {
+    type: auth && auth.type,
+    loading: auth && auth.loading,
+    error: auth && auth.error,
+    user: auth && auth.user,
+  };
+};
+
+const mapDispatchToProps = {
+  signIn,
+  resetAuthType,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

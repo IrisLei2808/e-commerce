@@ -38,8 +38,18 @@ h2 {
     height: 30px;
     width: 140px;
 }
-.location {
+.location  {
     margin-left: 40px;
+}
+.heart {
+    margin-left: 170px;
+}
+.heart:hover {
+    cursor: pointer;
+    color: orangered
+}
+a:hover {
+    cursor: pointer;
 }
 .delivery {
     margin-left: 80px;
@@ -62,5 +72,96 @@ h2 {
 .rating {
     color: #1a9cb7;
     font-size: 17px;
-    margin-left: 40px;
+    margin-left: 30px;
 }
+.price {
+    color: #f57224;
+    font-size: 30px;
+}
+.exchange {
+    color: #1a9cb7;
+    font-size: 15px;
+    margin-left: 220px;
+    margin-top: 37px;
+ }
+ .cartbtn {
+     margin-left: 40px;
+     width: 180px;
+     height: 50px;
+ }
+ .commentbtn {
+    float: right;
+    width: 180px;
+    height: 50px;
+}
+ .be_comment_block {
+      padding: 50px 70px;
+  }
+  
+  .comments_title {
+      font-size: 16px;
+      color: #262626;
+      font-family: 'Conv_helveticaneuecyr-bold';
+  }
+  
+  .be_img_comment {
+      display: flex;
+  }
+  
+  .be_ava_comment {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-top: 10px;
+
+  }
+  
+  .be-comment-content {
+      margin-left: 80px;
+  }
+  
+  .be_comment_content span {
+      display: inline-block;
+      width: 49%;
+      margin-bottom: 15px;
+  }
+  
+  .be_comment_name {
+      font-size: 13px;
+      font-family: 'Conv_helveticaneuecyr-bold';
+  }
+  
+  .be-comment-content a {
+      color: #383b43;
+  }
+  
+  .be-comment-content span {
+      display: inline-block;
+      width: 49%;
+      margin-bottom: 15px;
+  }
+  
+  .be-comment-time {
+      text-align: right;
+  }
+  
+  .be-comment-time {
+      font-size: 11px;
+      color: #b4b7c1;
+  }
+  
+  .be_comment_text {
+      font-size: 13px;
+      line-height: 18px;
+      color: #7a8192;
+      display: block;
+      background-color: white;
+      margin-top: 27px;
+      margin-left: 20px;
+  }
+  .clock {
+      float: right;
+  }
+  .be_comment {
+      margin-top: 10px;
+  }

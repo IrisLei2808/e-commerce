@@ -10,7 +10,11 @@ const Header = (props) => {
     <header>
       <Navbar bg="primary" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <Navbar.Brand>OSE Shop</Navbar.Brand>
+          <Navbar.Brand>
+            <LinkContainer to="/">
+              <NavDropdown.Item>Old Stuff Exchange</NavDropdown.Item>
+            </LinkContainer>
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">

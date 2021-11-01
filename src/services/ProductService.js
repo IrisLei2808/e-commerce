@@ -3,13 +3,11 @@ import { API_ENDPOINT } from "../configs/AppConfig";
 
 const productService = {};
 
-productService.getViewOtp = function (params) {
+productService.getProduct = function (data) {
   return axios({
     method: "get",
-    url: `${API_ENDPOINT}/${API_URI}/methods/${token}`,
-    headers: {
-      Authorization: bearerToken,
-    },
+    url: `${API_ENDPOINT}/api/products`,
+    data,
   });
 };
 

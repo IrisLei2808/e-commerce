@@ -10,10 +10,10 @@ export const fetchProductList = (params) => {
     params,
   };
 };
-export const fetchProductListSuccess = (payload) => {
+export const fetchProductListSuccess = (product) => {
   return {
     type: PRODUCT_LIST_SUCCESS,
-    contractType: payload.data.data,
+    productList: product.data,
   };
 };
 

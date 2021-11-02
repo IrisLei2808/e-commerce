@@ -2,6 +2,15 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 
 const CollectionItem = ({ product }) => {
+  const formatText = (text) => {
+    if (text.length > 26) {
+      const result = text.substring(0, 26) + "...";
+      return result;
+    } else {
+      return text;
+    }
+  };
+
   const defaultImage =
     "https://cdn.tgdd.vn/Products/Images/42/228744/iphone-12-pro-max-512gb-191020-021035-200x200.jpg";
   return (
@@ -17,7 +26,7 @@ const CollectionItem = ({ product }) => {
         <Card.Text
           style={{ marginLeft: "50px", color: "orange", cursor: "pointer" }}
         >
-          {product.name}
+          {formatText(product.name)}
         </Card.Text>
         <Card.Text style={{ marginLeft: "100px" }}>
           {product.quantity} quantities

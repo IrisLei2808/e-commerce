@@ -6,6 +6,7 @@ import Footer from "./components/layout-components/Footer";
 import LoginScreen from "./views/auth/LoginScreen";
 import RegisterScreen from "./views/auth/RegisterScreen";
 import DetailScreen from "./views/products/product-categories/DetaIlScreen";
+import CategoryScreen from "./views/products/product-categories/CategoryScreen";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/login" component={LoginScreen} />
           <Route path="/register" component={RegisterScreen} />
           <Route path="/detail" component={DetailScreen} exact />
+          <Route path="/category/:id" component={CategoryScreen} />
         </Container>
       </main>
       <Footer />

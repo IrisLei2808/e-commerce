@@ -1,12 +1,15 @@
 import React from "react";
-import Card from "react-bootstrap/Card";
-import { Row, Col } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import CollectionItem from "./CollectionItem";
 
 const ProductCollection = ({ collection }) => {
+  let history = useHistory();
   return (
     <>
-      <h3>Trending {collection.brandname}</h3>
+      <h3 onClick={() => history.push(`/brand/${collection.idbrand}`)}>
+        Trending {collection && collection.brandname}
+      </h3>
       <Row>
         {collection &&
           collection.Products.map((product) => (

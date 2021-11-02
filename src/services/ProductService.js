@@ -11,4 +11,25 @@ productService.getProduct = function (data) {
   });
 };
 
+productService.getProductByCategoryId = function (categoryId) {
+  return axios({
+    method: "get",
+    url: `${API_ENDPOINT}/api/categories/${categoryId}`,
+  });
+};
+
+productService.getProductByBrand = function (brandId) {
+  return axios({
+    method: "get",
+    url: `${API_ENDPOINT}/api/products/brand/${brandId}`,
+  });
+};
+
+productService.getProductDetails = function (productId) {
+  return axios({
+    method: "get",
+    url: `${API_ENDPOINT}/api/products/${productId}`,
+  });
+};
+
 export default productService;

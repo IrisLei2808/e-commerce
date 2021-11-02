@@ -1,167 +1,164 @@
 .content_detail {
-    display: flex;
-    width: 100%;
-    height: 100%;
+  display: flex;
+  width: 100%;
+  height: 100%;
 }
 .detail_img {
-    width: 330px;
-    height: 330px;
+  width: 330px;
+  height: 330px;
 }
 
 h2 {
-    color: orangered;
-    font-size: 30px;
-    margin-left: 40px;
+  color: orangered;
+  font-size: 30px;
+  margin-left: 40px;
 }
 .description {
-    width: 480px;
-     height: 150px;
-     font-size: 20px;
-     font-weight: 400;
-     margin-left: 40px;
-     margin-top: 10px
+  width: 480px;
+  height: 150px;
+  font-size: 20px;
+  font-weight: 400;
+  margin-left: 40px;
+  margin-top: 10px;
 }
 .address {
-    margin-left: 70px;
-    margin-top: -22px;
+  margin-left: 70px;
+  margin-top: -22px;
 }
 .ship {
-    margin-left: 42px;
+  margin-left: 42px;
 }
 .title {
-    font-size: 21px;
-    color: #757575;
-    font-weight: 500;
-    font-family: Roboto-Medium;
-    margin-left: 50px;
-    margin-top: 0px;
-    height: 30px;
-    width: 140px;
+  font-size: 21px;
+  color: #757575;
+  font-weight: 500;
+  font-family: Roboto-Medium;
+  margin-left: 50px;
+  margin-top: 0px;
+  height: 30px;
+  width: 140px;
 }
-.location  {
-    margin-left: 40px;
+.location {
+  margin-left: 40px;
 }
 .heart {
-    margin-left: 170px;
+  margin-left: 170px;
 }
 .heart:hover {
-    cursor: pointer;
-    color: orangered
+  cursor: pointer;
+  color: orangered;
 }
 a:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 .delivery {
-    margin-left: 80px;
-    margin-top: -22px;
-
+  margin-left: 80px;
+  margin-top: -22px;
 }
 .cash {
-    margin-left: 40px;
-
+  margin-left: 40px;
 }
 .cashon {
-    margin-left: 80px;
-    border-bottom: 1px solid black;
-    margin-top: -25px;
-    height: 35px;
+  margin-left: 80px;
+  border-bottom: 1px solid black;
+  margin-top: -25px;
+  height: 35px;
 }
 .return {
-    margin-top: 300px
+  margin-top: 300px;
 }
 .rating {
-    color: #1a9cb7;
-    font-size: 17px;
-    margin-left: 30px;
+  color: #1a9cb7;
+  font-size: 17px;
+  margin-left: 30px;
 }
 .price {
-    color: #f57224;
-    font-size: 30px;
+  color: #f57224;
+  font-size: 30px;
 }
 .exchange {
-    color: #1a9cb7;
-    font-size: 15px;
-    margin-left: 220px;
-    margin-top: 37px;
- }
- .cartbtn {
-     margin-left: 40px;
-     width: 180px;
-     height: 50px;
- }
- .commentbtn {
-    float: right;
-    width: 180px;
-    height: 50px;
+  color: #1a9cb7;
+  font-size: 15px;
+  margin-left: 220px;
+  margin-top: 37px;
 }
- .be_comment_block {
-      padding: 50px 70px;
-  }
-  
-  .comments_title {
-      font-size: 16px;
-      color: #262626;
-      font-family: 'Conv_helveticaneuecyr-bold';
-  }
-  
-  .be_img_comment {
-      display: flex;
-  }
-  
-  .be_ava_comment {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      margin-top: 10px;
+.cartbtn {
+  margin-left: 40px;
+  width: 180px;
+  height: 50px;
+}
+.commentbtn {
+  float: right;
+  width: 180px;
+  height: 50px;
+}
+.be_comment_block {
+  padding: 50px 70px;
+}
 
-  }
-  
-  .be-comment-content {
-      margin-left: 80px;
-  }
-  
-  .be_comment_content span {
-      display: inline-block;
-      width: 49%;
-      margin-bottom: 15px;
-  }
-  
-  .be_comment_name {
-      font-size: 13px;
-      font-family: 'Conv_helveticaneuecyr-bold';
-  }
-  
-  .be-comment-content a {
-      color: #383b43;
-  }
-  
-  .be-comment-content span {
-      display: inline-block;
-      width: 49%;
-      margin-bottom: 15px;
-  }
-  
-  .be-comment-time {
-      text-align: right;
-  }
-  
-  .be-comment-time {
-      font-size: 11px;
-      color: #b4b7c1;
-  }
-  
-  .be_comment_text {
-      font-size: 13px;
-      line-height: 18px;
-      color: #7a8192;
-      display: block;
-      background-color: white;
-      margin-top: 27px;
-      margin-left: 20px;
-  }
-  .clock {
-      float: right;
-  }
-  .be_comment {
-      margin-top: 10px;
-  }
+.comments_title {
+  font-size: 16px;
+  color: #262626;
+  font-family: "Conv_helveticaneuecyr-bold";
+}
+
+.be_img_comment {
+  display: flex;
+}
+
+.be_ava_comment {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-top: 10px;
+}
+
+.be-comment-content {
+  margin-left: 80px;
+}
+
+.be_comment_content span {
+  display: inline-block;
+  width: 49%;
+  margin-bottom: 15px;
+}
+
+.be_comment_name {
+  font-size: 13px;
+  font-family: "Conv_helveticaneuecyr-bold";
+}
+
+.be-comment-content a {
+  color: #383b43;
+}
+
+.be-comment-content span {
+  display: inline-block;
+  width: 49%;
+  margin-bottom: 15px;
+}
+
+.be-comment-time {
+  text-align: right;
+}
+
+.be-comment-time {
+  font-size: 11px;
+  color: #b4b7c1;
+}
+
+.be_comment_text {
+  font-size: 13px;
+  line-height: 18px;
+  color: #7a8192;
+  display: block;
+  background-color: white;
+  margin-top: 27px;
+  margin-left: 20px;
+}
+.clock {
+  float: right;
+}
+.be_comment {
+  margin-top: 10px;
+}

@@ -1,7 +1,10 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
+import { useHistory } from "react-router-dom";
 
 const CollectionItem = ({ product }) => {
+  let history = useHistory();
+
   const formatText = (text) => {
     if (text.length > 26) {
       const result = text.substring(0, 26) + "...";
@@ -21,16 +24,19 @@ const CollectionItem = ({ product }) => {
           marginLeft: "20px",
           height: "170px",
           border: "1px solid black",
-          minWidth: "300px"
+          minWidth: "300px",
         }}
       >
         <Card.Text
           style={{ textAlign: "center", color: "red", cursor: "pointer" }}
+          onClick={() =>
+            history.push(`/product/${product && product.idProduct}`)
+          }
         >
-          {formatText(product.name)}
+          {formatText(product && product.name)}
         </Card.Text>
         <Card.Text style={{ textAlign: "center" }}>
-          {product.quantity} quantities
+          {product && product.quantity} quantities
         </Card.Text>
         <div className="img-product">
           <Card.Img

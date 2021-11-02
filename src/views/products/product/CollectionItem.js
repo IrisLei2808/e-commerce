@@ -17,18 +17,19 @@ const CollectionItem = ({ product }) => {
     <>
       <Card
         style={{
-          width: "300px",
-          marginLeft: "40px",
+          maxWidth: "300px",
+          marginLeft: "20px",
           height: "170px",
           border: "1px solid black",
+          minWidth: "300px"
         }}
       >
         <Card.Text
-          style={{ marginLeft: "50px", color: "orange", cursor: "pointer" }}
+          style={{ textAlign: "center", color: "red", cursor: "pointer" }}
         >
           {formatText(product.name)}
         </Card.Text>
-        <Card.Text style={{ marginLeft: "100px" }}>
+        <Card.Text style={{ textAlign: "center" }}>
           {product.quantity} quantities
         </Card.Text>
         <div className="img-product">

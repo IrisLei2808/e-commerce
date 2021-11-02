@@ -1,1 +1,1 @@
-export const API_ENDPOINT = "http://old-stuff-exchange-api.herokuapp.com";
+export const API_ENDPOINT = "https://old-stuff-exchange-api.herokuapp.com";

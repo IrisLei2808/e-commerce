@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_ENDPOINT } from "../configs/AppConfig";
+import { API_ENDPOINT, LOCAL_API_ENDPOINT } from "../configs/AppConfig";
 
 const productService = {};
 

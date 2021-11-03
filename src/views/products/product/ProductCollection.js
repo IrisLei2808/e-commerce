@@ -13,7 +13,7 @@ const ProductCollection = ({ collection }) => {
       <Row>
         {collection &&
           collection.Products.map((product) => (
-            <Col sm={12} md={6} lg={4} xl={3} className="mb-4">
+            <Col sm={12} md={8} lg={4} xl={3} className="mb-4">
               <CollectionItem product={product} />
             </Col>
           ))}

@@ -38,7 +38,7 @@ const CollectionsComponent = (props) => {
       {loading ? (
         <Loader />
       ) : (
-        <div style={{ width: "1440px", marginLeft: "-165px" }}>
+        <div style={{ padding: "0px 20px" }}>
           <Slide easing="ease">
             <div className="each-slide">
               <img

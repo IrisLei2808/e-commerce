@@ -46,12 +46,19 @@ const ProductDetail = (props) => {
       {loading ? (
         <Loader />
       ) : (
-        <div>
+        <div
+          style={{
+            padding: 20,
+          }}
+        >
           <div className={styles.content_detail}>
             <img
               className={styles.detail_img}
               src={
-                product && product.Images
+                product &&
+                product.Images &&
+                product.Images[0] &&
+                product.Images[0].address
                   ? product.Images[0].address
                   : defaultImage
               }
@@ -68,7 +75,7 @@ const ProductDetail = (props) => {
                   borderBottom: "1px solid black",
                   height: "40px",
                   marginLeft: "15px",
-                  marginTop: "-20px",
+                  marginTop: "15px",
                 }}
               >
                 <a className={styles.rating}>59 ratings</a>
@@ -197,23 +204,26 @@ const ProductDetail = (props) => {
                 </p>
               </div>
             </div>
+            <Form className="mt-5">
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label>Email address</Form.Label>
+                <Form.Control type="email" placeholder="name@example.com" />
+              </Form.Group>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlTextarea1"
+              >
+                <Form.Label>Leave A Comment</Form.Label>
+                <Form.Control as="textarea" rows={3} />
+              </Form.Group>
+              <Button className={styles.commentbtn} variant="primary">
+                Submit
+              </Button>
+            </Form>
           </div>
-          <Form>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="name@example.com" />
-            </Form.Group>
-            <Form.Group
-              className="mb-3"
-              controlId="exampleForm.ControlTextarea1"
-            >
-              <Form.Label>Leave A Comment</Form.Label>
-              <Form.Control as="textarea" rows={3} />
-            </Form.Group>
-            <Button className={styles.commentbtn} variant="primary">
-              Submit
-            </Button>
-          </Form>
         </div>
       )}
     </>

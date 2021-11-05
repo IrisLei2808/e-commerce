@@ -22,7 +22,7 @@ function App() {
           <Route path="/product/:id" component={DetailScreen} />
           <Route path="/category/:id" component={CategoryScreen} />
           <Route path="/brand/:id" component={ProductByBrandScreen} />
-          <Route path="/cart" component={CardScreen} />
+          <Route path="/cart/:id?" component={CardScreen} />
         </Container>
       </main>
       <Footer />

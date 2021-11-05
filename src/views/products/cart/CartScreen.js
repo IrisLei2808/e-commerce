@@ -1,7 +1,157 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import {
+  addToCart,
+  removeFromCart,
+  resetCartType,
+} from "../../../redux/actions/Cart";
+import {
+  fetchProductDetails,
+  resetProductType,
+} from "../../../redux/actions/Product";
+import { connect } from "react-redux";
+import { Row, Col, ListGroup, Image, Form, Button } from "react-bootstrap";
+import ErrorMessage from "../../../components/shared-components/ErrorMessage";
+import { Link } from "react-router-dom";
+import { formatMoney } from "../../../utils/formatText";
+import { PRODUCT_DETAILS_SUCCESS } from "../../../redux/constants/Product";
+import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../../../redux/constants/Cart";
 
-const CartScreen = () => {
-  return <div></div>;
+const CartScreen = (props) => {
+  const {
+    addToCart,
+    resetCartType,
+    match,
+    location,
+    cartItems,
+    type,
+    productDetails,
+    fetchProductDetails,
+    resetProductType,
+    removeFromCart,
+    cartType,
+  } = props;
+  const defaultImage =
+    "https://cdn.tgdd.vn/Products/Images/42/228744/iphone-12-pro-max-512gb-191020-021035-200x200.jpg";
+  const productId = match.params.id;
+  const qty = location.search ? Number(location.search.split("=")[1]) : 1;
+  const [cartStorage, setCartStorage] = useState(
+    localStorage.getItem("productCartItems")
+      ? JSON.parse(localStorage.getItem("productCartItems"))
+      : []
+  );
+
+  useEffect(() => {
+    fetchProductDetails(productId);
+  }, [productId]);
+
+  useEffect(() => {
+    switch (type) {
+      case PRODUCT_DETAILS_SUCCESS:
+        addToCart(productDetails, productId, qty);
+        break;
+      default:
+        break;
+    }
+    return function cleanup() {
+      resetProductType();
+    };
+  }, [type]);
+  console.log("RES2: ", cartItems);
+  useEffect(() => {
+    switch (cartType) {
+      case CART_ADD_ITEM:
+        localStorage.setItem("productCartItems", JSON.stringify(cartItems));
+        setCartStorage(
+          JSON.parse(localStorage.getItem("productCartItems")) || []
+        );
+        break;
+      case CART_REMOVE_ITEM:
+        localStorage.setItem("productCartItems", JSON.stringify(cartItems));
+        setCartStorage(
+          JSON.parse(localStorage.getItem("productCartItems")) || []
+        );
+        break;
+      default:
+        break;
+    }
+    return function cleanup() {
+      resetCartType();
+    };
+  }, [cartType]);
+
+  return (
+    <Row>
+      <Col md={8}>
+        <h1>Shopping Cart</h1>
+        {cartStorage.length === 0 ? (
+          <ErrorMessage>
+            Your cart is empty <Link to="/">Go Back</Link>
+          </ErrorMessage>
+        ) : (
+          <ListGroup variant="flush">
+            {cartStorage.map((item) => (
+              <ListGroup.Item>
+                <Row>
+                  <Col md={2}>
+                    <Image
+                      src={
+                        item &&
+                        item.Images &&
+                        item.Images[0] &&
+                        item.Images[0].address
+                          ? item.Images[0].address
+                          : defaultImage
+                      }
+                      alt={item && item.name}
+                      fluid
+                      rounded
+                      style={{ height: 75 }}
+                    />
+                  </Col>
+                  <Col md={3}>
+                    <Link>{item.name}</Link>
+                  </Col>
+                  <Col md={3}>{formatMoney(item.price)}</Col>
+                  <Col md={2}>
+                    <Row>
+                      <Form.Control as="select"></Form.Control>
+                    </Row>
+                  </Col>
+                  <Col md={2}>
+                    <Button
+                      type="button"
+                      variant="light"
+                      onClick={() => removeFromCart(item.idProduct)}
+                    >
+                      <i className="fas fa-trash" />
+                    </Button>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        )}
+      </Col>
+    </Row>
+  );
 };
 
-export default CartScreen;
+const mapStateToProps = ({ cart, product }) => {
+  return {
+    cartItems: cart && cart.cartItems,
+    type: product.type,
+    cartType: cart.type,
+    productDetails: product.productDetails,
+    cartItemsFromStorage: cart.cartItemsFromStorage,
+  };
+};
+
+const mapDispatchToProps = {
+  addToCart,
+  removeFromCart,
+  resetCartType,
+  fetchProductDetails,
+  resetProductType,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartScreen);

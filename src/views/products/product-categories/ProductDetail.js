@@ -10,8 +10,10 @@ import styles from "./product-detail.module.css";
 import { formatMoney } from "../../../utils/formatText";
 import Loader from "../../../components/shared-components/Spinner";
 import { PRODUCT_DETAILS_SUCCESS } from "../../../redux/constants/Product";
+import { useHistory } from "react-router-dom";
 
 const ProductDetail = (props) => {
+  let history = useHistory();
   const [product, setProduct] = useState(null);
   const {
     fetchProductDetails,
@@ -25,6 +27,10 @@ const ProductDetail = (props) => {
   useEffect(() => {
     fetchProductDetails(match.params.id);
   }, [match]);
+
+  const addToCartHandler = () => {
+    history.push(`/cart/${match.params.id}?qty=1`);
+  };
 
   useEffect(() => {
     switch (type) {
@@ -98,7 +104,11 @@ const ProductDetail = (props) => {
                 </h3>
                 <a className={styles.exchange}>Want to exchange ? </a>
               </div>
-              <Button className={styles.cartbtn} variant="danger">
+              <Button
+                className={styles.cartbtn}
+                variant="danger"
+                onClick={addToCartHandler}
+              >
                 Add To Cart
               </Button>
             </div>

@@ -26,7 +26,12 @@ const CollectionItem = ({ product }) => {
         }}
       >
         <Card.Text
-          style={{ textAlign: "center", color: "red", cursor: "pointer" }}
+          style={{
+            textAlign: "center",
+            color: "#2ECC40",
+            cursor: "pointer",
+            fontWeight: "bold",
+          }}
           onClick={() =>
             history.push(`/product/${product && product.idProduct}`)
           }

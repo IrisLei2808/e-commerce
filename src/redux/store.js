@@ -28,6 +28,16 @@ function configureStore(preloadedState) {
   return store;
 }
 
-const store = configureStore();
+const cartItemsFromStorage = localStorage.getItem("productCartItems")
+  ? JSON.parse(localStorage.getItem("productCartItems"))
+  : [];
+
+const initialState = {
+  cart: {
+    cartItems: cartItemsFromStorage,
+  },
+};
+
+const store = configureStore(initialState);
 
 export default store;

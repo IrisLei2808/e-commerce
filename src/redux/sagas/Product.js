@@ -59,11 +59,15 @@ export function* fetchProductDetails() {
   yield takeEvery(PRODUCT_DETAILS_REQUEST, function* (params) {
     const { productId } = params;
     try {
-      const productDetails = yield call(
-        productService.getProductDetails,
-        productId
-      );
-      yield put(fetchProductDetailsSuccess(productDetails));
+      if (productId !== undefined) {
+        const productDetails = yield call(
+          productService.getProductDetails,
+          productId
+        );
+        yield put(fetchProductDetailsSuccess(productDetails));
+      } else {
+        yield put(fetchProductDetailsFailed);
+      }
     } catch (error) {
       yield put(fetchProductDetailsFailed(error));
     }

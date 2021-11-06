@@ -8,6 +8,8 @@ const Header = (props) => {
   const { userInfoFromStorage, signOut } = props;
   return (
     <header>
+        <img class="image" src="//icms-image.slatic.net/images/ims-web/26e000f2-824d-4717-b539-f7bdce8224ef.jpg" alt="10.7"
+        data-spm-anchor-id="a2o4n.home.0.i0.68b4e1826jx3lr" style={{ height: '94px', width: '100%', cursor: 'pointer' }} />
       <Navbar bg="primary" variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <Navbar.Brand>

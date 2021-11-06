@@ -9,6 +9,7 @@ import DetailScreen from "./views/products/product-categories/DetaIlScreen";
 import CategoryScreen from "./views/products/product-categories/CategoryScreen";
 import ProductByBrandScreen from "./views/products/product-categories/ProductByBrandScreen";
 import CardScreen from "./views/products/cart/CartScreen";
+import PostScreen from "./views/products/product-post/PostScreen";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/category/:id" component={CategoryScreen} />
           <Route path="/brand/:id" component={ProductByBrandScreen} />
           <Route path="/cart/:id?" component={CardScreen} />
+          <Route path="/post" component={PostScreen} />
         </Container>
       </main>
       <Footer />

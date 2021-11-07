@@ -71,7 +71,9 @@ const ProductDetail = (props) => {
               alt=""
             />
             <div>
-              <h2>{product && product.name}</h2>
+              <h2 className={styles.productDetailName}>
+                {product && product.name}
+              </h2>
               <p className={styles.description}>
                 {product && product.description}
               </p>
@@ -81,7 +83,7 @@ const ProductDetail = (props) => {
                   borderBottom: "1px solid black",
                   height: "40px",
                   marginLeft: "15px",
-                  marginTop: "15px",
+                  marginTop: "35px",
                 }}
               >
                 <a className={styles.rating}>59 ratings</a>

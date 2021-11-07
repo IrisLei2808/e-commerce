@@ -19,4 +19,14 @@ authService.register = function (data) {
   });
 };
 
+authService.getProfile = function (jwtToken) {
+  return axios({
+    method: "post",
+    url: `${API_ENDPOINT}/api/users/profile`,
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+    },
+  });
+};
+
 export default authService;

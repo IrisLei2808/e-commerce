@@ -1,7 +1,5 @@
-import { act } from "react-dom/test-utils";
 import {
   CART_ADD_ITEM,
-  CART_ADD_ITEM_SUCCESS,
   CART_REMOVE_ITEM,
   RESET_CART_TYPE,
 } from "../constants/Cart";
@@ -21,8 +19,10 @@ const initState = {
 const cart = (state = initState, action) => {
   switch (action.type) {
     case CART_ADD_ITEM:
-      const item = action.productDetails;
-      const existedItem = state.cartItems.find(
+      let item = action.productDetails;
+      let qty = action.qty;
+      item.qty = qty;
+      let existedItem = state.cartItems.find(
         (x) => x.idProduct === item.idProduct
       );
       if (existedItem) {

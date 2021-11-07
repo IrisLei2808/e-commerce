@@ -1,4 +1,7 @@
 import {
+  GET_PROFILE_FAIL,
+  GET_PROFILE_REQUEST,
+  GET_PROFILE_SUCCESS,
   RESET_AUTH_TYPE,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -62,6 +65,26 @@ export const registerSuccess = (user) => {
 export const registerFailure = (error) => {
   return {
     type: USER_REGISTER_FAIL,
+    error,
+  };
+};
+
+export const getProfile = () => {
+  return {
+    type: GET_PROFILE_REQUEST,
+  };
+};
+
+export const getProfileSuccess = (user) => {
+  return {
+    type: GET_PROFILE_SUCCESS,
+    user,
+  };
+};
+
+export const getProfileFailure = (error) => {
+  return {
+    type: GET_PROFILE_FAIL,
     error,
   };
 };

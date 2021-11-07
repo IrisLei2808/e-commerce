@@ -1,10 +1,16 @@
 import { all, takeEvery, put, fork, call } from "redux-saga/effects";
-import { USER_LOGIN_REQUEST, USER_REGISTER_REQUEST } from "../constants/Auth";
+import {
+  GET_PROFILE_REQUEST,
+  USER_LOGIN_REQUEST,
+  USER_REGISTER_REQUEST,
+} from "../constants/Auth";
 import {
   signInSuccess,
   signInFailure,
   registerSuccess,
   registerFailure,
+  getProfileSuccess,
+  getProfileFailure,
 } from "../actions/Auth";
 import authService from "../../services/AuthService";
 
@@ -44,6 +50,21 @@ export function* register() {
       }
     }
   );
+}
+
+export function* getProfile() {
+  yield takeEvery(GET_PROFILE_REQUEST, function* ({ username, password }) {
+    try {
+      const user = yield call(authService.login, {
+        userName: username,
+        password,
+      });
+      localStorage.setItem("userInfo", JSON.stringify(user.data));
+      yield put(getProfileSuccess(user.data));
+    } catch (err) {
+      yield put(getProfileFailure(err.response && err.response.data));
+    }
+  });
 }
 
 export default function* rootSaga() {

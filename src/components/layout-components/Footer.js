@@ -6,7 +6,7 @@ const Footer = () => {
     <Container>
       <Row>
         <Col className="text-center py-3">
-          Old Stuff Exchange ©2021 Created by Trung Nguyen Quang
+          Old Stuff Exchange ©2021 Created by Capstone Team
         </Col>
       </Row>
     </Container>

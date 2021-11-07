@@ -9,14 +9,24 @@ import {
   resetProductType,
 } from "../../../redux/actions/Product";
 import { connect } from "react-redux";
-import { Row, Col, ListGroup, Image, Form, Button } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  ListGroup,
+  Image,
+  Form,
+  Button,
+  Card,
+} from "react-bootstrap";
 import ErrorMessage from "../../../components/shared-components/ErrorMessage";
 import { Link } from "react-router-dom";
 import { formatMoney } from "../../../utils/formatText";
 import { PRODUCT_DETAILS_SUCCESS } from "../../../redux/constants/Product";
 import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../../../redux/constants/Cart";
+import { useHistory } from "react-router-dom";
 
 const CartScreen = (props) => {
+  let history = useHistory();
   const {
     addToCart,
     resetCartType,
@@ -39,6 +49,17 @@ const CartScreen = (props) => {
       ? JSON.parse(localStorage.getItem("productCartItems"))
       : []
   );
+  const userInfo = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
+    : [];
+
+  const checkoutHandler = () => {
+    if (!userInfo) {
+      history.push("/login?redirect=placeorder");
+    } else {
+      history.push("/placeorder");
+    }
+  };
 
   useEffect(() => {
     fetchProductDetails(productId);
@@ -56,7 +77,6 @@ const CartScreen = (props) => {
       resetProductType();
     };
   }, [type]);
-  console.log("RES2: ", cartItems);
   useEffect(() => {
     switch (cartType) {
       case CART_ADD_ITEM:
@@ -109,12 +129,26 @@ const CartScreen = (props) => {
                     />
                   </Col>
                   <Col md={3}>
-                    <Link>{item.name}</Link>
+                    <Link to={`/product/${item.idProduct}`}>{item.name}</Link>
                   </Col>
                   <Col md={3}>{formatMoney(item.price)}</Col>
                   <Col md={2}>
                     <Row>
-                      <Form.Control as="select"></Form.Control>
+                      <Form.Control
+                        as="select"
+                        value={item.qty}
+                        onChange={(e) =>
+                          addToCart(
+                            item,
+                            item.idProduct,
+                            Number(e.target.value)
+                          )
+                        }
+                      >
+                        {[...Array(item.quantity).keys()].map((x) => (
+                          <option key={x + 1}>{x + 1}</option>
+                        ))}
+                      </Form.Control>
                     </Row>
                   </Col>
                   <Col md={2}>
@@ -131,6 +165,34 @@ const CartScreen = (props) => {
             ))}
           </ListGroup>
         )}
+      </Col>
+      <Col md={4}>
+        <Card>
+          <ListGroup variant="flush">
+            <ListGroup.Item>
+              <h2>
+                Total ({cartStorage.reduce((acc, item) => acc + item.qty, 0)})
+                Products
+              </h2>
+              {formatMoney(
+                cartStorage.reduce(
+                  (acc, item) => acc + item.qty * item.price,
+                  0
+                )
+              )}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <Button
+                type="button"
+                className="btn-block"
+                onClick={checkoutHandler}
+                disabled={cartStorage.length === 0}
+              >
+                Proceed To Checkout
+              </Button>
+            </ListGroup.Item>
+          </ListGroup>
+        </Card>
       </Col>
     </Row>
   );

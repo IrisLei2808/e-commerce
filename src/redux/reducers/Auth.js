@@ -1,4 +1,7 @@
 import {
+  GET_PROFILE_FAIL,
+  GET_PROFILE_REQUEST,
+  GET_PROFILE_SUCCESS,
   RESET_AUTH_TYPE,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -66,6 +69,25 @@ const auth = (state = initState, action) => {
           : null,
       };
     case USER_REGISTER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
+    case GET_PROFILE_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case GET_PROFILE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        user: action.user,
+        type: action.type,
+      };
+    case GET_PROFILE_FAIL:
       return {
         ...state,
         loading: false,

@@ -13,15 +13,9 @@ import { CART_ADD_ITEM } from "../constants/Cart";
 
 export const getCart = (state) => state.cart;
 
-export function* addToCart() {
-  // let cart = yield select(getCart);
-  // localStorage.setItem("productCartItems", JSON.stringify(cart.cartItems));
-  // console.log("CARRR: ", cart && cart);
-}
+export function* addToCart() {}
 
-export function* handleAddToCart() {
-  // yield takeLatest(CART_ADD_ITEM, addToCart);
-}
+export function* handleAddToCart() {}
 
 export default function* rootSaga() {
   yield all([fork(handleAddToCart)]);

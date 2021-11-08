@@ -12,6 +12,12 @@ import {
   PRODUCT_BY_BRAND_SUCCESS,
   PRODUCT_BY_BRAND_FAIL,
   RESET_PRODUCT_TYPE,
+  CATEGORY_BY_BRAND_REQUEST,
+  CATEGORY_BY_BRAND_SUCCESS,
+  CATEGORY_BY_BRAND_FAIL,
+  CATEGORY_NAME_REQUEST,
+  CATEGORY_NAME_SUCCESS,
+  CATEGORY_NAME_FAIL,
 } from "../constants/Product";
 
 export const fetchProductList = (params) => {
@@ -64,12 +70,32 @@ export const fetchProductByBrandSuccess = (product) => {
   return {
     type: PRODUCT_BY_BRAND_SUCCESS,
     productList: product.data && product.data[0],
+    brand: product.data && product.data,
   };
 };
 
 export const fetchProductByBrandFail = (message) => {
   return {
     type: PRODUCT_BY_BRAND_FAIL,
+    message,
+  };
+};
+
+export const fetchCategoryByBrand = () => {
+  return {
+    type: CATEGORY_BY_BRAND_REQUEST,
+  };
+};
+export const fetchCategoryByBrandSuccess = (category) => {
+  return {
+    type: CATEGORY_BY_BRAND_SUCCESS,
+    categoryList: category.data,
+  };
+};
+
+export const fetchCategoryByBrandFail = (message) => {
+  return {
+    type: CATEGORY_BY_BRAND_FAIL,
     message,
   };
 };
@@ -90,6 +116,26 @@ export const fetchProductDetailsSuccess = (product) => {
 export const fetchProductDetailsFailed = (message) => {
   return {
     type: PRODUCT_DETAILS_FAIL,
+    message,
+  };
+};
+
+export const fetchCategoryName = (categoryId) => {
+  return {
+    type: CATEGORY_NAME_REQUEST,
+    categoryId,
+  };
+};
+export const fetchCategoryNameSuccess = (category) => {
+  return {
+    type: CATEGORY_NAME_SUCCESS,
+    categoryName: category && category.data && category.data.name,
+  };
+};
+
+export const fetchCategoryNameFailed = (message) => {
+  return {
+    type: CATEGORY_NAME_FAIL,
     message,
   };
 };

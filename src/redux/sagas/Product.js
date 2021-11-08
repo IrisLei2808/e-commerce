@@ -1,5 +1,7 @@
 import { all, takeEvery, put, fork, call } from "redux-saga/effects";
 import {
+  CATEGORY_BY_BRAND_REQUEST,
+  CATEGORY_NAME_REQUEST,
   PRODUCT_BY_BRAND_REQUEST,
   PRODUCT_BY_CATEGORY_REQUEST,
   PRODUCT_DETAILS_REQUEST,
@@ -14,6 +16,10 @@ import {
   fetchProductDetailsFailed,
   fetchProductByBrandSuccess,
   fetchProductByBrandFail,
+  fetchCategoryByBrandSuccess,
+  fetchCategoryByBrandFail,
+  fetchCategoryNameSuccess,
+  fetchCategoryNameFailed,
 } from "../actions/Product";
 import productService from "../../services/ProductService";
 
@@ -55,6 +61,17 @@ export function* fetchProductByBrand() {
   });
 }
 
+export function* fetchCategoryByBrand() {
+  yield takeEvery(CATEGORY_BY_BRAND_REQUEST, function* () {
+    try {
+      const product = yield call(productService.getCategoryByBrand);
+      yield put(fetchCategoryByBrandSuccess(product));
+    } catch (error) {
+      yield put(fetchCategoryByBrandFail(error));
+    }
+  });
+}
+
 export function* fetchProductDetails() {
   yield takeEvery(PRODUCT_DETAILS_REQUEST, function* (params) {
     const { productId } = params;
@@ -74,11 +91,25 @@ export function* fetchProductDetails() {
   });
 }
 
+export function* fetchCategoryName() {
+  yield takeEvery(CATEGORY_NAME_REQUEST, function* (params) {
+    const { categoryId } = params;
+    try {
+      const product = yield call(productService.getCategoryName, categoryId);
+      yield put(fetchCategoryNameSuccess(product));
+    } catch (error) {
+      yield put(fetchCategoryNameFailed(error));
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
     fork(fetchProductList),
     fork(fetchProductByCategory),
     fork(fetchProductDetails),
     fork(fetchProductByBrand),
+    fork(fetchCategoryByBrand),
+    fork(fetchCategoryName),
   ]);
 }

@@ -16,7 +16,12 @@ function App() {
   return (
     <Router>
       <Header />
-      <main className="py-3">
+      <main
+        className="py-3"
+        style={{
+          background: "linear-gradient(to right, #e9defa, #fbfcdb)",
+        }}
+      >
         <Route path="/" component={HomeScreen} exact />
         <Container>
           <Route path="/login" component={LoginScreen} />

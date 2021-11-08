@@ -1,4 +1,10 @@
 import {
+  CATEGORY_BY_BRAND_FAIL,
+  CATEGORY_BY_BRAND_REQUEST,
+  CATEGORY_BY_BRAND_SUCCESS,
+  CATEGORY_NAME_FAIL,
+  CATEGORY_NAME_REQUEST,
+  CATEGORY_NAME_SUCCESS,
   PRODUCT_BY_BRAND_FAIL,
   PRODUCT_BY_BRAND_REQUEST,
   PRODUCT_BY_BRAND_SUCCESS,
@@ -71,9 +77,29 @@ const product = (state = initState, action) => {
         ...state,
         isLoading: false,
         list: action.productList,
+        brand: action.brand,
         type: action.type,
       };
     case PRODUCT_BY_BRAND_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.message,
+      };
+    case CATEGORY_BY_BRAND_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        type: action.type,
+      };
+    case CATEGORY_BY_BRAND_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        categoryList: action.categoryList,
+        type: action.type,
+      };
+    case CATEGORY_BY_BRAND_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -93,6 +119,25 @@ const product = (state = initState, action) => {
         type: action.type,
       };
     case PRODUCT_DETAILS_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.message,
+      };
+    case CATEGORY_NAME_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        type: action.type,
+      };
+    case CATEGORY_NAME_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        categoryName: action.categoryName,
+        type: action.type,
+      };
+    case CATEGORY_NAME_FAIL:
       return {
         ...state,
         isLoading: false,

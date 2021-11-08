@@ -3,21 +3,29 @@ import { Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
   fetchProductByBrand,
+  fetchCategoryByBrand,
   resetProductType,
 } from "../../../redux/actions/Product";
 import ProductCategory from "../../../components/layout-components/ProductCategory";
 import Loader from "../../../components/shared-components/Spinner";
-import { PRODUCT_BY_BRAND_SUCCESS } from "../../../redux/constants/Product";
+import {
+  PRODUCT_BY_BRAND_SUCCESS,
+  CATEGORY_BY_BRAND_SUCCESS,
+} from "../../../redux/constants/Product";
 
 const ProductByBrandScreen = (props) => {
   const [product, setProduct] = useState(null);
+  const [category, setCategory] = useState(null);
   const {
     fetchProductByBrand,
+    fetchCategoryByBrand,
     productList,
+    categoryList,
     loading,
     match,
     type,
     resetProductType,
+    brand,
   } = props;
   useEffect(() => {
     fetchProductByBrand(match && match.params.id);
@@ -27,6 +35,9 @@ const ProductByBrandScreen = (props) => {
     switch (type) {
       case PRODUCT_BY_BRAND_SUCCESS:
         setProduct(productList);
+        break;
+      case CATEGORY_BY_BRAND_SUCCESS:
+        setCategory(categoryList);
         break;
       default:
         break;
@@ -41,15 +52,20 @@ const ProductByBrandScreen = (props) => {
       {loading ? (
         <Loader />
       ) : (
-        <Row>
-          {product &&
-            product.Products &&
-            product.Products.map((pro) => (
-              <Col sm={12} md={6} lg={4} xl={3}>
-                <ProductCategory product={pro} />
-              </Col>
-            ))}
-        </Row>
+        <>
+          <h2>Trending {brand && brand[0].brandname}</h2>
+          {product !== null && (
+            <Row>
+              {product &&
+                product.Products &&
+                product.Products.map((pro) => (
+                  <Col sm={12} md={6} lg={4} xl={3}>
+                    <ProductCategory product={pro} />
+                  </Col>
+                ))}
+            </Row>
+          )}
+        </>
       )}
     </>
   );
@@ -58,13 +74,16 @@ const ProductByBrandScreen = (props) => {
 const mapStateToProps = ({ product }) => {
   return {
     productList: product.list,
+    categoryList: product && product.categoryList,
     loading: product.isLoading,
     type: product.type,
+    brand: product.brand,
   };
 };
 
 const mapDispatchToProps = {
   fetchProductByBrand,
+  fetchCategoryByBrand,
   resetProductType,
 };
 

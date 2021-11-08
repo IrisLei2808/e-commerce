@@ -20,7 +20,6 @@ const PlaceOrderScreen = () => {
     ? JSON.parse(localStorage.getItem("userInfo"))
     : [];
 
-  console.log("DD: ", userInfo);
   useEffect(() => {
     if (userInfo.length === 0) {
       history.push("/login");

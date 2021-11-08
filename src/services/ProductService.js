@@ -32,4 +32,18 @@ productService.getProductDetails = function (productId) {
   });
 };
 
+productService.getCategoryByBrand = function () {
+  return axios({
+    method: "get",
+    url: `${API_ENDPOINT}/api/brand`,
+  });
+};
+
+productService.getCategoryName = function (categoryId) {
+  return axios({
+    method: "get",
+    url: `${API_ENDPOINT}/api/categories/name/${categoryId}`,
+  });
+};
+
 export default productService;

@@ -106,6 +106,7 @@ const auth = (state = initState, action) => {
       return {
         ...state,
         type: action.type,
+        loading: true,
       };
     }
     case AVATAR_UPLOAD_SUCCESS: {
@@ -113,12 +114,14 @@ const auth = (state = initState, action) => {
         ...state,
         type: action.type,
         fileList: action.fileList,
+        loading: false,
       };
     }
     case AVATAR_UPLOAD_FAIL: {
       return {
         ...state,
         type: action.type,
+        loading: false,
       };
     }
     default:

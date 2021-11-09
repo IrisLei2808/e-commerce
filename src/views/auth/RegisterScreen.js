@@ -101,7 +101,6 @@ const RegisterScreen = (props) => {
       <h1>Sign Up</h1>
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error && error.message}</Message>}
-      {loading && <Loader />}
       <Form onSubmit={submitHandler}>
         <AvatarUpload preview={preview} setPreview={setPreview} />
         <Form.Group controlId="name" className="mt-3">
@@ -197,15 +196,18 @@ const RegisterScreen = (props) => {
             </Grid>
           </MuiPickersUtilsProvider>
         </Form.Group>
-        <Button
+        <button
+          className="btn btn-primary btn-block btn-lg"
           type="submit"
-          variant="primary"
-          block
-          size="lg"
-          className="mt-4"
+          disabled={loading}
         >
-          Register
-        </Button>
+          <span
+            className={loading ? "spinner-border spinner-border-sm" : ""}
+            role="status"
+            aria-hidden="true"
+          ></span>
+          {loading ? "Loading..." : "Register"}
+        </button>
       </Form>
       <Row className="py-3">
         <Col>

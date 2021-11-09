@@ -5,6 +5,9 @@ import {
   CATEGORY_NAME_FAIL,
   CATEGORY_NAME_REQUEST,
   CATEGORY_NAME_SUCCESS,
+  IMAGE_UPLOAD_FAIL,
+  IMAGE_UPLOAD_REQUEST,
+  IMAGE_UPLOAD_SUCCESS,
   PRODUCT_BY_BRAND_FAIL,
   PRODUCT_BY_BRAND_REQUEST,
   PRODUCT_BY_BRAND_SUCCESS,
@@ -143,6 +146,28 @@ const product = (state = initState, action) => {
         isLoading: false,
         error: action.message,
       };
+    case IMAGE_UPLOAD_REQUEST: {
+      return {
+        ...state,
+        type: action.type,
+        loading: true,
+      };
+    }
+    case IMAGE_UPLOAD_SUCCESS: {
+      return {
+        ...state,
+        type: action.type,
+        fileList: action.fileList,
+        loading: false,
+      };
+    }
+    case IMAGE_UPLOAD_FAIL: {
+      return {
+        ...state,
+        loading: false,
+        type: action.type,
+      };
+    }
     case RESET_PRODUCT_TYPE:
       return {
         ...state,

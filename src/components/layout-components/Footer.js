@@ -9,11 +9,9 @@ const Footer = () => {
         width: "100%",
       }}
     >
-      <Row>
-        <Col className="text-center py-3">
-          Old Stuff Exchange ©2021 Created by Capstone Team
-        </Col>
-      </Row>
+      <Col className="text-center py-3">
+        Old Stuff Exchange ©2021 Created by Capstone Team
+      </Col>
     </footer>
   );
 };

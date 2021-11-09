@@ -13,15 +13,34 @@ import {
 } from "@material-ui/pickers";
 import Grid from "@material-ui/core/Grid";
 import DateFnsUtils from "@date-io/date-fns";
-import { resetAuthType, register } from "../../redux/actions/Auth";
+import {
+  resetAuthType,
+  register,
+  avatarUpload,
+} from "../../redux/actions/Auth";
 import Loader from "../../components/shared-components/Spinner";
-import { USER_REGISTER_SUCCESS } from "../../redux/constants/Auth";
+import AvatarUpload from "../../components/layout-components/AvatarUpload";
+import {
+  AVATAR_UPLOAD_FAIL,
+  AVATAR_UPLOAD_SUCCESS,
+  USER_REGISTER_SUCCESS,
+} from "../../redux/constants/Auth";
 
 const RegisterScreen = (props) => {
-  const { register, loading, resetAuthType, error, type, location, history } =
-    props;
+  const {
+    register,
+    loading,
+    resetAuthType,
+    error,
+    type,
+    location,
+    history,
+    avatarUpload,
+    fileList,
+  } = props;
   const redirect = location.search ? location.search.split("=")[1] : "/";
 
+  const [preview, setPreview] = useState(null);
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -47,27 +66,31 @@ const RegisterScreen = (props) => {
     );
   };
   finalDate(selectedDate);
+
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      setMessage("Passwords do not match");
-    } else {
-      register(
-        name,
-        password,
-        address,
-        fullName,
-        phone,
-        value,
-        finalDate(selectedDate)
-      );
-    }
+    avatarUpload(preview);
   };
 
   useEffect(() => {
     switch (type) {
       case USER_REGISTER_SUCCESS:
         history.push(redirect);
+      case AVATAR_UPLOAD_SUCCESS:
+        if (password !== confirmPassword) {
+          setMessage("Passwords do not match");
+        } else {
+          register(
+            name,
+            password,
+            address,
+            phone,
+            fullName,
+            value,
+            finalDate(selectedDate),
+            fileList && fileList.url
+          );
+        }
         break;
     }
     resetAuthType();
@@ -80,7 +103,8 @@ const RegisterScreen = (props) => {
       {error && <Message variant="danger">{error && error.message}</Message>}
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
-        <Form.Group controlId="name">
+        <AvatarUpload preview={preview} setPreview={setPreview} />
+        <Form.Group controlId="name" className="mt-3">
           <Form.Label>Username</Form.Label>
           <Form.Control
             type="input"
@@ -179,7 +203,6 @@ const RegisterScreen = (props) => {
           block
           size="lg"
           className="mt-4"
-          onClick={register}
         >
           Register
         </Button>
@@ -199,11 +222,13 @@ const mapStateToProps = ({ auth }) => {
     loading: auth && auth.loading,
     error: auth && auth.error,
     user: auth && auth.user,
+    fileList: auth && auth.fileList,
   };
 };
 
 const mapDispatchToProps = {
   register,
+  avatarUpload,
   resetAuthType,
 };
 

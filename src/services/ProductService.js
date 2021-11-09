@@ -3,6 +3,30 @@ import { API_ENDPOINT, LOCAL_API_ENDPOINT } from "../configs/AppConfig";
 
 const productService = {};
 
+productService.createProduct = function (data) {
+  return axios({
+    method: "post",
+    url: `${API_ENDPOINT}/api/products`,
+    data,
+  });
+};
+
+productService.addProductImage = function (data) {
+  return axios({
+    method: "post",
+    url: `${API_ENDPOINT}/api/products/image`,
+    data,
+  });
+};
+
+productService.removeProductImage = function (data) {
+  return axios({
+    method: "post",
+    url: `${API_ENDPOINT}/api/products/image/remove`,
+    data,
+  });
+};
+
 productService.getProduct = function (data) {
   return axios({
     method: "get",

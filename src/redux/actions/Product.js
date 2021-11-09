@@ -18,6 +18,9 @@ import {
   CATEGORY_NAME_REQUEST,
   CATEGORY_NAME_SUCCESS,
   CATEGORY_NAME_FAIL,
+  IMAGE_UPLOAD_REQUEST,
+  IMAGE_UPLOAD_SUCCESS,
+  IMAGE_UPLOAD_FAIL,
 } from "../constants/Product";
 
 export const fetchProductList = (params) => {
@@ -136,6 +139,26 @@ export const fetchCategoryNameSuccess = (category) => {
 export const fetchCategoryNameFailed = (message) => {
   return {
     type: CATEGORY_NAME_FAIL,
+    message,
+  };
+};
+
+export const imageUpload = (data) => {
+  return {
+    type: IMAGE_UPLOAD_REQUEST,
+    data,
+  };
+};
+export const imageUploadSuccess = (file) => {
+  return {
+    type: IMAGE_UPLOAD_SUCCESS,
+    fileList: file.data,
+  };
+};
+
+export const imageUploadFailed = (message) => {
+  return {
+    type: IMAGE_UPLOAD_FAIL,
     message,
   };
 };

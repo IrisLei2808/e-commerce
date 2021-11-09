@@ -1,4 +1,7 @@
 import {
+  AVATAR_UPLOAD_FAIL,
+  AVATAR_UPLOAD_REQUEST,
+  AVATAR_UPLOAD_SUCCESS,
   GET_PROFILE_FAIL,
   GET_PROFILE_REQUEST,
   GET_PROFILE_SUCCESS,
@@ -97,6 +100,25 @@ const auth = (state = initState, action) => {
       return {
         ...state,
         type: null,
+      };
+    }
+    case AVATAR_UPLOAD_REQUEST: {
+      return {
+        ...state,
+        type: action.type,
+      };
+    }
+    case AVATAR_UPLOAD_SUCCESS: {
+      return {
+        ...state,
+        type: action.type,
+        fileList: action.fileList,
+      };
+    }
+    case AVATAR_UPLOAD_FAIL: {
+      return {
+        ...state,
+        type: action.type,
       };
     }
     default:

@@ -1,5 +1,13 @@
 import React, { useMemo, useState } from "react";
-import { Col, Container, Nav, Navbar, NavDropdown, Row } from "react-bootstrap";
+import {
+  Col,
+  Container,
+  Nav,
+  Navbar,
+  NavDropdown,
+  Row,
+  Image,
+} from "react-bootstrap";
 import { connect } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { signOut } from "../../redux/actions/Auth";
@@ -7,6 +15,7 @@ import { fetchCategoryByBrand } from "../../redux/actions/Product";
 import { formatMoney } from "../../utils/formatText";
 import { getIcon } from "../../utils/iconText";
 import { useHistory } from "react-router-dom";
+import { AVATAR_NO_URL } from "../../configs/Constants";
 
 const Header = (props) => {
   let history = useHistory();
@@ -50,27 +59,50 @@ const Header = (props) => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
+              <LinkContainer to="/post">
+                <Nav.Link>
+                  <i class="fas fa-cart-plus mr-2"></i>Post Product
+                </Nav.Link>
+              </LinkContainer>
               <LinkContainer to="/cart">
                 <Nav.Link>
                   <i className="fas fa-shopping-cart mr-2"></i>Cart
                 </Nav.Link>
               </LinkContainer>
               {userInfoFromStorage ? (
-                <NavDropdown title={userInfoFromStorage.userName} id="username">
-                  <NavDropdown.Item
-                    style={{ color: "#02aab0", fontWeight: "bold" }}
-                    disabled={true}
+                <div style={{ alignItems: "center", display: "flex" }}>
+                  <NavDropdown
+                    title={userInfoFromStorage.userName}
+                    id="username"
                   >
-                    {userInfoFromStorage.balance
-                      ? formatMoney(userInfoFromStorage.balance)
-                      : formatMoney(0)}
-                  </NavDropdown.Item>
-                  <LinkContainer to="/profile">
-                    <NavDropdown.Item>Profile</NavDropdown.Item>
-                  </LinkContainer>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={signOut}>Logout</NavDropdown.Item>
-                </NavDropdown>
+                    <NavDropdown.Item
+                      style={{ color: "#02aab0", fontWeight: "bold" }}
+                      disabled={true}
+                    >
+                      <i className="fas fa-wallet mr-2"></i>
+                      {userInfoFromStorage.balance
+                        ? formatMoney(userInfoFromStorage.balance)
+                        : formatMoney(0)}
+                    </NavDropdown.Item>
+                    <LinkContainer to="/profile">
+                      <NavDropdown.Item>
+                        <i className="fas fa-user-circle mr-2"></i>Profile
+                      </NavDropdown.Item>
+                    </LinkContainer>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item onClick={signOut}>
+                      <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                  <Image
+                    src={
+                      userInfoFromStorage.avatar
+                        ? userInfoFromStorage.avatar
+                        : `${AVATAR_NO_URL}`
+                    }
+                    style={{ width: 40, height: 40 }}
+                  />
+                </div>
               ) : (
                 <LinkContainer to="/login">
                   <Nav.Link>

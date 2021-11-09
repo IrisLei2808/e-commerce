@@ -19,6 +19,14 @@ authService.register = function (data) {
   });
 };
 
+authService.addAvatarImage = function (data) {
+  return axios({
+    method: "post",
+    url: `${API_ENDPOINT}/api/products/image/avatar`,
+    data,
+  });
+};
+
 authService.getProfile = function (jwtToken) {
   return axios({
     method: "post",

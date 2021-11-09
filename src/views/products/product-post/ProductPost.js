@@ -1,9 +1,8 @@
-import React, { Component } from "react";
-import { Box } from "@material-ui/core";
-import { TextField } from "@material-ui/core";
-import { MenuItem } from "@material-ui/core";
-import styles from "./product-post.module.css";
+import { Box, MenuItem, TextField } from "@material-ui/core";
+import React, { useState } from "react";
+import { Form, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
+import FileUpload from "../../../components/layout-components/FileUpload";
 
 const currencies = [
   {
@@ -21,7 +20,17 @@ const currencies = [
 ];
 
 export default function ProductPost() {
-  const [currency, setCurrency] = React.useState("EUR");
+  const [image, setImage] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [price, setPrice] = useState("");
+  const [status, setStatus] = useState("");
+  const [brand, setBrand] = useState("");
+  const [category, setCategory] = useState("female");
+  const [currency, setCurrency] = useState("EUR");
+  console.log("IMG: ", image);
 
   const handleChange = (event) => {
     setCurrency(event.target.value);
@@ -33,61 +42,65 @@ export default function ProductPost() {
   return (
     <Box
       sx={{
-        width: 960,
-        height: 650,
-        marginLeft: 85,
-        backgroundColor: "white",
-        border: "1px solid black",
+        backgroundColor: "#fff",
+        boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
         "&:hover": {
           backgroundColor: "primary.main",
           opacity: [0.9, 0.8, 0.7],
         },
+        borderRadius: 5,
+        padding: "20px 0px",
+        justifyContent: "space-around",
       }}
     >
-      <h2 style={{ textAlign: "center", marginTop: "20px" }}>
-        Upload Stuff Newfeed
-      </h2>
-      <form onSubmit={handleSubmit}>
+      <h2 style={{ textAlign: "center" }}>Post Product</h2>
+      <Form
+        onSubmit={handleSubmit}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Row className="w-50">
+          <FileUpload
+            image={image}
+            setImage={setImage}
+            setLoading={setLoading}
+          />
+        </Row>
         <TextField
           id="outlined-basic"
           label="Name"
           variant="outlined"
-          style={{ marginTop: "20px", width: "608px", marginLeft: "185px" }}
           color="secondary"
-        />
-        <TextField
-          id="outlined-basic"
-          label="Description"
-          variant="outlined"
-          style={{ marginTop: "20px", width: "608px", marginLeft: "185px" }}
-          color="secondary"
-        />
-        <TextField
-          id="outlined-basic"
-          type="number"
-          label="Quantity"
-          variant="outlined"
-          style={{ marginTop: "20px", width: "608px", marginLeft: "185px" }}
-          color="secondary"
-        />
-        <TextField
-          id="outlined-basic"
-          type="number"
-          label="Price"
-          variant="outlined"
-          style={{ marginTop: "20px", width: "608px", marginLeft: "185px" }}
-          color="secondary"
+          className="mt-4 w-50"
         />
         <TextField
           id="outlined-select-currency"
           select
           variant="outlined"
-          label="Status"
+          label="Brand"
           value={currency}
           color="secondary"
           onChange={handleChange}
-          helperText="Please select your status"
-          style={{ marginTop: "20px", width: "608px", marginLeft: "185px" }}
+          className="mt-4 w-50"
+        >
+          {currencies.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField
+          id="outlined-select-currency"
+          select
+          variant="outlined"
+          label="Category"
+          value={currency}
+          color="secondary"
+          onChange={handleChange}
+          className="mt-4 w-50"
         >
           {currencies.map((option) => (
             <MenuItem key={option.value} value={option.value}>
@@ -97,15 +110,47 @@ export default function ProductPost() {
         </TextField>
         <TextField
           id="outlined-basic"
-          type="file"
+          label="Description"
           variant="outlined"
-          style={{ marginTop: "20px", width: "612px", marginLeft: "180px" }}
           color="secondary"
+          className="mt-4 w-50"
         />
-        <Button className={styles.cartbtn} variant="primary" type="submit">
-          Upload
+        <TextField
+          id="outlined-basic"
+          type="number"
+          label="Quantity"
+          variant="outlined"
+          color="secondary"
+          className="mt-4 w-50"
+        />
+        <TextField
+          id="outlined-basic"
+          type="number"
+          label="Price"
+          variant="outlined"
+          color="secondary"
+          className="mt-4 w-50"
+        />
+        <TextField
+          id="outlined-select-currency"
+          select
+          variant="outlined"
+          label="Status"
+          value={currency}
+          color="secondary"
+          onChange={handleChange}
+          className="mt-4 w-50"
+        >
+          {currencies.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+        <Button variant="primary" type="submit" className="mt-3">
+          Post Product
         </Button>
-      </form>
+      </Form>
     </Box>
   );
 }

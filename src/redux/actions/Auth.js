@@ -1,4 +1,7 @@
 import {
+  AVATAR_UPLOAD_FAIL,
+  AVATAR_UPLOAD_REQUEST,
+  AVATAR_UPLOAD_SUCCESS,
   GET_PROFILE_FAIL,
   GET_PROFILE_REQUEST,
   GET_PROFILE_SUCCESS,
@@ -41,7 +44,8 @@ export const register = (
   phone,
   fullName,
   gender,
-  dob
+  dob,
+  fileList
 ) => {
   return {
     type: USER_REGISTER_REQUEST,
@@ -52,6 +56,7 @@ export const register = (
     fullName,
     gender,
     dob,
+    fileList,
   };
 };
 
@@ -92,6 +97,26 @@ export const getProfileFailure = (error) => {
 export const signOut = () => {
   return {
     type: USER_LOGOUT,
+  };
+};
+
+export const avatarUpload = (data) => {
+  return {
+    type: AVATAR_UPLOAD_REQUEST,
+    data,
+  };
+};
+export const avatarUploadSuccess = (file) => {
+  return {
+    type: AVATAR_UPLOAD_SUCCESS,
+    fileList: file.data,
+  };
+};
+
+export const avatarUploadFailed = (message) => {
+  return {
+    type: AVATAR_UPLOAD_FAIL,
+    message,
   };
 };
 

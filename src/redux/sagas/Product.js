@@ -2,6 +2,7 @@ import { all, takeEvery, put, fork, call } from "redux-saga/effects";
 import {
   CATEGORY_BY_BRAND_REQUEST,
   CATEGORY_NAME_REQUEST,
+  IMAGE_UPLOAD_REQUEST,
   PRODUCT_BY_BRAND_REQUEST,
   PRODUCT_BY_CATEGORY_REQUEST,
   PRODUCT_DETAILS_REQUEST,
@@ -20,6 +21,8 @@ import {
   fetchCategoryByBrandFail,
   fetchCategoryNameSuccess,
   fetchCategoryNameFailed,
+  imageUploadSuccess,
+  imageUploadFailed,
 } from "../actions/Product";
 import productService from "../../services/ProductService";
 
@@ -103,6 +106,17 @@ export function* fetchCategoryName() {
   });
 }
 
+export function* imageUpload() {
+  yield takeEvery(IMAGE_UPLOAD_REQUEST, function* (data) {
+    try {
+      const res = yield call(productService.addProductImage, data.data);
+      yield put(imageUploadSuccess(res));
+    } catch (error) {
+      yield put(imageUploadFailed(error));
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
     fork(fetchProductList),
@@ -111,5 +125,6 @@ export default function* rootSaga() {
     fork(fetchProductByBrand),
     fork(fetchCategoryByBrand),
     fork(fetchCategoryName),
+    fork(imageUpload),
   ]);
 }

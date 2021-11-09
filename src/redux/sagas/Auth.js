@@ -1,5 +1,6 @@
 import { all, takeEvery, put, fork, call } from "redux-saga/effects";
 import {
+  AVATAR_UPLOAD_REQUEST,
   GET_PROFILE_REQUEST,
   USER_LOGIN_REQUEST,
   USER_REGISTER_REQUEST,
@@ -11,6 +12,8 @@ import {
   registerFailure,
   getProfileSuccess,
   getProfileFailure,
+  avatarUploadSuccess,
+  avatarUploadFailed,
 } from "../actions/Auth";
 import authService from "../../services/AuthService";
 
@@ -32,7 +35,16 @@ export function* signIn() {
 export function* register() {
   yield takeEvery(
     USER_REGISTER_REQUEST,
-    function* ({ username, password, address, fullName, phone, gender, dob }) {
+    function* ({
+      username,
+      password,
+      address,
+      phone,
+      fullName,
+      gender,
+      dob,
+      fileList,
+    }) {
       try {
         const user = yield call(authService.register, {
           userName: username,
@@ -42,6 +54,7 @@ export function* register() {
           fullName,
           gender,
           dob,
+          avatar: fileList,
         });
         localStorage.setItem("userInfo", JSON.stringify(user.data));
         yield put(registerSuccess(user.data));
@@ -67,6 +80,20 @@ export function* getProfile() {
   });
 }
 
+export function* avatarUpload() {
+  yield takeEvery(AVATAR_UPLOAD_REQUEST, function* (data) {
+    const uploadData = {
+      image: data.data,
+    };
+    try {
+      const res = yield call(authService.addAvatarImage, uploadData);
+      yield put(avatarUploadSuccess(res));
+    } catch (error) {
+      yield put(avatarUploadFailed(error));
+    }
+  });
+}
+
 export default function* rootSaga() {
-  yield all([fork(signIn), fork(register)]);
+  yield all([fork(signIn), fork(register), fork(avatarUpload)]);
 }

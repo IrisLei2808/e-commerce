@@ -1,26 +1,34 @@
 import {
-  PRODUCT_LIST_REQUEST,
-  PRODUCT_LIST_SUCCESS,
-  PRODUCT_LIST_FAIL,
-  PRODUCT_BY_CATEGORY_REQUEST,
-  PRODUCT_BY_CATEGORY_SUCCESS,
-  PRODUCT_BY_CATEGORY_FAIL,
-  PRODUCT_DETAILS_REQUEST,
-  PRODUCT_DETAILS_SUCCESS,
-  PRODUCT_DETAILS_FAIL,
-  PRODUCT_BY_BRAND_REQUEST,
-  PRODUCT_BY_BRAND_SUCCESS,
-  PRODUCT_BY_BRAND_FAIL,
-  RESET_PRODUCT_TYPE,
+  ALL_CATEGORY_FAIL,
+  ALL_CATEGORY_REQUEST,
+  ALL_CATEGORY_SUCCESS,
+  CATEGORY_BY_BRAND_FAIL,
   CATEGORY_BY_BRAND_REQUEST,
   CATEGORY_BY_BRAND_SUCCESS,
-  CATEGORY_BY_BRAND_FAIL,
+  CATEGORY_NAME_FAIL,
   CATEGORY_NAME_REQUEST,
   CATEGORY_NAME_SUCCESS,
-  CATEGORY_NAME_FAIL,
+  CREATE_PRODUCT_FAIL,
+  CREATE_PRODUCT_SUCCESS,
+  IMAGE_REMOVE_FAIL,
+  IMAGE_REMOVE_REQUEST,
+  IMAGE_REMOVE_SUCCESS,
+  IMAGE_UPLOAD_FAIL,
   IMAGE_UPLOAD_REQUEST,
   IMAGE_UPLOAD_SUCCESS,
-  IMAGE_UPLOAD_FAIL,
+  PRODUCT_BY_BRAND_FAIL,
+  PRODUCT_BY_BRAND_REQUEST,
+  PRODUCT_BY_BRAND_SUCCESS,
+  PRODUCT_BY_CATEGORY_FAIL,
+  PRODUCT_BY_CATEGORY_REQUEST,
+  PRODUCT_BY_CATEGORY_SUCCESS,
+  PRODUCT_DETAILS_FAIL,
+  PRODUCT_DETAILS_REQUEST,
+  PRODUCT_DETAILS_SUCCESS,
+  PRODUCT_LIST_FAIL,
+  PRODUCT_LIST_REQUEST,
+  PRODUCT_LIST_SUCCESS,
+  RESET_PRODUCT_TYPE,
 } from "../constants/Product";
 
 export const fetchProductList = (params) => {
@@ -29,6 +37,7 @@ export const fetchProductList = (params) => {
     params,
   };
 };
+
 export const fetchProductListSuccess = (product) => {
   return {
     type: PRODUCT_LIST_SUCCESS,
@@ -40,6 +49,44 @@ export const fetchProductListFailed = (message) => {
   return {
     type: PRODUCT_LIST_FAIL,
     message,
+  };
+};
+
+export const createProduct = (
+  name,
+  description,
+  quantity,
+  price,
+  image,
+  own,
+  status,
+  category,
+  categoryChangeID
+) => {
+  return {
+    name,
+    description,
+    quantity,
+    price,
+    image,
+    own,
+    status,
+    category,
+    categoryChangeID,
+  };
+};
+
+export const createProductSuccess = (product) => {
+  return {
+    type: CREATE_PRODUCT_SUCCESS,
+    product,
+  };
+};
+
+export const createProductFail = (error) => {
+  return {
+    type: CREATE_PRODUCT_FAIL,
+    error,
   };
 };
 
@@ -80,6 +127,26 @@ export const fetchProductByBrandSuccess = (product) => {
 export const fetchProductByBrandFail = (message) => {
   return {
     type: PRODUCT_BY_BRAND_FAIL,
+    message,
+  };
+};
+
+export const getAllCategory = (brandId) => {
+  return {
+    type: ALL_CATEGORY_REQUEST,
+    brandId,
+  };
+};
+export const getAllCategorySuccess = (product) => {
+  return {
+    type: ALL_CATEGORY_SUCCESS,
+    allCategory: product.data && product.data,
+  };
+};
+
+export const getAllCategoryFail = (message) => {
+  return {
+    type: ALL_CATEGORY_FAIL,
     message,
   };
 };
@@ -159,6 +226,26 @@ export const imageUploadSuccess = (file) => {
 export const imageUploadFailed = (message) => {
   return {
     type: IMAGE_UPLOAD_FAIL,
+    message,
+  };
+};
+
+export const imageRemove = (data) => {
+  return {
+    type: IMAGE_REMOVE_REQUEST,
+    data,
+  };
+};
+export const imageRemoveSuccess = (file) => {
+  return {
+    type: IMAGE_REMOVE_SUCCESS,
+    cloudinaryId: file.data.cloudinaryId,
+  };
+};
+
+export const imageRemoveFailed = (message) => {
+  return {
+    type: IMAGE_REMOVE_FAIL,
     message,
   };
 };

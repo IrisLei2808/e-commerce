@@ -35,6 +35,14 @@ productService.getProduct = function (data) {
   });
 };
 
+productService.getAllCategory = function (data) {
+  return axios({
+    method: "get",
+    url: `${API_ENDPOINT}/api/categories/category/brand`,
+    data,
+  });
+};
+
 productService.getProductByCategoryId = function (categoryId) {
   return axios({
     method: "get",

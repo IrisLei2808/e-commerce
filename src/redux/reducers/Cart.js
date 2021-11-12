@@ -26,7 +26,6 @@ const cart = (state = initState, action) => {
         (x) => x.idProduct === item.idProduct
       );
       if (existedItem) {
-        console.log("Trùng");
         return {
           ...state,
           type: action.type,
@@ -35,7 +34,6 @@ const cart = (state = initState, action) => {
           ),
         };
       } else {
-        console.log("Không trùng");
         return {
           ...state,
           type: action.type,

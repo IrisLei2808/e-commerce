@@ -1,7 +1,10 @@
 import { all, takeEvery, put, fork, call } from "redux-saga/effects";
 import {
+  ALL_CATEGORY_REQUEST,
   CATEGORY_BY_BRAND_REQUEST,
   CATEGORY_NAME_REQUEST,
+  CREATE_PRODUCT_REQUEST,
+  IMAGE_REMOVE_REQUEST,
   IMAGE_UPLOAD_REQUEST,
   PRODUCT_BY_BRAND_REQUEST,
   PRODUCT_BY_CATEGORY_REQUEST,
@@ -23,6 +26,12 @@ import {
   fetchCategoryNameFailed,
   imageUploadSuccess,
   imageUploadFailed,
+  imageRemoveSuccess,
+  imageRemoveFailed,
+  createProductSuccess,
+  createProductFail,
+  getAllCategorySuccess,
+  getAllCategoryFail,
 } from "../actions/Product";
 import productService from "../../services/ProductService";
 
@@ -33,6 +42,17 @@ export function* fetchProductList() {
       yield put(fetchProductListSuccess(product));
     } catch (error) {
       yield put(fetchProductListFailed(error));
+    }
+  });
+}
+
+export function* fetchAllCategory() {
+  yield takeEvery(ALL_CATEGORY_REQUEST, function* () {
+    try {
+      const category = yield call(productService.getAllCategory);
+      yield put(getAllCategorySuccess(category));
+    } catch (error) {
+      yield put(getAllCategoryFail(error));
     }
   });
 }
@@ -117,6 +137,54 @@ export function* imageUpload() {
   });
 }
 
+export function* imageRemove() {
+  yield takeEvery(IMAGE_REMOVE_REQUEST, function* (data) {
+    const removeData = {
+      public_id: data.data,
+    };
+    try {
+      const res = yield call(productService.removeProductImage, removeData);
+      yield put(imageRemoveSuccess(res));
+    } catch (error) {
+      yield put(imageRemoveFailed(error));
+    }
+  });
+}
+
+export function* createProduct() {
+  yield takeEvery(
+    CREATE_PRODUCT_REQUEST,
+    function* ({
+      name,
+      description,
+      quantity,
+      price,
+      image,
+      own,
+      status,
+      category,
+      categoryChangeID,
+    }) {
+      try {
+        const product = yield call(productService.createProduct, {
+          name,
+          description,
+          quantity,
+          price,
+          image,
+          own,
+          status,
+          category,
+          categoryChangeID,
+        });
+        yield put(createProductSuccess(product.data));
+      } catch (err) {
+        yield put(createProductFail(err.response && err.response.data));
+      }
+    }
+  );
+}
+
 export default function* rootSaga() {
   yield all([
     fork(fetchProductList),
@@ -126,5 +194,8 @@ export default function* rootSaga() {
     fork(fetchCategoryByBrand),
     fork(fetchCategoryName),
     fork(imageUpload),
+    fork(imageRemove),
+    fork(createProduct),
+    fork(fetchAllCategory),
   ]);
 }

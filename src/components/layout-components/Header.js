@@ -59,7 +59,9 @@ const Header = (props) => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
-              <LinkContainer to="/post">
+              <LinkContainer
+                to={userInfoFromStorage ? "/post" : "/login?redirect=post"}
+              >
                 <Nav.Link>
                   <i class="fas fa-cart-plus mr-2"></i>Post Product
                 </Nav.Link>

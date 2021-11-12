@@ -1,10 +1,19 @@
 import {
+  ALL_CATEGORY_FAIL,
+  ALL_CATEGORY_REQUEST,
+  ALL_CATEGORY_SUCCESS,
   CATEGORY_BY_BRAND_FAIL,
   CATEGORY_BY_BRAND_REQUEST,
   CATEGORY_BY_BRAND_SUCCESS,
   CATEGORY_NAME_FAIL,
   CATEGORY_NAME_REQUEST,
   CATEGORY_NAME_SUCCESS,
+  CREATE_PRODUCT_FAIL,
+  CREATE_PRODUCT_REQUEST,
+  CREATE_PRODUCT_SUCCESS,
+  IMAGE_REMOVE_FAIL,
+  IMAGE_REMOVE_REQUEST,
+  IMAGE_REMOVE_SUCCESS,
   IMAGE_UPLOAD_FAIL,
   IMAGE_UPLOAD_REQUEST,
   IMAGE_UPLOAD_SUCCESS,
@@ -45,6 +54,25 @@ const product = (state = initState, action) => {
         type: action.type,
       };
     case PRODUCT_LIST_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.message,
+      };
+    case ALL_CATEGORY_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        type: action.type,
+      };
+    case ALL_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        allCategory: action.allCategory,
+        type: action.type,
+      };
+    case ALL_CATEGORY_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -168,6 +196,47 @@ const product = (state = initState, action) => {
         type: action.type,
       };
     }
+    case IMAGE_REMOVE_REQUEST: {
+      return {
+        ...state,
+        type: action.type,
+        loading: true,
+      };
+    }
+    case IMAGE_REMOVE_SUCCESS: {
+      return {
+        ...state,
+        type: action.type,
+        cloudinaryId: action.cloudinaryId,
+        loading: false,
+      };
+    }
+    case IMAGE_REMOVE_FAIL: {
+      return {
+        ...state,
+        loading: false,
+        type: action.type,
+      };
+    }
+    case CREATE_PRODUCT_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case CREATE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        product: action.product,
+        type: action.type,
+      };
+    case CREATE_PRODUCT_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
     case RESET_PRODUCT_TYPE:
       return {
         ...state,

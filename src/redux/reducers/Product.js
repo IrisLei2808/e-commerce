@@ -228,7 +228,7 @@ const product = (state = initState, action) => {
       return {
         ...state,
         loading: false,
-        product: action.product,
+        newProductId: action.product,
         type: action.type,
       };
     case CREATE_PRODUCT_FAIL:
@@ -236,6 +236,7 @@ const product = (state = initState, action) => {
         ...state,
         loading: false,
         error: action.error,
+        type: action.type,
       };
     case RESET_PRODUCT_TYPE:
       return {

@@ -83,7 +83,7 @@ const ProductDetail = (props) => {
                   borderBottom: "1px solid black",
                   height: "40px",
                   marginLeft: "15px",
-                  marginTop: "35px",
+                  marginTop: "20px",
                 }}
               >
                 <a className={styles.rating}>59 ratings</a>

@@ -162,7 +162,7 @@ export function* createProduct() {
       image,
       own,
       status,
-      category,
+      categoryID,
       categoryChangeID,
     }) {
       try {
@@ -174,7 +174,7 @@ export function* createProduct() {
           image,
           own,
           status,
-          category,
+          categoryID,
           categoryChangeID,
         });
         yield put(createProductSuccess(product.data));

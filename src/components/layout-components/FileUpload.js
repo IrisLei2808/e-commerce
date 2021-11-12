@@ -5,19 +5,11 @@ import { imageUpload, resetProductType } from "../../redux/actions/Product";
 import { IMAGE_UPLOAD_SUCCESS } from "../../redux/constants/Product";
 
 const FileUpload = (props) => {
-  const {
-    image,
-    setImage,
-    setLoading,
-    imageUpload,
-    resetProductType,
-    type,
-    imageFile,
-  } = props;
+  const { image, setImage, imageUpload, resetProductType, type, imageFile } =
+    props;
   const fileUploadAndResize = (e) => {
     let files = e.target.files;
     if (files) {
-      setLoading(true);
       for (let i = 0; i < files.length; i++) {
         const formData = new FormData();
         formData.append("image", files[i]);

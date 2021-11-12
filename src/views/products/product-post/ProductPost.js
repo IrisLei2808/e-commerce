@@ -1,14 +1,19 @@
 import { Box, MenuItem, TextField } from "@material-ui/core";
 import Badge from "@material-ui/core/Badge";
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import React, { useEffect, useState } from "react";
 import { Col, Form, Image, Row } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
-import FileUpload from "../../../components/layout-components/FileUpload";
 import CurrencyInput from "react-currency-input-field";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import FileUpload from "../../../components/layout-components/FileUpload";
+import LoadingButton from "../../../components/shared-components/LoadingButton";
+import ProductModal from "../../../components/shared-components/Modal";
 import {
-  fetchCategoryByBrand,
   createProduct,
+  fetchCategoryByBrand,
   getAllCategory,
   imageRemove,
   resetProductType,
@@ -16,10 +21,11 @@ import {
 import {
   ALL_CATEGORY_SUCCESS,
   CATEGORY_BY_BRAND_SUCCESS,
+  CREATE_PRODUCT_SUCCESS,
   IMAGE_REMOVE_SUCCESS,
 } from "../../../redux/constants/Product";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 
+const own = JSON.parse(localStorage.getItem("userInfo"));
 const currencies = [
   {
     value: "SELL",
@@ -44,18 +50,27 @@ const ProductPost = (props) => {
     categoryList,
     allCategory,
     createProduct,
+    newProductId,
+    loading,
     type,
   } = props;
+  let history = useHistory();
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => history.push("/");
+  const goToDetail = () => history.push(`/product/${newProductId}`);
+
   const [image, setImage] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
-  const [status, setStatus] = useState("");
   const [brand, setBrand] = useState("");
+  const [brandWantChange, setBrandWantChange] = useState("");
   const [category, setCategory] = useState("");
+  const [categoryWantChange, setCategoryWantChange] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [categoryIdWantChange, setCategoryIdWantChange] = useState("");
   const [currency, setCurrency] = useState("");
   const wantChangeStatus = currency === "EXCHANGE" || currency === "BOTH";
 
@@ -71,10 +86,10 @@ const ProductPost = (props) => {
       quantity,
       price,
       image,
-      //own,
-      status,
-      category
-      //categoryChangeID
+      own && own.id,
+      currency,
+      categoryId,
+      categoryIdWantChange
     );
   }
 
@@ -87,11 +102,23 @@ const ProductPost = (props) => {
     setCategoryId(value && value.idcategory);
   };
 
+  const handleCategoryWantChange = (e, value) => {
+    setCategoryIdWantChange(value && value.idcategory);
+  };
+
   const handleBrandChange = (e, value) => {
     if (value) {
       setCategory(value && value.Categories);
     } else {
       setCategory(allCategory);
+    }
+  };
+
+  const handleBrandWantChange = (e, value) => {
+    if (value) {
+      setCategoryWantChange(value && value.Categories);
+    } else {
+      setCategoryWantChange(allCategory);
     }
   };
 
@@ -119,9 +146,14 @@ const ProductPost = (props) => {
         break;
       case CATEGORY_BY_BRAND_SUCCESS:
         setBrand(categoryList);
+        setBrandWantChange(categoryList);
         break;
       case ALL_CATEGORY_SUCCESS:
         setCategory(allCategory);
+        setCategoryWantChange(allCategory);
+        break;
+      case CREATE_PRODUCT_SUCCESS:
+        setShow(true);
         break;
       default:
         break;
@@ -145,6 +177,7 @@ const ProductPost = (props) => {
         justifyContent: "space-around",
       }}
     >
+      <ToastContainer position="top-center" autoClose={5000} />
       <h2 style={{ textAlign: "center" }}>Post Product</h2>
       <Form
         onSubmit={handleSubmit}
@@ -176,11 +209,7 @@ const ProductPost = (props) => {
           </Row>
         )}
         <Row className="w-50 d-flex">
-          <FileUpload
-            image={image}
-            setImage={setImage}
-            setLoading={setLoading}
-          />
+          <FileUpload image={image} setImage={setImage} />
         </Row>
         <TextField
           id="outlined-basic"
@@ -246,7 +275,6 @@ const ProductPost = (props) => {
           }}
           required
         />
-
         <TextField
           id="outlined-select-currency"
           select
@@ -268,7 +296,7 @@ const ProductPost = (props) => {
           <>
             <Autocomplete
               id="combo-box-demo"
-              options={brand}
+              options={brandWantChange}
               getOptionLabel={(option) => option.brandname}
               style={{ width: 300 }}
               renderInput={(params) => (
@@ -279,11 +307,11 @@ const ProductPost = (props) => {
                 />
               )}
               className="mt-4 w-50"
-              onChange={handleBrandChange}
+              onChange={handleBrandWantChange}
             />
             <Autocomplete
               id="combo-box-demo"
-              options={category}
+              options={categoryWantChange}
               getOptionLabel={(option) => option.name}
               style={{ width: 300 }}
               renderInput={(params) => (
@@ -294,13 +322,18 @@ const ProductPost = (props) => {
                 />
               )}
               className="mt-4 w-50"
+              onChange={handleCategoryWantChange}
             />
           </>
         )}
-        <Button variant="primary" type="submit" className="mt-3">
-          Post Product
-        </Button>
+        <LoadingButton loading={loading} title="Post Product" />
       </Form>
+      <ProductModal
+        show={show}
+        handleClose={handleClose}
+        history={history}
+        goToDetail={goToDetail}
+      />
     </Box>
   );
 };
@@ -311,6 +344,12 @@ const mapStateToProps = ({ product }) => {
     cloudinaryId: product && product.cloudinaryId,
     categoryList: product && product.categoryList,
     allCategory: product && product.allCategory,
+    loading: product && product.loading,
+    newProductId:
+      product &&
+      product.newProductId &&
+      product.newProductId.data &&
+      product.newProductId.data.idProduct,
   };
 };
 

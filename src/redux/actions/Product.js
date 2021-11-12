@@ -9,6 +9,7 @@ import {
   CATEGORY_NAME_REQUEST,
   CATEGORY_NAME_SUCCESS,
   CREATE_PRODUCT_FAIL,
+  CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
   IMAGE_REMOVE_FAIL,
   IMAGE_REMOVE_REQUEST,
@@ -60,10 +61,11 @@ export const createProduct = (
   image,
   own,
   status,
-  category,
+  categoryID,
   categoryChangeID
 ) => {
   return {
+    type: CREATE_PRODUCT_REQUEST,
     name,
     description,
     quantity,
@@ -71,7 +73,7 @@ export const createProduct = (
     image,
     own,
     status,
-    category,
+    categoryID,
     categoryChangeID,
   };
 };

@@ -29,7 +29,7 @@ authService.addAvatarImage = function (data) {
 
 authService.getProfile = function (jwtToken) {
   return axios({
-    method: "post",
+    method: "get",
     url: `${API_ENDPOINT}/api/users/profile`,
     headers: {
       Authorization: `Bearer ${jwtToken}`,

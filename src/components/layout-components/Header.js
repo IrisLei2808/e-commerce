@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { signOut } from "../../redux/actions/Auth";
 import { fetchCategoryByBrand } from "../../redux/actions/Product";
+import { getProfile } from "../../redux/actions/Auth";
 import { formatMoney } from "../../utils/formatText";
 import { getIcon } from "../../utils/iconText";
 import { useHistory } from "react-router-dom";
@@ -19,10 +20,16 @@ import { AVATAR_NO_URL } from "../../configs/Constants";
 
 const Header = (props) => {
   let history = useHistory();
-  const { userInfoFromStorage, signOut, fetchCategoryByBrand, categoryList } =
-    props;
+  const {
+    userInfoFromStorage,
+    signOut,
+    fetchCategoryByBrand,
+    categoryList,
+    getProfile,
+    balance,
+  } = props;
   const [curDropdownID, setCurDropdownID] = useState(null);
-
+  const own = JSON.parse(localStorage.getItem("userInfo"));
   const isOpen = (id) => {
     return curDropdownID === id;
   };
@@ -33,6 +40,10 @@ const Header = (props) => {
 
   useMemo(() => {
     fetchCategoryByBrand();
+  }, []);
+
+  useMemo(() => {
+    getProfile(own && own.token);
   }, []);
 
   return (
@@ -82,9 +93,7 @@ const Header = (props) => {
                       disabled={true}
                     >
                       <i className="fas fa-wallet mr-2"></i>
-                      {userInfoFromStorage.balance
-                        ? formatMoney(userInfoFromStorage.balance)
-                        : formatMoney(0)}
+                      {balance ? formatMoney(balance) : formatMoney(0)}
                     </NavDropdown.Item>
                     <LinkContainer to="/profile">
                       <NavDropdown.Item>
@@ -193,12 +202,14 @@ const mapStateToProps = ({ auth, product }) => {
   return {
     userInfoFromStorage: auth && auth.userInfoFromStorage,
     categoryList: product && product.categoryList,
+    balance: auth && auth.balance,
   };
 };
 
 const mapDispatchToProps = {
   signOut,
   fetchCategoryByBrand,
+  getProfile,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

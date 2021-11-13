@@ -1,11 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { Col, Image, ListGroup, Row, Card, Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Card, Col, Image, ListGroup, Row } from "react-bootstrap";
+import { connect } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import Message from "../../../components/shared-components/ErrorMessage";
-import { Link } from "react-router-dom";
+import PlaceOrderModal from "../../../components/shared-components/PlaceOrderModal";
+import { orderRequest, resetOrderType } from "../../../redux/actions/Order";
+import {
+  ORDER_CREATE_FAIL,
+  ORDER_CREATE_SUCCESS,
+} from "../../../redux/constants/Order";
 import { formatMoney } from "../../../utils/formatText";
-import { useHistory } from "react-router-dom";
 
-const PlaceOrderScreen = () => {
+const PlaceOrderScreen = (props) => {
+  const { loading, orderRequest, resetOrderType, type, message } = props;
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+  };
+  const goToHomePage = () => {
+    history.push("/");
+  };
+  const own = JSON.parse(localStorage.getItem("userInfo"));
   let history = useHistory();
   const defaultImage =
     "https://cdn.tgdd.vn/Products/Images/42/228744/iphone-12-pro-max-512gb-191020-021035-200x200.jpg";
@@ -15,6 +30,14 @@ const PlaceOrderScreen = () => {
       ? JSON.parse(localStorage.getItem("productCartItems"))
       : []
   );
+
+  const handleOrder = () => {
+    orderRequest({
+      id: own && own.id,
+      product: cartStorage && cartStorage,
+      token: own && own.token,
+    });
+  };
 
   const userInfo = localStorage.getItem("userInfo")
     ? JSON.parse(localStorage.getItem("userInfo"))
@@ -33,6 +56,23 @@ const PlaceOrderScreen = () => {
 
   cartStorage.totalPrice = Number(cartStorage.itemsPrice);
 
+  useEffect(() => {
+    switch (type) {
+      case ORDER_CREATE_SUCCESS:
+        setShow(true);
+        localStorage.removeItem("productCartItems");
+        break;
+      case ORDER_CREATE_FAIL:
+        setShow(true);
+        break;
+      default:
+        break;
+    }
+    return function cleanup() {
+      resetOrderType();
+    };
+  }, [type]);
+
   return (
     <>
       <Row>
@@ -47,7 +87,7 @@ const PlaceOrderScreen = () => {
                   {cartStorage.map((item, index) => (
                     <ListGroup.Item key={index}>
                       <Row>
-                        <Col md={1}>
+                        <Col md={2}>
                           <Image
                             src={
                               item &&
@@ -98,21 +138,48 @@ const PlaceOrderScreen = () => {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                <Button
-                  title="Place Order"
-                  type="button"
-                  className="btn-block"
-                  disabled={cartStorage.cartItems === 0}
+                <button
+                  className="btn btn-primary btn-block mt-3"
+                  type="submit"
+                  disabled={loading}
+                  onClick={handleOrder}
                 >
-                  Place Order
-                </Button>
+                  <span
+                    className={
+                      loading ? "spinner-border spinner-border-sm" : ""
+                    }
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  {loading ? "Loading..." : "Place order"}
+                </button>
               </ListGroup.Item>
             </ListGroup>
           </Card>
         </Col>
+        <PlaceOrderModal
+          show={show}
+          handleClose={handleClose}
+          history={history}
+          goToHomePage={goToHomePage}
+          message={message}
+        />
       </Row>
     </>
   );
 };
 
-export default PlaceOrderScreen;
+const mapStateToProps = ({ order }) => {
+  return {
+    loading: order.loading,
+    type: order.type,
+    message: order.message,
+  };
+};
+
+const mapDispatchToProps = {
+  orderRequest,
+  resetOrderType,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrderScreen);

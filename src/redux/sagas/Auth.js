@@ -66,13 +66,9 @@ export function* register() {
 }
 
 export function* getProfile() {
-  yield takeEvery(GET_PROFILE_REQUEST, function* ({ username, password }) {
+  yield takeEvery(GET_PROFILE_REQUEST, function* ({ data }) {
     try {
-      const user = yield call(authService.login, {
-        userName: username,
-        password,
-      });
-      localStorage.setItem("userInfo", JSON.stringify(user.data));
+      const user = yield call(authService.getProfile, data);
       yield put(getProfileSuccess(user.data));
     } catch (err) {
       yield put(getProfileFailure(err.response && err.response.data));
@@ -95,5 +91,10 @@ export function* avatarUpload() {
 }
 
 export default function* rootSaga() {
-  yield all([fork(signIn), fork(register), fork(avatarUpload)]);
+  yield all([
+    fork(signIn),
+    fork(register),
+    fork(avatarUpload),
+    fork(getProfile),
+  ]);
 }

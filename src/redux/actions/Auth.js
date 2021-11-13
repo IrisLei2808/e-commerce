@@ -74,16 +74,17 @@ export const registerFailure = (error) => {
   };
 };
 
-export const getProfile = () => {
+export const getProfile = (data) => {
   return {
     type: GET_PROFILE_REQUEST,
+    data,
   };
 };
 
 export const getProfileSuccess = (user) => {
   return {
     type: GET_PROFILE_SUCCESS,
-    user,
+    balance: user && user.balance,
   };
 };
 

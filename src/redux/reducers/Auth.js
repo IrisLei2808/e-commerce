@@ -87,7 +87,7 @@ const auth = (state = initState, action) => {
       return {
         ...state,
         loading: false,
-        user: action.user,
+        balance: action.balance,
         type: action.type,
       };
     case GET_PROFILE_FAIL:

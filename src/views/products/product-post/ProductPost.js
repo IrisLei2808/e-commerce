@@ -73,9 +73,14 @@ const ProductPost = (props) => {
   const [categoryIdWantChange, setCategoryIdWantChange] = useState("");
   const [currency, setCurrency] = useState("");
   const wantChangeStatus = currency === "EXCHANGE" || currency === "BOTH";
+  console.log("DD: ", quantity);
 
   const handleStatusChange = (event) => {
+    const { value } = event.target;
     setCurrency(event.target.value);
+    if (value === "EXCHANGE" || value === "BOTH") {
+      setQuantity(1);
+    }
   };
 
   function handleSubmit(event) {
@@ -259,6 +264,9 @@ const ProductPost = (props) => {
           className="mt-4 w-50"
           required
           onChange={(e) => setQuantity(e.target.value)}
+          inputProps={{ min: 0 }}
+          value={quantity}
+          disabled={wantChangeStatus}
         />
         <CurrencyInput
           suffix=" VND"

@@ -73,7 +73,6 @@ const ProductPost = (props) => {
   const [categoryIdWantChange, setCategoryIdWantChange] = useState("");
   const [currency, setCurrency] = useState("");
   const wantChangeStatus = currency === "EXCHANGE" || currency === "BOTH";
-  console.log("DD: ", quantity);
 
   const handleStatusChange = (event) => {
     const { value } = event.target;

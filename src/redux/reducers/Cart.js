@@ -2,6 +2,7 @@ import {
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
   RESET_CART_TYPE,
+  CART_CLEAR_ITEMS,
 } from "../constants/Cart";
 
 const cartStorage = localStorage.getItem("productCartItems")
@@ -46,6 +47,11 @@ const cart = (state = initState, action) => {
         ...state,
         type: action.type,
         cartItems: state.cartItems.filter((x) => x.idProduct !== product),
+      };
+    case CART_CLEAR_ITEMS:
+      return {
+        ...state,
+        cartItems: [],
       };
     case RESET_CART_TYPE:
       return {

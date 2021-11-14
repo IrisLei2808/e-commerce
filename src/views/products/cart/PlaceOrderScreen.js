@@ -5,6 +5,8 @@ import { Link, useHistory } from "react-router-dom";
 import Message from "../../../components/shared-components/ErrorMessage";
 import PlaceOrderModal from "../../../components/shared-components/PlaceOrderModal";
 import { orderRequest, resetOrderType } from "../../../redux/actions/Order";
+import { cartClearItems } from "../../../redux/actions/Cart";
+import { getProfile } from "../../../redux/actions/Auth";
 import {
   ORDER_CREATE_FAIL,
   ORDER_CREATE_SUCCESS,
@@ -12,7 +14,15 @@ import {
 import { formatMoney } from "../../../utils/formatText";
 
 const PlaceOrderScreen = (props) => {
-  const { loading, orderRequest, resetOrderType, type, message } = props;
+  const {
+    loading,
+    orderRequest,
+    resetOrderType,
+    type,
+    message,
+    cartClearItems,
+    getProfile,
+  } = props;
   const [show, setShow] = useState(false);
   const handleClose = () => {
     setShow(false);
@@ -59,8 +69,9 @@ const PlaceOrderScreen = (props) => {
   useEffect(() => {
     switch (type) {
       case ORDER_CREATE_SUCCESS:
+        cartClearItems();
+        getProfile(own && own.token);
         setShow(true);
-        localStorage.removeItem("productCartItems");
         break;
       case ORDER_CREATE_FAIL:
         setShow(true);
@@ -180,6 +191,8 @@ const mapStateToProps = ({ order }) => {
 const mapDispatchToProps = {
   orderRequest,
   resetOrderType,
+  cartClearItems,
+  getProfile,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrderScreen);

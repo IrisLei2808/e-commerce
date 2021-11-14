@@ -23,6 +23,7 @@ export function* orderRequest() {
         token
       );
       yield put(orderRequestSuccess(productData));
+      localStorage.removeItem("productCartItems");
     } catch (err) {
       yield put(orderRequestFail(err.response && err.response.data.result));
     }

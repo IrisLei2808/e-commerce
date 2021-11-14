@@ -5,6 +5,8 @@ import {
   RESET_ORDER_TYPE,
 } from "../constants/Order";
 
+import { CART_CLEAR_ITEMS } from "../constants/Cart";
+
 export const orderRequest = (data, jwtToken) => {
   return {
     type: ORDER_CREATE_REQUEST,

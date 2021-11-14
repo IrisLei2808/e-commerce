@@ -2,6 +2,7 @@ import {
   CART_ADD_ITEM,
   CART_ADD_ITEM_FAIL,
   CART_ADD_ITEM_SUCCESS,
+  CART_CLEAR_ITEMS,
   CART_REMOVE_ITEM,
   RESET_CART_TYPE,
 } from "../constants/Cart";
@@ -33,6 +34,12 @@ export const removeFromCart = (productId) => {
   return {
     type: CART_REMOVE_ITEM,
     productId,
+  };
+};
+
+export const cartClearItems = () => {
+  return {
+    type: CART_CLEAR_ITEMS,
   };
 };
 

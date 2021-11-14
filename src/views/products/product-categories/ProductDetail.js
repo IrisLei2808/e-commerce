@@ -24,12 +24,36 @@ const ProductDetail = (props) => {
     resetProductType,
   } = props;
 
+  const own = JSON.parse(localStorage.getItem("userInfo"));
+  const isOwn = product && product.own === own.id;
+  const isExchange =
+    (product && product.status === "EXCHANGE") ||
+    (product && product.status === "BOTH");
+  const isBuy =
+    (product && product.status === "SELL") ||
+    (product && product.status === "BOTH");
+  console.log(isOwn);
+  console.log(product && product.own);
+
   useEffect(() => {
     fetchProductDetails(match.params.id);
   }, [match]);
 
   const addToCartHandler = () => {
     history.push(`/cart/${match.params.id}?qty=1`);
+  };
+
+  const getStatus = (status) => {
+    switch (status) {
+      case "EXCHANGE":
+        return "Want to exchange ?";
+      case "BOTH":
+        return "Want to buy or exchange ?";
+      case "SELL":
+        return "Want to buy ?";
+      default:
+        return "Want to buy ?";
+    }
   };
 
   useEffect(() => {
@@ -104,15 +128,33 @@ const ProductDetail = (props) => {
                 <h3 className={styles.price}>
                   {formatMoney(product && product.price)}
                 </h3>
-                <a className={styles.exchange}>Want to exchange ? </a>
+                {!isOwn && (
+                  <a className={styles.exchange}>
+                    {getStatus(product && product.status)}
+                  </a>
+                )}
               </div>
-              <Button
-                className={styles.cartbtn}
-                variant="danger"
-                onClick={addToCartHandler}
-              >
-                Add To Cart
-              </Button>
+              {!isOwn && (
+                <>
+                  {isBuy && (
+                    <Button
+                      className={styles.cartbtn}
+                      variant="danger"
+                      onClick={addToCartHandler}
+                    >
+                      Add To Cart
+                    </Button>
+                  )}
+                  {isExchange && (
+                    <Button
+                      className={styles.exchangbtn}
+                      style={{ marginLeft: isBuy ? 20 : 40 }}
+                    >
+                      Exchange
+                    </Button>
+                  )}
+                </>
+              )}
             </div>
             <div>
               <h1 className={styles.title}>Delivery Details</h1> <br />

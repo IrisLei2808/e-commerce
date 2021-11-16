@@ -3,9 +3,10 @@ import {
   ORDER_CREATE_SUCCESS,
   ORDER_CREATE_FAIL,
   RESET_ORDER_TYPE,
+  PURCHASE_REQUEST,
+  PURCHASE_FAIL,
+  PURCHASE_SUCCESS,
 } from "../constants/Order";
-
-import { CART_CLEAR_ITEMS } from "../constants/Cart";
 
 export const orderRequest = (data, jwtToken) => {
   return {
@@ -25,6 +26,28 @@ export const orderRequestSuccess = (product) => {
 export const orderRequestFail = (error) => {
   return {
     type: ORDER_CREATE_FAIL,
+    error,
+  };
+};
+
+export const purchaseRequest = (userId, status) => {
+  return {
+    type: PURCHASE_REQUEST,
+    userId,
+    status,
+  };
+};
+
+export const purchaseRequestSuccess = (product) => {
+  return {
+    type: PURCHASE_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const purchaseRequestFail = (error) => {
+  return {
+    type: PURCHASE_FAIL,
     error,
   };
 };

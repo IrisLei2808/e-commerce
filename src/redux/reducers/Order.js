@@ -2,6 +2,9 @@ import {
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
+  PURCHASE_FAIL,
+  PURCHASE_REQUEST,
+  PURCHASE_SUCCESS,
 } from "../constants/Order";
 import { RESET_ORDER_TYPE } from "../constants/Order";
 
@@ -27,6 +30,26 @@ const order = (state = initState, action) => {
         type: action.type,
       };
     case ORDER_CREATE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case PURCHASE_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case PURCHASE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        purchase: action.product,
+        type: action.type,
+      };
+    case PURCHASE_FAIL:
       return {
         ...state,
         loading: false,

@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+import Loader from "../../../components/shared-components/Spinner";
 import {
   fetchProductDetails,
   resetProductType,
 } from "../../../redux/actions/Product";
-import styles from "./product-detail.module.css";
-import { formatMoney } from "../../../utils/formatText";
-import Loader from "../../../components/shared-components/Spinner";
 import { PRODUCT_DETAILS_SUCCESS } from "../../../redux/constants/Product";
-import { useHistory } from "react-router-dom";
+import { formatMoney } from "../../../utils/formatText";
+import styles from "./product-detail.module.css";
 
 const ProductDetail = (props) => {
   let history = useHistory();
@@ -32,8 +32,6 @@ const ProductDetail = (props) => {
   const isBuy =
     (product && product.status === "SELL") ||
     (product && product.status === "BOTH");
-  console.log(isOwn);
-  console.log(product && product.own);
 
   useEffect(() => {
     fetchProductDetails(match.params.id);

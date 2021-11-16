@@ -94,7 +94,6 @@ const auth = (state = initState, action) => {
       return {
         ...state,
         loading: false,
-        error: action.error,
       };
     case RESET_AUTH_TYPE: {
       return {

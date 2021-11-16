@@ -10,6 +10,7 @@ import {
   resetProductType,
 } from "../../../redux/actions/Product";
 import { PRODUCT_BY_CATEGORY_SUCCESS } from "../../../redux/constants/Product";
+import ViewMoreButton from "../../../components/shared-components/ViewMoreButton";
 
 const CategoryScreen = (props) => {
   const [product, setProduct] = useState(null);
@@ -25,6 +26,17 @@ const CategoryScreen = (props) => {
     fetchCategoryName,
     categoryName,
   } = props;
+
+  const [visible, setVisible] = useState(12);
+  const [viewLoading, setViewLoading] = useState(false);
+
+  const showMoreItems = () => {
+    setViewLoading(true);
+    setTimeout(() => {
+      setVisible((prevValue) => prevValue + 12);
+      setViewLoading(false);
+    }, 500);
+  };
 
   useEffect(() => {
     fetchCategoryName(match && match.params.id);
@@ -56,12 +68,23 @@ const CategoryScreen = (props) => {
           <h2>{categoryName && categoryName}</h2>
           <Row>
             {product &&
-              product.map((pro) => (
+              product.slice(0, visible).map((pro) => (
                 <Col sm={12} md={6} lg={4} xl={3}>
                   <ProductCategory product={pro} />
                 </Col>
               ))}
           </Row>
+          {product !== null && (
+            <ViewMoreButton
+              viewLoading={viewLoading}
+              showMoreItems={showMoreItems}
+              hide={
+                visible >= parseInt(productList && productList.length)
+                  ? true
+                  : false
+              }
+            />
+          )}
         </>
       )}
     </>

@@ -14,4 +14,12 @@ orderService.order = function (data, jwtToken) {
   });
 };
 
+orderService.purchase = function (data) {
+  return axios({
+    method: "post",
+    url: `${API_ENDPOINT}/api/order/purchase`,
+    data,
+  });
+};
+
 export default orderService;

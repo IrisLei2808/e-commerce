@@ -1,21 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Button } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { connect } from "react-redux";
-import {
-  fetchProductByBrand,
-  fetchCategoryByBrand,
-  resetProductType,
-} from "../../../redux/actions/Product";
 import ProductCategory from "../../../components/layout-components/ProductCategory";
 import Loader from "../../../components/shared-components/Spinner";
 import {
-  PRODUCT_BY_BRAND_SUCCESS,
+  fetchCategoryByBrand,
+  fetchProductByBrand,
+  resetProductType,
+} from "../../../redux/actions/Product";
+import {
   CATEGORY_BY_BRAND_SUCCESS,
+  PRODUCT_BY_BRAND_SUCCESS,
 } from "../../../redux/constants/Product";
+import ViewMoreButton from "../../../components/shared-components/ViewMoreButton";
 
 const ProductByBrandScreen = (props) => {
   const [product, setProduct] = useState(null);
   const [category, setCategory] = useState(null);
+  const [items, setItems] = useState([]);
+  const [visible, setVisible] = useState(12);
+  const [viewLoading, setViewLoading] = useState(false);
+
+  const showMoreItems = () => {
+    setViewLoading(true);
+    setTimeout(() => {
+      setVisible((prevValue) => prevValue + 12);
+      setViewLoading(false);
+    }, 500);
+  };
+
   const {
     fetchProductByBrand,
     fetchCategoryByBrand,
@@ -27,6 +40,7 @@ const ProductByBrandScreen = (props) => {
     resetProductType,
     brand,
   } = props;
+
   useEffect(() => {
     fetchProductByBrand(match && match.params.id);
   }, [match]);
@@ -58,12 +72,28 @@ const ProductByBrandScreen = (props) => {
             <Row>
               {product &&
                 product.Products &&
-                product.Products.map((pro) => (
+                product.Products.slice(0, visible).map((pro) => (
                   <Col sm={12} md={6} lg={4} xl={3}>
                     <ProductCategory product={pro} />
                   </Col>
                 ))}
             </Row>
+          )}
+          {product !== null && (
+            <ViewMoreButton
+              viewLoading={viewLoading}
+              showMoreItems={showMoreItems}
+              hide={
+                visible >=
+                parseInt(
+                  productList &&
+                    productList.Products &&
+                    productList.Products.length
+                )
+                  ? true
+                  : false
+              }
+            />
           )}
         </>
       )}

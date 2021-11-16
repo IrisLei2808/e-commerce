@@ -88,9 +88,9 @@ const PlaceOrderScreen = (props) => {
     <>
       <Row>
         <Col md={8}>
+          <h2>Order Items</h2>
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h2>Order Items</h2>
               {cartStorage.length === 0 ? (
                 <Message>Your cart is empty</Message>
               ) : (

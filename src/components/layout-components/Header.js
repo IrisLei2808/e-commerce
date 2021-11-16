@@ -83,21 +83,38 @@ const Header = (props) => {
                 </Nav.Link>
               </LinkContainer>
               {userInfoFromStorage ? (
-                <div style={{ alignItems: "center", display: "flex" }}>
+                <>
                   <NavDropdown
                     title={userInfoFromStorage.userName}
                     id="username"
+                    className="ml-3"
                   >
                     <NavDropdown.Item
                       style={{ color: "#02aab0", fontWeight: "bold" }}
                       disabled={true}
                     >
-                      <i className="fas fa-wallet mr-2"></i>
+                      <i
+                        className="fas fa-wallet mr-2"
+                        style={{ width: 25 }}
+                      ></i>
                       {balance ? formatMoney(balance) : formatMoney(0)}
                     </NavDropdown.Item>
+                    <LinkContainer to="/purchase">
+                      <NavDropdown.Item>
+                        <i
+                          class="fas fa-shopping-basket mr-2"
+                          style={{ width: 25 }}
+                        ></i>
+                        Order
+                      </NavDropdown.Item>
+                    </LinkContainer>
                     <LinkContainer to="/profile">
                       <NavDropdown.Item>
-                        <i className="fas fa-user-circle mr-2"></i>Profile
+                        <i
+                          className="fas fa-user-circle mr-2"
+                          style={{ width: 25 }}
+                        ></i>
+                        Profile
                       </NavDropdown.Item>
                     </LinkContainer>
                     <NavDropdown.Divider />
@@ -113,7 +130,7 @@ const Header = (props) => {
                     }
                     style={{ width: 40, height: 40 }}
                   />
-                </div>
+                </>
               ) : (
                 <LinkContainer to="/login">
                   <Nav.Link>

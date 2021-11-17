@@ -108,6 +108,15 @@ const Header = (props) => {
                         Order
                       </NavDropdown.Item>
                     </LinkContainer>
+                    <LinkContainer to="/sell">
+                      <NavDropdown.Item>
+                        <i
+                          class="fas fa-cash-register mr-2"
+                          style={{ width: 26 }}
+                        ></i>
+                        Sell
+                      </NavDropdown.Item>
+                    </LinkContainer>
                     <LinkContainer to="/profile">
                       <NavDropdown.Item>
                         <i

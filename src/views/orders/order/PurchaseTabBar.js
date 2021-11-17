@@ -7,6 +7,11 @@ import Typography from "@material-ui/core/Typography";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import WaitingConfirm from "./purchase/WaitingConfirm";
+import WaitingDelivery from "./purchase/WaitingDelivery";
+import Delivery from "./purchase/Delivery";
+import CompleteDelivery from "./purchase/CompleteDelivery";
+import Cancelled from "./purchase/Cancelled";
+import Return from "./purchase/Return";
 import { purchaseRequest } from "../../../redux/actions/Order";
 import { WAITING_FOR_CONFIRM } from "../../../configs/Constants";
 
@@ -43,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     backgroundColor: theme.palette.background.paper,
   },
+  label: {
+    textTransform: "none",
+  },
 }));
 
 const ScrollableTabsButtonAuto = (props) => {
@@ -71,28 +79,43 @@ const ScrollableTabsButtonAuto = (props) => {
           scrollButtons="auto"
           aria-label="scrollable auto tabs example"
         >
-          <Tab label="Waiting for confirmation" {...a11yProps(0)} />
-          <Tab label="Waiting for delivery" {...a11yProps(1)} />
-          <Tab label="Delivery" {...a11yProps(2)} />
-          <Tab label="Complete delivery" {...a11yProps(3)} />
-          <Tab label="Cancelled" {...a11yProps(4)} />
-          <Tab label="Return" {...a11yProps(5)} />
+          <Tab
+            label="Waiting for confirmation"
+            {...a11yProps(0)}
+            className={classes.label}
+          />
+          <Tab
+            label="Waiting for delivery"
+            {...a11yProps(1)}
+            className={classes.label}
+          />
+          <Tab label="Delivery" {...a11yProps(2)} className={classes.label} />
+          <Tab
+            label="Completed delivery"
+            {...a11yProps(3)}
+            className={classes.label}
+          />
+          <Tab label="Cancelled" {...a11yProps(4)} className={classes.label} />
+          <Tab label="Return" {...a11yProps(5)} className={classes.label} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
         <WaitingConfirm purchase={purchase} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <WaitingDelivery />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        <Delivery />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Item Four
+        <CompleteDelivery />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Item Five
+        <Cancelled />
+      </TabPanel>
+      <TabPanel value={value} index={5}>
+        <Return />
       </TabPanel>
     </div>
   );

@@ -22,4 +22,12 @@ orderService.purchase = function (data) {
   });
 };
 
+orderService.sell = function (data) {
+  return axios({
+    method: "post",
+    url: `${API_ENDPOINT}/api/order/sell`,
+    data,
+  });
+};
+
 export default orderService;

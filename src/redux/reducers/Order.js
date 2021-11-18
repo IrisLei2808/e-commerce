@@ -5,6 +5,9 @@ import {
   PURCHASE_FAIL,
   PURCHASE_REQUEST,
   PURCHASE_SUCCESS,
+  SELL_FAIL,
+  SELL_REQUEST,
+  SELL_SUCCESS,
 } from "../constants/Order";
 import { RESET_ORDER_TYPE } from "../constants/Order";
 
@@ -50,6 +53,26 @@ const order = (state = initState, action) => {
         type: action.type,
       };
     case PURCHASE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case SELL_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case SELL_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        purchase: action.product,
+        type: action.type,
+      };
+    case SELL_FAIL:
       return {
         ...state,
         loading: false,

@@ -30,4 +30,8 @@ export const PURCHASE_REQUEST = "PURCHASE_REQUEST";
 export const PURCHASE_SUCCESS = "PURCHASE_SUCCESS";
 export const PURCHASE_FAIL = "PURCHASE_FAIL";
 
+export const SELL_REQUEST = "SELL_REQUEST";
+export const SELL_SUCCESS = "SELL_SUCCESS";
+export const SELL_FAIL = "SELL_FAIL";
+
 export const RESET_ORDER_TYPE = "RESET_ORDER_TYPE";

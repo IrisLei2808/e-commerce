@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, ListGroup, Row } from "react-bootstrap";
-import PurchaseItem from "./PurchaseItem";
 import NoOrderScreen from "../NoOrderScreen";
+import PurchaseItem from "./PurchaseItem";
 
 const WaitingConfirm = (props) => {
   const { purchase } = props;

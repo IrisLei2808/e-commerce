@@ -6,6 +6,9 @@ import {
   PURCHASE_REQUEST,
   PURCHASE_FAIL,
   PURCHASE_SUCCESS,
+  SELL_REQUEST,
+  SELL_SUCCESS,
+  SELL_FAIL,
 } from "../constants/Order";
 
 export const orderRequest = (data, jwtToken) => {
@@ -48,6 +51,28 @@ export const purchaseRequestSuccess = (product) => {
 export const purchaseRequestFail = (error) => {
   return {
     type: PURCHASE_FAIL,
+    error,
+  };
+};
+
+export const sellRequest = (userId, status) => {
+  return {
+    type: SELL_REQUEST,
+    userId,
+    status,
+  };
+};
+
+export const sellRequestSuccess = (product) => {
+  return {
+    type: SELL_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const sellRequestFail = (error) => {
+  return {
+    type: SELL_FAIL,
     error,
   };
 };

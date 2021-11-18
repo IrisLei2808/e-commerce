@@ -1,5 +1,5 @@
 import React from "react";
-import ScrollableTabsButtonAuto from "./PurchaseTabBar";
+import ScrollableTabsButtonAuto from "./sell/SellTabBar";
 
 const PurchaseScreen = () => {
   return (

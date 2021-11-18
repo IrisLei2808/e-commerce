@@ -6,14 +6,14 @@ import Tabs from "@material-ui/core/Tabs";
 import Typography from "@material-ui/core/Typography";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import WaitingConfirm from "./purchase/WaitingConfirm";
-import WaitingDelivery from "./purchase/WaitingDelivery";
-import Delivery from "./purchase/Delivery";
-import CompleteDelivery from "./purchase/CompleteDelivery";
-import Cancelled from "./purchase/Cancelled";
-import Return from "./purchase/Return";
-import { purchaseRequest } from "../../../redux/actions/Order";
-import { WAITING_FOR_CONFIRM } from "../../../configs/Constants";
+import WaitingConfirm from "./WaitingConfirm";
+import WaitingDelivery from "./WaitingDelivery";
+import Delivery from "./Delivery";
+import CompleteDelivery from "./CompleteDelivery";
+import Cancelled from "./Cancelled";
+import Return from "./Return";
+import { purchaseRequest } from "../../../../redux/actions/Order";
+import { WAITING_FOR_CONFIRM } from "../../../../configs/Constants";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

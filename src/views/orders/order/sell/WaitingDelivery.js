@@ -1,11 +1,14 @@
 import React from "react";
-import { Col, ListGroup, Row } from "react-bootstrap";
+import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+import Message from "../../../../components/shared-components/ErrorMessage";
+import { formatMoney } from "../../../../utils/formatText";
+import { Link } from "react-router-dom";
 import PurchaseItem from "./PurchaseItem";
 import NoOrderScreen from "../NoOrderScreen";
 
 const WaitingConfirm = (props) => {
   const { purchase } = props;
-  return purchase && purchase.length > 0 ? (
+  return purchase ? (
     <Row>
       <Col>
         <ListGroup variant="flush">

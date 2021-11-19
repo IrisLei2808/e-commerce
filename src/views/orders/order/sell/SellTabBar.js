@@ -6,14 +6,20 @@ import Tabs from "@material-ui/core/Tabs";
 import Typography from "@material-ui/core/Typography";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { WAITING_FOR_CONFIRM } from "../../../../configs/Constants";
+import { resetOrderType, sellRequest } from "../../../../redux/actions/Order";
+import {
+  ACCEPT_ORDER_SUCCESS,
+  CANCEL_ORDER_SUCCESS,
+} from "../../../../redux/constants/Order";
+import Cancelled from "./Cancelled";
+import CompleteDelivery from "./CompleteDelivery";
+import Delivery from "./Delivery";
+import Return from "./Return";
 import WaitingConfirm from "./WaitingConfirm";
 import WaitingDelivery from "./WaitingDelivery";
-import Delivery from "./Delivery";
-import CompleteDelivery from "./CompleteDelivery";
-import Cancelled from "./Cancelled";
-import Return from "./Return";
-import { sellRequest } from "../../../../redux/actions/Order";
-import { WAITING_FOR_CONFIRM } from "../../../../configs/Constants";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,10 +60,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ScrollableTabsButtonAuto = (props) => {
-  const { sellRequest, purchase } = props;
+  const { sellRequest, purchase, resetOrderType, type } = props;
   const own = JSON.parse(localStorage.getItem("userInfo"));
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+
+  const notify = () => toast.success("Accept order successful!");
+  const notifyCancel = () => toast.success("Cancel order successful!");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -66,6 +75,24 @@ const ScrollableTabsButtonAuto = (props) => {
   useEffect(() => {
     sellRequest(own && own.id, WAITING_FOR_CONFIRM);
   }, []);
+
+  useEffect(() => {
+    switch (type) {
+      case ACCEPT_ORDER_SUCCESS:
+        sellRequest(own && own.id, WAITING_FOR_CONFIRM);
+        notify();
+        break;
+      case CANCEL_ORDER_SUCCESS:
+        sellRequest(own && own.id, WAITING_FOR_CONFIRM);
+        notifyCancel();
+        break;
+      default:
+        break;
+    }
+    return function cleanup() {
+      resetOrderType();
+    };
+  }, [type]);
 
   return (
     <div className={classes.root}>
@@ -117,6 +144,7 @@ const ScrollableTabsButtonAuto = (props) => {
       <TabPanel value={value} index={5}>
         <Return />
       </TabPanel>
+      <ToastContainer position="top-center" />
     </div>
   );
 };
@@ -124,11 +152,13 @@ const ScrollableTabsButtonAuto = (props) => {
 const mapStateToProps = ({ order }) => {
   return {
     purchase: order && order.purchase,
+    type: order && order.type,
   };
 };
 
 const mapDispatchToProps = {
   sellRequest,
+  resetOrderType,
 };
 
 export default connect(

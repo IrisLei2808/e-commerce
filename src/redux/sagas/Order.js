@@ -1,6 +1,10 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import orderService from "../../services/OrderService";
 import {
+  acceptOrderFail,
+  acceptOrderSuccess,
+  cancelOrderFail,
+  cancelOrderSuccess,
   orderRequestFail,
   orderRequestSuccess,
   purchaseRequestFail,
@@ -10,6 +14,8 @@ import {
   sellRequestSuccess,
 } from "../actions/Order";
 import {
+  ACCEPT_ORDER_REQUEST,
+  CANCEL_ORDER_REQUEST,
   ORDER_CREATE_REQUEST,
   PURCHASE_REQUEST,
   SELL_REQUEST,
@@ -70,6 +76,38 @@ export function* sellRequest() {
   });
 }
 
+export function* acceptOrder() {
+  yield takeEvery(ACCEPT_ORDER_REQUEST, function* ({ idOrderDetail }) {
+    try {
+      const productData = yield call(orderService.accept, {
+        idOrderDetail,
+      });
+      yield put(acceptOrderSuccess(productData));
+    } catch (err) {
+      yield put(acceptOrderFail(err.response && err.response.data.result));
+    }
+  });
+}
+
+export function* cancelOrder() {
+  yield takeEvery(CANCEL_ORDER_REQUEST, function* ({ idOrderDetail }) {
+    try {
+      const productData = yield call(orderService.cancel, {
+        idOrderDetail,
+      });
+      yield put(cancelOrderSuccess(productData));
+    } catch (err) {
+      yield put(cancelOrderFail(err.response && err.response.data.result));
+    }
+  });
+}
+
 export default function* rootSaga() {
-  yield all([fork(orderRequest), fork(purchaseRequest), fork(sellRequest)]);
+  yield all([
+    fork(orderRequest),
+    fork(purchaseRequest),
+    fork(sellRequest),
+    fork(acceptOrder),
+    fork(cancelOrder),
+  ]);
 }

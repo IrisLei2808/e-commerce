@@ -9,6 +9,12 @@ import {
   SELL_REQUEST,
   SELL_SUCCESS,
   SELL_FAIL,
+  ACCEPT_ORDER_REQUEST,
+  ACCEPT_ORDER_SUCCESS,
+  ACCEPT_ORDER_FAIL,
+  CANCEL_ORDER_REQUEST,
+  CANCEL_ORDER_SUCCESS,
+  CANCEL_ORDER_FAIL,
 } from "../constants/Order";
 
 export const orderRequest = (data, jwtToken) => {
@@ -73,6 +79,48 @@ export const sellRequestSuccess = (product) => {
 export const sellRequestFail = (error) => {
   return {
     type: SELL_FAIL,
+    error,
+  };
+};
+
+export const acceptOrder = (idOrderDetail) => {
+  return {
+    type: ACCEPT_ORDER_REQUEST,
+    idOrderDetail,
+  };
+};
+
+export const acceptOrderSuccess = (product) => {
+  return {
+    type: ACCEPT_ORDER_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const acceptOrderFail = (error) => {
+  return {
+    type: ACCEPT_ORDER_FAIL,
+    error,
+  };
+};
+
+export const cancelOrder = (idOrderDetail) => {
+  return {
+    type: CANCEL_ORDER_REQUEST,
+    idOrderDetail,
+  };
+};
+
+export const cancelOrderSuccess = (product) => {
+  return {
+    type: CANCEL_ORDER_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const cancelOrderFail = (error) => {
+  return {
+    type: CANCEL_ORDER_FAIL,
     error,
   };
 };

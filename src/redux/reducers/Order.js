@@ -1,4 +1,10 @@
 import {
+  ACCEPT_ORDER_FAIL,
+  ACCEPT_ORDER_REQUEST,
+  ACCEPT_ORDER_SUCCESS,
+  CANCEL_ORDER_FAIL,
+  CANCEL_ORDER_REQUEST,
+  CANCEL_ORDER_SUCCESS,
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
@@ -73,6 +79,46 @@ const order = (state = initState, action) => {
         type: action.type,
       };
     case SELL_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case ACCEPT_ORDER_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case ACCEPT_ORDER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        purchase: action.product,
+        type: action.type,
+      };
+    case ACCEPT_ORDER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case CANCEL_ORDER_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case CANCEL_ORDER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        purchase: action.product,
+        type: action.type,
+      };
+    case CANCEL_ORDER_FAIL:
       return {
         ...state,
         loading: false,

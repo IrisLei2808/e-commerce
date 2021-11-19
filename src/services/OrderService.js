@@ -30,4 +30,20 @@ orderService.sell = function (data) {
   });
 };
 
+orderService.accept = function (data) {
+  return axios({
+    method: "post",
+    url: `${API_ENDPOINT}/api/orderDetail/acceptOrderDetail`,
+    data,
+  });
+};
+
+orderService.cancel = function (data) {
+  return axios({
+    method: "post",
+    url: `${API_ENDPOINT}/api/orderDetail/cancelOrderDetail`,
+    data,
+  });
+};
+
 export default orderService;

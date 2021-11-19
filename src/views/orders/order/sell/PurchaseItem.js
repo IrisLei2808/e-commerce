@@ -167,6 +167,7 @@ const WaitingConfirm = ({ item, loading, acceptOrder, cancelOrder }) => {
                 className="d-flex justify-content-center align-items-center"
                 style={{ marginLeft: "auto" }}
               >
+                <i class="fas fa-receipt mr-2 fa-2x"></i>
                 Tổng số tiền:
                 <span
                   className="ml-2"

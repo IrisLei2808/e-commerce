@@ -15,6 +15,15 @@ import {
   CANCEL_ORDER_REQUEST,
   CANCEL_ORDER_SUCCESS,
   CANCEL_ORDER_FAIL,
+  WAITING_DELIVERY_REQUEST,
+  WAITING_DELIVERY_SUCCESS,
+  WAITING_DELIVERY_FAIL,
+  DELIVERY_REQUEST,
+  DELIVERY_SUCCESS,
+  DELIVERY_FAIL,
+  DELIVERY_INFO_REQUEST,
+  DELIVERY_INFO_SUCCESS,
+  DELIVERY_INFO_FAIL,
 } from "../constants/Order";
 
 export const orderRequest = (data, jwtToken) => {
@@ -57,6 +66,72 @@ export const purchaseRequestSuccess = (product) => {
 export const purchaseRequestFail = (error) => {
   return {
     type: PURCHASE_FAIL,
+    error,
+  };
+};
+
+export const waitingDeliveryRequest = (userId, status) => {
+  return {
+    type: WAITING_DELIVERY_REQUEST,
+    userId,
+    status,
+  };
+};
+
+export const waitingDeliveryRequestSuccess = (product) => {
+  return {
+    type: WAITING_DELIVERY_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const waitingDeliveryRequestFail = (error) => {
+  return {
+    type: WAITING_DELIVERY_FAIL,
+    error,
+  };
+};
+
+export const deliveryRequest = (userId, status) => {
+  return {
+    type: DELIVERY_REQUEST,
+    userId,
+    status,
+  };
+};
+
+export const deliveryRequestSuccess = (product) => {
+  return {
+    type: DELIVERY_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const deliveryRequestFail = (error) => {
+  return {
+    type: DELIVERY_FAIL,
+    error,
+  };
+};
+
+export const deliveryInfoRequest = (userId, status) => {
+  return {
+    type: DELIVERY_INFO_REQUEST,
+    userId,
+    status,
+  };
+};
+
+export const deliveryInfoRequestSuccess = (product) => {
+  return {
+    type: DELIVERY_INFO_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const deliveryInfoRequestFail = (error) => {
+  return {
+    type: DELIVERY_INFO_FAIL,
     error,
   };
 };

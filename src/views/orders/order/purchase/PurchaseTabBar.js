@@ -12,8 +12,18 @@ import Delivery from "./Delivery";
 import CompleteDelivery from "./CompleteDelivery";
 import Cancelled from "./Cancelled";
 import Return from "./Return";
-import { purchaseRequest } from "../../../../redux/actions/Order";
-import { WAITING_FOR_CONFIRM } from "../../../../configs/Constants";
+import {
+  purchaseRequest,
+  waitingDeliveryRequest,
+  deliveryRequest,
+  deliveryInfoRequest,
+} from "../../../../redux/actions/Order";
+import {
+  DELIVERY,
+  DELIVERY_INFO,
+  WAITING_FOR_CONFIRM,
+  WAITING_FOR_DELIVERY,
+} from "../../../../configs/Constants";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,7 +64,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ScrollableTabsButtonAuto = (props) => {
-  const { purchaseRequest, purchase } = props;
+  const {
+    purchaseRequest,
+    waitingDeliveryRequest,
+    deliveryRequest,
+    purchase,
+    waitingDelivery,
+    delivery,
+    deliveryInfoRequest,
+    deliveryInfo,
+  } = props;
   const own = JSON.parse(localStorage.getItem("userInfo"));
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -65,6 +84,15 @@ const ScrollableTabsButtonAuto = (props) => {
 
   useEffect(() => {
     purchaseRequest(own && own.id, WAITING_FOR_CONFIRM);
+  }, []);
+
+  useEffect(() => {
+    waitingDeliveryRequest(own && own.id, WAITING_FOR_DELIVERY);
+  }, []);
+
+  useEffect(() => {
+    deliveryRequest(own && own.id, DELIVERY);
+    deliveryInfoRequest(own && own.id, DELIVERY_INFO);
   }, []);
 
   return (
@@ -103,10 +131,10 @@ const ScrollableTabsButtonAuto = (props) => {
         <WaitingConfirm purchase={purchase} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <WaitingDelivery />
+        <WaitingDelivery waitingDelivery={waitingDelivery} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Delivery />
+        <Delivery delivery={delivery} deliveryInfo={deliveryInfo} />
       </TabPanel>
       <TabPanel value={value} index={3}>
         <CompleteDelivery />
@@ -124,11 +152,17 @@ const ScrollableTabsButtonAuto = (props) => {
 const mapStateToProps = ({ order }) => {
   return {
     purchase: order && order.purchase,
+    waitingDelivery: order && order.waitingDelivery,
+    delivery: order && order.delivery,
+    deliveryInfo: order && order.deliveryInfo,
   };
 };
 
 const mapDispatchToProps = {
   purchaseRequest,
+  waitingDeliveryRequest,
+  deliveryRequest,
+  deliveryInfoRequest,
 };
 
 export default connect(

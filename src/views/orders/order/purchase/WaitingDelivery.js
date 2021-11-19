@@ -1,20 +1,17 @@
 import React from "react";
-import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
-import Message from "../../../../components/shared-components/ErrorMessage";
-import { formatMoney } from "../../../../utils/formatText";
-import { Link } from "react-router-dom";
-import PurchaseItem from "./PurchaseItem";
+import { Col, ListGroup, Row } from "react-bootstrap";
 import NoOrderScreen from "../NoOrderScreen";
+import PurchaseItem from "./PurchaseItem";
 
 const WaitingConfirm = (props) => {
-  const { purchase } = props;
-  return purchase ? (
+  const { waitingDelivery } = props;
+  return waitingDelivery ? (
     <Row>
       <Col>
         <ListGroup variant="flush">
-          {purchase &&
-            purchase.map((item) => (
-              <PurchaseItem key={item.idOrderDetail} item={item} />
+          {waitingDelivery &&
+            waitingDelivery.map((item) => (
+              <PurchaseItem key={item.idOrderDetail} item={item} status={2} />
             ))}
         </ListGroup>
       </Col>

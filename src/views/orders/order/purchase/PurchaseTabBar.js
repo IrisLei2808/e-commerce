@@ -83,10 +83,6 @@ const ScrollableTabsButtonAuto = (props) => {
   };
 
   useEffect(() => {
-    purchaseRequest(own && own.id, WAITING_FOR_CONFIRM);
-  }, []);
-
-  useEffect(() => {
     waitingDeliveryRequest(own && own.id, WAITING_FOR_DELIVERY);
   }, []);
 

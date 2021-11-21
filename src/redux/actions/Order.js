@@ -24,6 +24,9 @@ import {
   DELIVERY_INFO_REQUEST,
   DELIVERY_INFO_SUCCESS,
   DELIVERY_INFO_FAIL,
+  COUNT_PURCHASE,
+  COUNT_PURCHASE_SUCCESS,
+  COUNT_PURCHASE_FAIL,
 } from "../constants/Order";
 
 export const orderRequest = (data, jwtToken) => {
@@ -48,11 +51,12 @@ export const orderRequestFail = (error) => {
   };
 };
 
-export const purchaseRequest = (userId, status) => {
+export const purchaseRequest = (userId, status, params) => {
   return {
     type: PURCHASE_REQUEST,
     userId,
     status,
+    params,
   };
 };
 
@@ -66,6 +70,29 @@ export const purchaseRequestSuccess = (product) => {
 export const purchaseRequestFail = (error) => {
   return {
     type: PURCHASE_FAIL,
+    error,
+  };
+};
+
+export const countPurchase = (userId, status, params) => {
+  return {
+    type: COUNT_PURCHASE,
+    userId,
+    status,
+    params,
+  };
+};
+
+export const countPurchaseSuccess = (product) => {
+  return {
+    type: COUNT_PURCHASE_SUCCESS,
+    product: product.data.Count,
+  };
+};
+
+export const countPurchaseFail = (error) => {
+  return {
+    type: COUNT_PURCHASE_FAIL,
     error,
   };
 };

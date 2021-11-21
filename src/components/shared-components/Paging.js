@@ -1,32 +1,58 @@
 import React from "react";
-import { MemoryRouter, Route } from "react-router";
-import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import Pagination from "@material-ui/lab/Pagination";
-import PaginationItem from "@material-ui/lab/PaginationItem";
+import { WAITING_FOR_CONFIRM } from "../../configs/Constants";
 
-export default function PaginationLink() {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > * + *": {
+      marginTop: theme.spacing(2),
+      justifyContent: "center",
+      display: "flex",
+      flexDirection: "row",
+    },
+  },
+}));
+
+export default function PaginationControlled({
+  page,
+  setPage,
+  count,
+  limit,
+  purchaseRequest,
+  own,
+}) {
+  const classes = useStyles();
+
+  const numberOfRecords = Math.ceil(count / limit);
+
+  const handleChange = (event, value) => {
+    setPage(value);
+    purchaseRequest(own && own.id, WAITING_FOR_CONFIRM, {
+      page: value,
+      limit: limit,
+    });
+  };
+
   return (
-    <MemoryRouter initialEntries={["/inbox"]} initialIndex={0}>
-      <Route>
-        {({ location }) => {
-          const query = new URLSearchParams(location.search);
-          const page = parseInt(query.get("page") || "1", 10);
-          return (
-            <Pagination
-              page={page}
-              count={10}
-              style={{ background: "white", textAlign: "center" }}
-              renderItem={(item) => (
-                <PaginationItem
-                  component={Link}
-                  to={`/inbox${item.page === 1 ? "" : `?page=${item.page}`}`}
-                  {...item}
-                />
-              )}
-            />
-          );
-        }}
-      </Route>
-    </MemoryRouter>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Typography className="mr-4">Page: {page}</Typography>
+      <Pagination
+        count={numberOfRecords}
+        page={page}
+        onChange={handleChange}
+        size="large"
+        showFirstButton
+        showLastButton
+      />
+    </div>
   );
 }

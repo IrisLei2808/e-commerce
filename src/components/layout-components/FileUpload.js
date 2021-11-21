@@ -43,7 +43,7 @@ const FileUpload = (props) => {
 
   return (
     <label className="btn btn-info mt-3" style={{ display: "inline-block" }}>
-      <i className="fas fa-images mr-2"></i>Choose Image
+      <i className="fas fa-images mr-2"></i>Chọn hình ảnh
       <input
         type="file"
         multiple

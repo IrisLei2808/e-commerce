@@ -5,6 +5,9 @@ import {
   CANCEL_ORDER_FAIL,
   CANCEL_ORDER_REQUEST,
   CANCEL_ORDER_SUCCESS,
+  COUNT_PURCHASE,
+  COUNT_PURCHASE_FAIL,
+  COUNT_PURCHASE_SUCCESS,
   DELIVERY_FAIL,
   DELIVERY_INFO_FAIL,
   DELIVERY_INFO_REQUEST,
@@ -68,6 +71,26 @@ const order = (state = initState, action) => {
         type: action.type,
       };
     case PURCHASE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case COUNT_PURCHASE: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case COUNT_PURCHASE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        purchaseCount: action.product,
+        type: action.type,
+      };
+    case COUNT_PURCHASE_FAIL:
       return {
         ...state,
         loading: false,

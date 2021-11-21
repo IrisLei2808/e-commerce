@@ -5,6 +5,8 @@ import {
   acceptOrderSuccess,
   cancelOrderFail,
   cancelOrderSuccess,
+  countPurchaseFail,
+  countPurchaseSuccess,
   deliveryInfoRequestFail,
   deliveryInfoRequestSuccess,
   deliveryRequestFail,
@@ -22,6 +24,7 @@ import {
 import {
   ACCEPT_ORDER_REQUEST,
   CANCEL_ORDER_REQUEST,
+  COUNT_PURCHASE,
   DELIVERY_INFO_REQUEST,
   DELIVERY_REQUEST,
   ORDER_CREATE_REQUEST,
@@ -58,15 +61,38 @@ export function* orderRequest() {
 }
 
 export function* purchaseRequest() {
-  yield takeEvery(PURCHASE_REQUEST, function* ({ userId, status }) {
+  yield takeEvery(PURCHASE_REQUEST, function* ({ userId, status, params }) {
+    const { page, limit } = params;
+    const product = {
+      page: page,
+      limit: limit,
+    };
     try {
-      const productData = yield call(orderService.purchase, {
-        id: userId,
-        status,
-      });
+      const productData = yield call(
+        orderService.purchase,
+        {
+          id: userId,
+          status,
+        },
+        product
+      );
       yield put(purchaseRequestSuccess(productData));
     } catch (err) {
       yield put(purchaseRequestFail(err.response && err.response.data.result));
+    }
+  });
+}
+
+export function* countPurchase() {
+  yield takeEvery(COUNT_PURCHASE, function* ({ userId, status }) {
+    try {
+      const productData = yield call(orderService.countPurchase, {
+        id: userId,
+        status,
+      });
+      yield put(countPurchaseSuccess(productData));
+    } catch (err) {
+      yield put(countPurchaseFail(err.response && err.response.data.result));
     }
   });
 }
@@ -167,5 +193,6 @@ export default function* rootSaga() {
     fork(acceptOrder),
     fork(cancelOrder),
     fork(deliveryInfo),
+    fork(countPurchase),
   ]);
 }

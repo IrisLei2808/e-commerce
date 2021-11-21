@@ -29,15 +29,15 @@ const own = JSON.parse(localStorage.getItem("userInfo"));
 const currencies = [
   {
     value: "SELL",
-    label: "SELL",
+    label: "BÁN",
   },
   {
     value: "EXCHANGE",
-    label: "EXCHANGE",
+    label: "TRAO ĐỔI",
   },
   {
     value: "BOTH",
-    label: "BOTH",
+    label: "BÁN HOẶC TRAO ĐỔI",
   },
 ];
 
@@ -73,7 +73,6 @@ const ProductPost = (props) => {
   const [categoryIdWantChange, setCategoryIdWantChange] = useState("");
   const [currency, setCurrency] = useState("");
   const wantChangeStatus = currency === "EXCHANGE" || currency === "BOTH";
-
   const handleStatusChange = (event) => {
     const { value } = event.target;
     setCurrency(event.target.value);
@@ -182,7 +181,7 @@ const ProductPost = (props) => {
       }}
     >
       <ToastContainer position="top-center" autoClose={5000} />
-      <h2 style={{ textAlign: "center" }}>Post Product</h2>
+      <h2 style={{ textAlign: "center" }}>Đăng sản phẩm</h2>
       <Form
         onSubmit={handleSubmit}
         style={{
@@ -217,7 +216,7 @@ const ProductPost = (props) => {
         </Row>
         <TextField
           id="outlined-basic"
-          label="Name"
+          label="Tên sản phẩm"
           variant="outlined"
           color="secondary"
           className="mt-3 w-50"
@@ -230,7 +229,7 @@ const ProductPost = (props) => {
           getOptionLabel={(option) => option.brandname}
           style={{ width: 300 }}
           renderInput={(params) => (
-            <TextField {...params} label="Brand" variant="outlined" />
+            <TextField {...params} label="Tên hãng" variant="outlined" />
           )}
           className="mt-4 w-50"
           onChange={handleBrandChange}
@@ -241,14 +240,14 @@ const ProductPost = (props) => {
           getOptionLabel={(option) => option.name}
           style={{ width: 300 }}
           renderInput={(params) => (
-            <TextField {...params} label="Category" variant="outlined" />
+            <TextField {...params} label="Loại sản phẩm" variant="outlined" />
           )}
           className="mt-4 w-50"
           onChange={handleCategoryChange}
         />
         <Form.Control
           as="textarea"
-          placeholder="Description"
+          placeholder="Mô tả"
           style={{ height: "100px" }}
           className="mt-4 w-50"
           required
@@ -257,7 +256,7 @@ const ProductPost = (props) => {
         <TextField
           id="outlined-basic"
           type="number"
-          label="Quantity"
+          label="Số lượng"
           variant="outlined"
           color="secondary"
           className="mt-4 w-50"
@@ -271,7 +270,7 @@ const ProductPost = (props) => {
           suffix=" VND"
           id="input-example"
           name="input-name"
-          placeholder="Price *"
+          placeholder="Giá *"
           decimalsLimit={2}
           onValueChange={(value, name) => setPrice(value)}
           className="mt-4 w-50"
@@ -286,7 +285,7 @@ const ProductPost = (props) => {
           id="outlined-select-currency"
           select
           variant="outlined"
-          label="Status"
+          label="Hình thức"
           value={currency}
           color="secondary"
           onChange={handleStatusChange}
@@ -333,7 +332,7 @@ const ProductPost = (props) => {
             />
           </>
         )}
-        <LoadingButton loading={loading} title="Post Product" />
+        <LoadingButton loading={loading} title="Đăng sản phẩm" />
       </Form>
       <ProductModal
         show={show}

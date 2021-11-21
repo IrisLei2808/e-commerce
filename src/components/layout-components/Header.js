@@ -74,12 +74,12 @@ const Header = (props) => {
                 to={userInfoFromStorage ? "/post" : "/login?redirect=post"}
               >
                 <Nav.Link>
-                  <i class="fas fa-cart-plus mr-2"></i>Post Product
+                  <i class="fas fa-cart-plus mr-2"></i>Đăng sản phẩm
                 </Nav.Link>
               </LinkContainer>
               <LinkContainer to="/cart">
                 <Nav.Link>
-                  <i className="fas fa-shopping-cart mr-2"></i>Cart
+                  <i className="fas fa-shopping-cart mr-2"></i>Giỏ hàng
                 </Nav.Link>
               </LinkContainer>
               {userInfoFromStorage ? (
@@ -105,16 +105,16 @@ const Header = (props) => {
                           class="fas fa-shopping-basket mr-2"
                           style={{ width: 25 }}
                         ></i>
-                        Order
+                        Đơn mua
                       </NavDropdown.Item>
                     </LinkContainer>
                     <LinkContainer to="/sell">
                       <NavDropdown.Item>
                         <i
                           class="fas fa-cash-register mr-2"
-                          style={{ width: 26 }}
+                          style={{ width: 25 }}
                         ></i>
-                        Sell
+                        Đơn bán
                       </NavDropdown.Item>
                     </LinkContainer>
                     <LinkContainer to="/profile">
@@ -123,12 +123,12 @@ const Header = (props) => {
                           className="fas fa-user-circle mr-2"
                           style={{ width: 25 }}
                         ></i>
-                        Profile
+                        Hồ sơ cá nhân
                       </NavDropdown.Item>
                     </LinkContainer>
                     <NavDropdown.Divider />
                     <NavDropdown.Item onClick={signOut}>
-                      <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                      <i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất
                     </NavDropdown.Item>
                   </NavDropdown>
                   <Image
@@ -143,7 +143,7 @@ const Header = (props) => {
               ) : (
                 <LinkContainer to="/login">
                   <Nav.Link>
-                    <i className="fas fa-user"></i> Sign In
+                    <i className="fas fa-user"></i> Đăng nhập
                   </Nav.Link>
                 </LinkContainer>
               )}

@@ -14,10 +14,19 @@ orderService.order = function (data, jwtToken) {
   });
 };
 
-orderService.purchase = function (data) {
+orderService.purchase = function (data, params) {
   return axios({
     method: "post",
     url: `${API_ENDPOINT}/api/order/purchase`,
+    data,
+    params,
+  });
+};
+
+orderService.countPurchase = function (data, params) {
+  return axios({
+    method: "post",
+    url: `${API_ENDPOINT}/api/order/countPurchase`,
     data,
   });
 };

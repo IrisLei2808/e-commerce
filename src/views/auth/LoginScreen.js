@@ -40,26 +40,28 @@ const LoginScreen = (props) => {
 
   return (
     <FormContainer>
-      <h1>Sign In</h1>
+      <h1>Đăng nhập</h1>
       {error && (
-        <Message variant="danger">Invalid username or password</Message>
+        <Message variant="danger">
+          Tên tài khoản hoặc mật khẩu không hợp lệ
+        </Message>
       )}
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="username">
-          <Form.Label>Username</Form.Label>
+          <Form.Label>Tên tài khoản</Form.Label>
           <Form.Control
             type="input"
-            placeholder="Enter username"
+            placeholder="Nhập tên tài khoản"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="password">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Mật khẩu</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Enter password"
+            placeholder="Nhập mật khẩu"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
@@ -71,12 +73,12 @@ const LoginScreen = (props) => {
           className="mt-4"
           size="lg"
         >
-          Sign In
+          Đăng nhập
         </Button>
       </Form>
       <Row className="py-3">
         <Col>
-          New Customer? <Link to="/register">Register</Link>
+          Tài khoản mới? <Link to="/register">Đăng ký</Link>
         </Col>
       </Row>
     </FormContainer>

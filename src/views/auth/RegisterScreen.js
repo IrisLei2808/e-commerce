@@ -98,70 +98,70 @@ const RegisterScreen = (props) => {
 
   return (
     <FormContainer>
-      <h1>Sign Up</h1>
+      <h1>Đăng ký</h1>
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error && error.message}</Message>}
       <Form onSubmit={submitHandler}>
         <AvatarUpload preview={preview} setPreview={setPreview} />
         <Form.Group controlId="name" className="mt-3">
-          <Form.Label>Username</Form.Label>
+          <Form.Label>Tên tài khoản</Form.Label>
           <Form.Control
             type="input"
-            placeholder="Enter username"
+            placeholder="Nhập tên tài khoản"
             value={name}
             required
             onChange={(e) => setName(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="password">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Mật khẩu</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Enter password"
+            placeholder="Nhập mật khẩu"
             value={password}
             required
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="confirmPassword">
-          <Form.Label>Confirm Password</Form.Label>
+          <Form.Label>Xác nhận lại mật khẩu</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Confirm password"
+            placeholder="Nhập mật khẩu xác nhận"
             value={confirmPassword}
             required
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="address">
-          <Form.Label>Address</Form.Label>
+          <Form.Label>Địa chỉ</Form.Label>
           <Form.Control
             type="input"
-            placeholder="Enter address"
+            placeholder="Nhập địa chỉ"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="name">
-          <Form.Label>Phone</Form.Label>
+          <Form.Label>Số điện thoại</Form.Label>
           <Form.Control
             type="number"
-            placeholder="Enter phone"
+            placeholder="Nhập số điện thoại"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="name">
-          <Form.Label>Full name</Form.Label>
+          <Form.Label>Họ và tên</Form.Label>
           <Form.Control
             type="input"
-            placeholder="Enter full name"
+            placeholder="Nhập họ và tên"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="gender">
-          <Form.Label>Gender</Form.Label>
+          <Form.Label>Giới tính</Form.Label>
           <RadioGroup
             aria-label="gender"
             name="gender1"
@@ -170,22 +170,18 @@ const RegisterScreen = (props) => {
             value={value}
             onChange={handleChange}
           >
-            <FormControlLabel
-              value="female"
-              control={<Radio />}
-              label="Female"
-            />
-            <FormControlLabel value="male" control={<Radio />} label="Male" />
+            <FormControlLabel value="female" control={<Radio />} label="Nữ" />
+            <FormControlLabel value="male" control={<Radio />} label="Nam" />
           </RadioGroup>
         </Form.Group>
         <Form.Group controlId="name">
-          <Form.Label>Date of birth</Form.Label>
+          <Form.Label>Ngày sinh</Form.Label>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Grid container justifyContent="flex-start">
               <KeyboardDatePicker
                 margin="normal"
                 id="date-picker-dialog"
-                label="Birthdate picker"
+                label="Chọn ngày sinh"
                 format="MM/dd/yyyy"
                 value={selectedDate}
                 onChange={handleDateChange}
@@ -206,12 +202,12 @@ const RegisterScreen = (props) => {
             role="status"
             aria-hidden="true"
           ></span>
-          {loading ? "Loading..." : "Register"}
+          {loading ? "Loading..." : "Đăng ký"}
         </button>
       </Form>
       <Row className="py-3">
         <Col>
-          Have an Account? <Link to="/register">Login</Link>
+          Chưa có tài khoản? <Link to="/register">Đăng nhập</Link>
         </Col>
       </Row>
     </FormContainer>

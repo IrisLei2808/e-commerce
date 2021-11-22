@@ -68,19 +68,6 @@ const WaitingConfirm = ({ item, status }) => {
                   Đang chờ lấy hàng
                 </span>
               )}
-              {status === 3 && (
-                <span
-                  className="ml-auto d-flex"
-                  style={{
-                    background: "#00A86B",
-                    color: "white",
-                    padding: "5px 15px",
-                    borderRadius: 4,
-                  }}
-                >
-                  Đang giao
-                </span>
-              )}
             </Row>
             <Row style={{ borderBottom: "1px solid #E8E9EB", padding: 20 }}>
               <Col md={2}>

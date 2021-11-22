@@ -5,6 +5,9 @@ import {
   CANCEL_ORDER_FAIL,
   CANCEL_ORDER_REQUEST,
   CANCEL_ORDER_SUCCESS,
+  COUNT_DELIVERY,
+  COUNT_DELIVERY_FAIL,
+  COUNT_DELIVERY_SUCCESS,
   COUNT_PURCHASE,
   COUNT_PURCHASE_FAIL,
   COUNT_PURCHASE_SUCCESS,
@@ -29,6 +32,12 @@ import {
   PURCHASE_FAIL,
   PURCHASE_REQUEST,
   PURCHASE_SUCCESS,
+  SELL_COUNT_DELIVERY,
+  SELL_COUNT_DELIVERY_FAIL,
+  SELL_COUNT_DELIVERY_SUCCESS,
+  SELL_DELIVERY_FAIL,
+  SELL_DELIVERY_REQUEST,
+  SELL_DELIVERY_SUCCESS,
   SELL_FAIL,
   SELL_REQUEST,
   SELL_SUCCESS,
@@ -223,6 +232,66 @@ const order = (state = initState, action) => {
         type: action.type,
       };
     case DELIVERY_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case COUNT_DELIVERY: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case COUNT_DELIVERY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        deliveryCount: action.product,
+        type: action.type,
+      };
+    case COUNT_DELIVERY_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case SELL_DELIVERY_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case SELL_DELIVERY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        sellDelivery: action.product,
+        type: action.type,
+      };
+    case SELL_DELIVERY_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case SELL_COUNT_DELIVERY: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case SELL_COUNT_DELIVERY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        sellDeliveryCount: action.product,
+        type: action.type,
+      };
+    case SELL_COUNT_DELIVERY_FAIL:
       return {
         ...state,
         loading: false,

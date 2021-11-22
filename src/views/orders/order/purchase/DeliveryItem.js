@@ -1,8 +1,38 @@
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import { Col, Image, ListGroup, Row } from "react-bootstrap";
+import {
+  Col,
+  Image,
+  ListGroup,
+  PopoverContent,
+  PopoverTitle,
+  Row,
+  Button,
+} from "react-bootstrap";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Popover from "react-bootstrap/Popover";
+import { Link } from "react-router-dom";
 import { formatMoney } from "../../../../utils/formatText";
+
+const LoadingButton = ({ title, loading, accept, handleClickOpen }) => {
+  return (
+    <div>
+      <Button
+        className={
+          accept ? "btn btn-primary btn-block" : "btn btn-primary btn-block"
+        }
+        type="submit"
+        disabled={loading}
+        variant={accept ? "success" : "danger"}
+        onClick={handleClickOpen}
+        style={{ padding: "10px 0px" }}
+      >
+        {title}
+      </Button>
+    </div>
+  );
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +52,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const WaitingConfirm = ({ item, status }) => {
+  const popover = (
+    <Popover id="popover-basic">
+      <PopoverTitle>
+        <i class="fas fa-shipping-fast mr-2"></i>Đang giao
+      </PopoverTitle>
+      <PopoverContent>{item && item.transport}</PopoverContent>
+    </Popover>
+  );
+
+  const timePopover = (
+    <Popover id="popover-basic">
+      <PopoverTitle>
+        <i class="fas fa-exclamation mr-2"></i>Lưu ý
+      </PopoverTitle>
+      <PopoverContent>
+        Vui lòng kiểm tra tất cả các sản phẩm trong đơn hàng trước khi xác nhận
+        đã nhận hàng, nếu phát sinh vấn đề, bạn có thể yêu cầu trả hàng/hoàn
+        tiền cho đến ngày {item && item.timeLimitAccept}. Sau ngày này, bạn sẽ
+        không thể yêu cầu trả hàng/hoàn tiền nữa
+      </PopoverContent>
+    </Popover>
+  );
   const classes = useStyles();
   return (
     <>
@@ -55,17 +107,28 @@ const WaitingConfirm = ({ item, status }) => {
               >
                 {item && item.user && item.user[0] && item.user[0].fullName}
               </span>
-              {status === 2 && (
-                <span
-                  className="ml-auto d-flex"
-                  style={{
-                    background: "#D21404",
-                    color: "white",
-                    padding: "5px 15px",
-                    borderRadius: 4,
-                  }}
-                >
-                  Đang chờ lấy hàng
+              {status === 3 && (
+                <span className="ml-auto d-flex align-items-center">
+                  <OverlayTrigger
+                    trigger="hover"
+                    placement="bottom"
+                    overlay={popover}
+                  >
+                    <Link style={{ textDecoration: "none", fontSize: 15 }}>
+                      <i class="fas fa-truck mr-1"></i>Trạng thái giao hàng
+                    </Link>
+                  </OverlayTrigger>
+                  <span
+                    style={{
+                      background: "#00A86B",
+                      color: "white",
+                      padding: "5px 15px",
+                      borderRadius: 4,
+                    }}
+                    className="ml-5 "
+                  >
+                    Đang giao
+                  </span>
                 </span>
               )}
             </Row>
@@ -98,20 +161,65 @@ const WaitingConfirm = ({ item, status }) => {
                 {formatMoney(item && item.price)}
               </Col>
             </Row>
-            <Row style={{ padding: 20 }}>
-              <div
-                className="d-flex justify-content-center align-items-center"
-                style={{ marginLeft: "auto" }}
-              >
-                <i class="fas fa-receipt mr-2 fa-2x"></i>
-                Tổng số tiền:
-                <span
-                  className="ml-2"
-                  style={{ fontSize: 20, color: "#d73211" }}
+            <Row
+              style={{
+                padding: 20,
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              {item && item.timeLimitAccept && (
+                <>
+                  <Col>
+                    <span style={{ fontSize: 12, color: "#746D69" }}>
+                      Bạn hài lòng với sản phẩm đã nhận? Nếu có, chọn "Đã nhận
+                      hàng". Nếu không, vui lòng chọn "Trả hàng/Hoàn Tiền" trước
+                      ngày{" "}
+                      <OverlayTrigger
+                        trigger="hover"
+                        placement="bottom"
+                        overlay={timePopover}
+                      >
+                        <Link>{item.timeLimitAccept}</Link>
+                      </OverlayTrigger>
+                    </span>
+                  </Col>
+                  <Col>
+                    <LoadingButton title="Đã nhận hàng" accept={true} />
+                  </Col>
+                  <Col>
+                    <LoadingButton title="Yêu cầu trả hàng" accept={false} />
+                  </Col>
+                  <Col
+                    className="d-flex justify-content-center align-items-center"
+                    style={{ marginLeft: "auto" }}
+                  >
+                    <i class="fas fa-receipt mr-2 fa-2x"></i>
+                    Tổng số tiền:
+                    <span
+                      className="ml-2"
+                      style={{ fontSize: 20, color: "#d73211" }}
+                    >
+                      {formatMoney(item && item.price)}
+                    </span>
+                  </Col>
+                </>
+              )}
+              {item && !item.timeLimitAccept && (
+                <div
+                  className="d-flex justify-content-center align-items-center"
+                  style={{ marginLeft: "auto" }}
                 >
-                  {formatMoney(item && item.price)}
-                </span>
-              </div>
+                  <i class="fas fa-receipt mr-2 fa-2x"></i>
+                  Tổng số tiền:
+                  <span
+                    className="ml-2"
+                    style={{ fontSize: 20, color: "#d73211" }}
+                  >
+                    {formatMoney(item && item.price)}
+                  </span>
+                </div>
+              )}
             </Row>
           </>
         </ListGroup>

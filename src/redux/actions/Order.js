@@ -38,6 +38,15 @@ import {
   COUNT_SELL_WAITING_DELIVERY,
   COUNT_SELL_WAITING_DELIVERY_SUCCESS,
   COUNT_SELL_WAITING_DELIVERY_FAIL,
+  COUNT_DELIVERY,
+  COUNT_DELIVERY_SUCCESS,
+  COUNT_DELIVERY_FAIL,
+  SELL_DELIVERY_REQUEST,
+  SELL_DELIVERY_SUCCESS,
+  SELL_DELIVERY_FAIL,
+  SELL_COUNT_DELIVERY,
+  SELL_COUNT_DELIVERY_SUCCESS,
+  SELL_COUNT_DELIVERY_FAIL,
 } from "../constants/Order";
 
 export const orderRequest = (data, jwtToken) => {
@@ -153,11 +162,12 @@ export const countWaitingDeliveryFail = (error) => {
   };
 };
 
-export const deliveryRequest = (userId, status) => {
+export const deliveryRequest = (userId, status, params) => {
   return {
     type: DELIVERY_REQUEST,
     userId,
     status,
+    params,
   };
 };
 
@@ -171,6 +181,73 @@ export const deliveryRequestSuccess = (product) => {
 export const deliveryRequestFail = (error) => {
   return {
     type: DELIVERY_FAIL,
+    error,
+  };
+};
+
+export const countDelivery = (userId, status) => {
+  return {
+    type: COUNT_DELIVERY,
+    userId,
+    status,
+  };
+};
+
+export const countDeliverySuccess = (product) => {
+  return {
+    type: COUNT_DELIVERY_SUCCESS,
+    product: product.data.Count,
+  };
+};
+
+export const countDeliveryFail = (error) => {
+  return {
+    type: COUNT_DELIVERY_FAIL,
+    error,
+  };
+};
+
+export const sellDelivery = (userId, status, params) => {
+  return {
+    type: SELL_DELIVERY_REQUEST,
+    userId,
+    status,
+    params,
+  };
+};
+
+export const sellDeliverySuccess = (product) => {
+  return {
+    type: SELL_DELIVERY_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const sellDeliveryFail = (error) => {
+  return {
+    type: SELL_DELIVERY_FAIL,
+    error,
+  };
+};
+
+export const sellCountDelivery = (userId, status) => {
+  return {
+    type: SELL_COUNT_DELIVERY,
+    userId,
+    status,
+  };
+};
+
+export const sellCountDeliverySuccess = (product) => {
+  return {
+    type: SELL_COUNT_DELIVERY_SUCCESS,
+    product: product.data.Count,
+  };
+};
+
+export const sellCountDeliveryFail = (error) => {
+  return {
+    type: SELL_COUNT_DELIVERY_FAIL,
     error,
   };
 };

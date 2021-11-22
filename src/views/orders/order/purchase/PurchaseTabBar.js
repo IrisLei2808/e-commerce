@@ -4,15 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Typography from "@material-ui/core/Typography";
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { DELIVERY, DELIVERY_INFO } from "../../../../configs/Constants";
-import {
-  deliveryInfoRequest,
-  deliveryRequest,
-  purchaseRequest,
-  waitingDeliveryRequest,
-} from "../../../../redux/actions/Order";
 import Cancelled from "./Cancelled";
 import CompleteDelivery from "./CompleteDelivery";
 import Delivery from "./Delivery";
@@ -69,11 +62,6 @@ const ScrollableTabsButtonAuto = (props) => {
     setValue(newValue);
   };
 
-  useEffect(() => {
-    deliveryRequest(own && own.id, DELIVERY);
-    deliveryInfoRequest(own && own.id, DELIVERY_INFO);
-  }, []);
-
   return (
     <div className={classes.root}>
       <AppBar position="static" color="default">
@@ -109,7 +97,7 @@ const ScrollableTabsButtonAuto = (props) => {
         <WaitingDelivery />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Delivery delivery={delivery} deliveryInfo={deliveryInfo} />
+        <Delivery />
       </TabPanel>
       <TabPanel value={value} index={3}>
         <CompleteDelivery />
@@ -125,19 +113,10 @@ const ScrollableTabsButtonAuto = (props) => {
 };
 
 const mapStateToProps = ({ order }) => {
-  return {
-    waitingDelivery: order && order.waitingDelivery,
-    delivery: order && order.delivery,
-    deliveryInfo: order && order.deliveryInfo,
-  };
+  return {};
 };
 
-const mapDispatchToProps = {
-  purchaseRequest,
-  waitingDeliveryRequest,
-  deliveryRequest,
-  deliveryInfoRequest,
-};
+const mapDispatchToProps = {};
 
 export default connect(
   mapStateToProps,

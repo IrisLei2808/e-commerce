@@ -5,6 +5,8 @@ import {
   acceptOrderSuccess,
   cancelOrderFail,
   cancelOrderSuccess,
+  countDeliveryFail,
+  countDeliverySuccess,
   countPurchaseFail,
   countPurchaseSuccess,
   countSellFail,
@@ -21,7 +23,10 @@ import {
   orderRequestSuccess,
   purchaseRequestFail,
   purchaseRequestSuccess,
-  saleRequestSuccess,
+  sellCountDeliveryFail,
+  sellCountDeliverySuccess,
+  sellDeliveryFail,
+  sellDeliverySuccess,
   sellRequestFail,
   sellRequestSuccess,
   sellWaitingDeliveryFail,
@@ -32,6 +37,7 @@ import {
 import {
   ACCEPT_ORDER_REQUEST,
   CANCEL_ORDER_REQUEST,
+  COUNT_DELIVERY,
   COUNT_PURCHASE,
   COUNT_SELL,
   COUNT_SELL_WAITING_DELIVERY,
@@ -40,6 +46,8 @@ import {
   DELIVERY_REQUEST,
   ORDER_CREATE_REQUEST,
   PURCHASE_REQUEST,
+  SELL_COUNT_DELIVERY,
+  SELL_DELIVERY_REQUEST,
   SELL_REQUEST,
   SELL_WAITING_DELIVERY,
   WAITING_DELIVERY_REQUEST,
@@ -198,15 +206,80 @@ export function* countSellWaitingDelivery() {
 }
 
 export function* delivery() {
-  yield takeEvery(DELIVERY_REQUEST, function* ({ userId, status }) {
+  yield takeEvery(DELIVERY_REQUEST, function* ({ userId, status, params }) {
+    const { page, limit } = params;
+    const product = {
+      page: page,
+      limit: limit,
+    };
     try {
-      const productData = yield call(orderService.purchase, {
-        id: userId,
-        status,
-      });
+      const productData = yield call(
+        orderService.purchase,
+        {
+          id: userId,
+          status,
+        },
+        product
+      );
       yield put(deliveryRequestSuccess(productData));
     } catch (err) {
       yield put(deliveryRequestFail(err.response && err.response.data.result));
+    }
+  });
+}
+
+export function* countDelivery() {
+  yield takeEvery(COUNT_DELIVERY, function* ({ userId, status }) {
+    try {
+      const productData = yield call(orderService.countPurchase, {
+        id: userId,
+        status,
+      });
+      yield put(countDeliverySuccess(productData));
+    } catch (err) {
+      yield put(countDeliveryFail(err.response && err.response.data.result));
+    }
+  });
+}
+
+export function* sellDelivery() {
+  yield takeEvery(
+    SELL_DELIVERY_REQUEST,
+    function* ({ userId, status, params }) {
+      const { page, limit } = params;
+      const product = {
+        page: page,
+        limit: limit,
+      };
+      try {
+        const productData = yield call(
+          orderService.sell,
+          {
+            id: userId,
+            status,
+          },
+          product
+        );
+        yield put(sellDeliverySuccess(productData));
+      } catch (err) {
+        yield put(sellDeliveryFail(err.response && err.response.data.result));
+      }
+    }
+  );
+}
+
+export function* sellCountDelivery() {
+  yield takeEvery(SELL_COUNT_DELIVERY, function* ({ userId, status }) {
+    try {
+      const productData = yield call(orderService.countSell, {
+        id: userId,
+        status,
+      });
+      yield put(sellCountDeliverySuccess(productData));
+    } catch (err) {
+      yield put(
+        sellCountDeliveryFail(err.response && err.response.data.result)
+      );
     }
   });
 }
@@ -296,6 +369,7 @@ export default function* rootSaga() {
     fork(purchaseRequest),
     fork(waitingDelivery),
     fork(delivery),
+    fork(countDelivery),
     fork(sellRequest),
     fork(acceptOrder),
     fork(cancelOrder),
@@ -305,5 +379,7 @@ export default function* rootSaga() {
     fork(countWaitingDelivery),
     fork(sellWaitingDelivery),
     fork(countSellWaitingDelivery),
+    fork(sellDelivery),
+    fork(sellCountDelivery),
   ]);
 }

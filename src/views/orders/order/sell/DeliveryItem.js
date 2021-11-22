@@ -1,35 +1,8 @@
 import Avatar from "@material-ui/core/Avatar";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import { Button, Col, Image, ListGroup, Row } from "react-bootstrap";
-import { connect } from "react-redux";
-import OrderDialog from "../../../../components/shared-components/OrderDialog";
-import { acceptOrder, cancelOrder } from "../../../../redux/actions/Order";
+import { Col, Image, ListGroup, Row } from "react-bootstrap";
 import { formatMoney } from "../../../../utils/formatText";
-
-const LoadingButton = ({ title, loading, accept, handleClickOpen }) => {
-  return (
-    <div>
-      <Button
-        className={
-          accept ? "btn btn-primary mr-2" : "btn btn-primary btn-block"
-        }
-        type="submit"
-        disabled={loading}
-        variant={accept ? "success" : "danger"}
-        onClick={handleClickOpen}
-      >
-        <span
-          className={accept ? "fas fa-check mr-2" : "fas fa-times mr-2"}
-          role="status"
-          aria-hidden="true"
-        ></span>
-        {title}
-      </Button>
-    </div>
-  );
-};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,38 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WaitingConfirm = ({ item, loading, acceptOrder, cancelOrder }) => {
-  const [open, setOpen] = React.useState(false);
-  const [denyOpen, setDenyOpen] = React.useState(false);
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleAccept = () => {
-    acceptOrder(item && item.idOrderDetail);
-    setOpen(false);
-  };
-
-  const handleDenyOpen = () => {
-    setDenyOpen(true);
-  };
-
-  const handleDenyClose = () => {
-    setDenyOpen(false);
-  };
-
-  const handleDeny = () => {
-    cancelOrder(item && item.idOrderDetail);
-    setOpen(false);
-  };
-
+const WaitingConfirm = ({ item, status }) => {
   const classes = useStyles();
   return (
     <>
@@ -113,20 +55,19 @@ const WaitingConfirm = ({ item, loading, acceptOrder, cancelOrder }) => {
               >
                 {item && item.user && item.user[0] && item.user[0].fullName}
               </span>
-              <span className="ml-auto d-flex">
-                <LoadingButton
-                  title="Chấp nhận"
-                  loading={loading}
-                  accept={true}
-                  handleClickOpen={handleClickOpen}
-                />
-                <LoadingButton
-                  title="Hủy"
-                  loading={loading}
-                  accept={false}
-                  handleClickOpen={handleDenyOpen}
-                />
-              </span>
+              {status === 2 && (
+                <span
+                  className="ml-auto d-flex"
+                  style={{
+                    background: "#D21404",
+                    color: "white",
+                    padding: "5px 15px",
+                    borderRadius: 4,
+                  }}
+                >
+                  Đang chờ lấy hàng
+                </span>
+              )}
             </Row>
             <Row style={{ borderBottom: "1px solid #E8E9EB", padding: 20 }}>
               <Col md={2}>
@@ -175,33 +116,8 @@ const WaitingConfirm = ({ item, loading, acceptOrder, cancelOrder }) => {
           </>
         </ListGroup>
       </ListGroup.Item>
-      <OrderDialog
-        open={open}
-        handleClose={handleClose}
-        handleAccept={handleAccept}
-        loading={loading}
-        accept={true}
-      />
-      <OrderDialog
-        open={denyOpen}
-        handleClose={handleDenyClose}
-        handleDeny={handleDeny}
-        loading={loading}
-        accept={false}
-      />
     </>
   );
 };
 
-const mapStateToProps = ({ order }) => {
-  return {
-    loading: order && order.loading,
-  };
-};
-
-const mapDispatchToProps = {
-  acceptOrder,
-  cancelOrder,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(WaitingConfirm);
+export default WaitingConfirm;

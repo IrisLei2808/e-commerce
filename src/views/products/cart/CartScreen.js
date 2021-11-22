@@ -102,10 +102,10 @@ const CartScreen = (props) => {
   return (
     <Row>
       <Col md={8}>
-        <h1>Shopping Cart</h1>
+        <h1>Giỏ hàng</h1>
         {cartStorage.length === 0 ? (
           <ErrorMessage>
-            Your cart is empty <Link to="/">Go Back</Link>
+            Chưa có sản phẩm nào <Link to="/">Quay lại</Link>
           </ErrorMessage>
         ) : (
           <ListGroup variant="flush">
@@ -171,8 +171,8 @@ const CartScreen = (props) => {
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>
-                Total ({cartStorage.reduce((acc, item) => acc + item.qty, 0)})
-                Products
+                Tổng ({cartStorage.reduce((acc, item) => acc + item.qty, 0)})
+                Sản phẩm
               </h2>
               {formatMoney(
                 cartStorage.reduce(
@@ -188,7 +188,7 @@ const CartScreen = (props) => {
                 onClick={checkoutHandler}
                 disabled={cartStorage.length === 0}
               >
-                Proceed To Checkout
+                Kiểm tra sản phẩm
               </Button>
             </ListGroup.Item>
           </ListGroup>

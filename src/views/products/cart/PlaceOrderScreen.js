@@ -25,7 +25,7 @@ const PlaceOrderScreen = (props) => {
   } = props;
   const [show, setShow] = useState(false);
   const handleClose = () => {
-    setShow(false);
+    history.push("/purchase");
   };
   const goToHomePage = () => {
     history.push("/");
@@ -88,11 +88,11 @@ const PlaceOrderScreen = (props) => {
     <>
       <Row>
         <Col md={8}>
-          <h2>Order Items</h2>
+          <h2>Sản phẩm</h2>
           <ListGroup variant="flush">
             <ListGroup.Item>
               {cartStorage.length === 0 ? (
-                <Message>Your cart is empty</Message>
+                <Message>Không có sản phẩm nào</Message>
               ) : (
                 <ListGroup variant="flush">
                   {cartStorage.map((item, index) => (
@@ -134,17 +134,17 @@ const PlaceOrderScreen = (props) => {
           <Card>
             <ListGroup variant="flush">
               <ListGroup.Item>
-                <h2>Order Summary</h2>
+                <h2>Thông tin</h2>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Products</Col>
+                  <Col>Sản phẩm</Col>
                   <Col>{formatMoney(cartStorage.itemsPrice)}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Total</Col>
+                  <Col>Tổng</Col>
                   <Col>{formatMoney(cartStorage.totalPrice)}</Col>
                 </Row>
               </ListGroup.Item>
@@ -162,7 +162,7 @@ const PlaceOrderScreen = (props) => {
                     role="status"
                     aria-hidden="true"
                   ></span>
-                  {loading ? "Loading..." : "Place order"}
+                  {loading ? "Loading..." : "Đặt hàng"}
                 </button>
               </ListGroup.Item>
             </ListGroup>

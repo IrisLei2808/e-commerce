@@ -7,6 +7,12 @@ import {
   cancelOrderSuccess,
   countPurchaseFail,
   countPurchaseSuccess,
+  countSellFail,
+  countSellSuccess,
+  countSellWaitingDeliveryFail,
+  countSellWaitingDeliverySuccess,
+  countWaitingDeliveryFail,
+  countWaitingDeliverySuccess,
   deliveryInfoRequestFail,
   deliveryInfoRequestSuccess,
   deliveryRequestFail,
@@ -18,6 +24,8 @@ import {
   saleRequestSuccess,
   sellRequestFail,
   sellRequestSuccess,
+  sellWaitingDeliveryFail,
+  sellWaitingDeliverySuccess,
   waitingDeliveryRequestFail,
   waitingDeliveryRequestSuccess,
 } from "../actions/Order";
@@ -25,11 +33,15 @@ import {
   ACCEPT_ORDER_REQUEST,
   CANCEL_ORDER_REQUEST,
   COUNT_PURCHASE,
+  COUNT_SELL,
+  COUNT_SELL_WAITING_DELIVERY,
+  COUNT_WAITING_DELIVERY,
   DELIVERY_INFO_REQUEST,
   DELIVERY_REQUEST,
   ORDER_CREATE_REQUEST,
   PURCHASE_REQUEST,
   SELL_REQUEST,
+  SELL_WAITING_DELIVERY,
   WAITING_DELIVERY_REQUEST,
 } from "../constants/Order";
 
@@ -98,16 +110,88 @@ export function* countPurchase() {
 }
 
 export function* waitingDelivery() {
-  yield takeEvery(WAITING_DELIVERY_REQUEST, function* ({ userId, status }) {
+  yield takeEvery(
+    WAITING_DELIVERY_REQUEST,
+    function* ({ userId, status, params }) {
+      const { page, limit } = params;
+      const product = {
+        page: page,
+        limit: limit,
+      };
+      try {
+        const productData = yield call(
+          orderService.purchase,
+          {
+            id: userId,
+            status,
+          },
+          product
+        );
+        yield put(waitingDeliveryRequestSuccess(productData));
+      } catch (err) {
+        yield put(
+          waitingDeliveryRequestFail(err.response && err.response.data.result)
+        );
+      }
+    }
+  );
+}
+
+export function* countWaitingDelivery() {
+  yield takeEvery(COUNT_WAITING_DELIVERY, function* ({ userId, status }) {
     try {
-      const productData = yield call(orderService.purchase, {
+      const productData = yield call(orderService.countPurchase, {
         id: userId,
         status,
       });
-      yield put(waitingDeliveryRequestSuccess(productData));
+      yield put(countWaitingDeliverySuccess(productData));
     } catch (err) {
       yield put(
-        waitingDeliveryRequestFail(err.response && err.response.data.result)
+        countWaitingDeliveryFail(err.response && err.response.data.result)
+      );
+    }
+  });
+}
+
+export function* sellWaitingDelivery() {
+  yield takeEvery(
+    SELL_WAITING_DELIVERY,
+    function* ({ userId, status, params }) {
+      const { page, limit } = params;
+      const product = {
+        page: page,
+        limit: limit,
+      };
+      try {
+        const productData = yield call(
+          orderService.sell,
+          {
+            id: userId,
+            status,
+          },
+          product
+        );
+        yield put(sellWaitingDeliverySuccess(productData));
+      } catch (err) {
+        yield put(
+          sellWaitingDeliveryFail(err.response && err.response.data.result)
+        );
+      }
+    }
+  );
+}
+
+export function* countSellWaitingDelivery() {
+  yield takeEvery(COUNT_SELL_WAITING_DELIVERY, function* ({ userId, status }) {
+    try {
+      const productData = yield call(orderService.countSell, {
+        id: userId,
+        status,
+      });
+      yield put(countSellWaitingDeliverySuccess(productData));
+    } catch (err) {
+      yield put(
+        countSellWaitingDeliveryFail(err.response && err.response.data.result)
       );
     }
   });
@@ -144,15 +228,38 @@ export function* deliveryInfo() {
 }
 
 export function* sellRequest() {
-  yield takeEvery(SELL_REQUEST, function* ({ userId, status }) {
+  yield takeEvery(SELL_REQUEST, function* ({ userId, status, params }) {
+    const { page, limit } = params;
+    const product = {
+      page: page,
+      limit: limit,
+    };
     try {
-      const productData = yield call(orderService.sell, {
-        id: userId,
-        status,
-      });
+      const productData = yield call(
+        orderService.sell,
+        {
+          id: userId,
+          status,
+        },
+        product
+      );
       yield put(sellRequestSuccess(productData));
     } catch (err) {
       yield put(sellRequestFail(err.response && err.response.data.result));
+    }
+  });
+}
+
+export function* countSell() {
+  yield takeEvery(COUNT_SELL, function* ({ userId, status }) {
+    try {
+      const productData = yield call(orderService.countSell, {
+        id: userId,
+        status,
+      });
+      yield put(countSellSuccess(productData));
+    } catch (err) {
+      yield put(countSellFail(err.response && err.response.data.result));
     }
   });
 }
@@ -194,5 +301,9 @@ export default function* rootSaga() {
     fork(cancelOrder),
     fork(deliveryInfo),
     fork(countPurchase),
+    fork(countSell),
+    fork(countWaitingDelivery),
+    fork(sellWaitingDelivery),
+    fork(countSellWaitingDelivery),
   ]);
 }

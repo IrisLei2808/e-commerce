@@ -44,13 +44,13 @@ const ProductDetail = (props) => {
   const getStatus = (status) => {
     switch (status) {
       case "EXCHANGE":
-        return "Want to exchange ?";
+        return "Bạn muốn trao đổi ?";
       case "BOTH":
-        return "Want to buy or exchange ?";
+        return "Bạn muốn mua hoặc trao đổi ?";
       case "SELL":
-        return "Want to buy ?";
+        return "Bạn muốn mua sản phẩm ?";
       default:
-        return "Want to buy ?";
+        return "Bạn muốn mua sản phẩm ?";
     }
   };
 
@@ -133,14 +133,14 @@ const ProductDetail = (props) => {
                 )}
               </div>
               {!isOwn && (
-                <>
+                <div className="mt-3">
                   {isBuy && (
                     <Button
                       className={styles.cartbtn}
                       variant="danger"
                       onClick={addToCartHandler}
                     >
-                      Add To Cart
+                      Thêm vào giỏ hàng
                     </Button>
                   )}
                   {isExchange && (
@@ -148,10 +148,10 @@ const ProductDetail = (props) => {
                       className={styles.exchangbtn}
                       style={{ marginLeft: isBuy ? 20 : 40 }}
                     >
-                      Exchange
+                      Trao đổi
                     </Button>
                   )}
-                </>
+                </div>
               )}
             </div>
             <div>

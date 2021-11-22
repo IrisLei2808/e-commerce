@@ -44,6 +44,7 @@ const WaitingConfirm = (props) => {
           limit={limit}
           purchaseRequest={purchaseRequest}
           own={own}
+          type={WAITING_FOR_CONFIRM}
         />
       </Col>
     </Row>

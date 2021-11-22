@@ -8,6 +8,15 @@ import {
   COUNT_PURCHASE,
   COUNT_PURCHASE_FAIL,
   COUNT_PURCHASE_SUCCESS,
+  COUNT_SELL,
+  COUNT_SELL_FAIL,
+  COUNT_SELL_SUCCESS,
+  COUNT_SELL_WAITING_DELIVERY,
+  COUNT_SELL_WAITING_DELIVERY_FAIL,
+  COUNT_SELL_WAITING_DELIVERY_SUCCESS,
+  COUNT_WAITING_DELIVERY,
+  COUNT_WAITING_DELIVERY_FAIL,
+  COUNT_WAITING_DELIVERY_SUCCESS,
   DELIVERY_FAIL,
   DELIVERY_INFO_FAIL,
   DELIVERY_INFO_REQUEST,
@@ -23,6 +32,9 @@ import {
   SELL_FAIL,
   SELL_REQUEST,
   SELL_SUCCESS,
+  SELL_WAITING_DELIVERY,
+  SELL_WAITING_DELIVERY_FAIL,
+  SELL_WAITING_DELIVERY_SUCCESS,
   WAITING_DELIVERY_FAIL,
   WAITING_DELIVERY_REQUEST,
   WAITING_DELIVERY_SUCCESS,
@@ -97,6 +109,26 @@ const order = (state = initState, action) => {
         message: action.error,
         type: action.type,
       };
+    case COUNT_SELL: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case COUNT_SELL_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        sellCount: action.product,
+        type: action.type,
+      };
+    case COUNT_SELL_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
     case WAITING_DELIVERY_REQUEST: {
       return {
         ...state,
@@ -111,6 +143,66 @@ const order = (state = initState, action) => {
         type: action.type,
       };
     case WAITING_DELIVERY_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case COUNT_WAITING_DELIVERY: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case COUNT_WAITING_DELIVERY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        purWaitingDeliveryCount: action.product,
+        type: action.type,
+      };
+    case COUNT_WAITING_DELIVERY_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case SELL_WAITING_DELIVERY: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case SELL_WAITING_DELIVERY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        sellWaitingDelivery: action.product,
+        type: action.type,
+      };
+    case SELL_WAITING_DELIVERY_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case COUNT_SELL_WAITING_DELIVERY: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case COUNT_SELL_WAITING_DELIVERY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        purSellWaitingDeliveryCount: action.product,
+        type: action.type,
+      };
+    case COUNT_SELL_WAITING_DELIVERY_FAIL:
       return {
         ...state,
         loading: false,
@@ -167,7 +259,7 @@ const order = (state = initState, action) => {
       return {
         ...state,
         loading: false,
-        purchase: action.product,
+        sell: action.product,
         type: action.type,
       };
     case SELL_FAIL:

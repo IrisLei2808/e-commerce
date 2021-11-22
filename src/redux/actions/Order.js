@@ -27,6 +27,17 @@ import {
   COUNT_PURCHASE,
   COUNT_PURCHASE_SUCCESS,
   COUNT_PURCHASE_FAIL,
+  COUNT_SELL,
+  COUNT_SELL_SUCCESS,
+  COUNT_WAITING_DELIVERY,
+  COUNT_WAITING_DELIVERY_SUCCESS,
+  COUNT_WAITING_DELIVERY_FAIL,
+  SELL_WAITING_DELIVERY,
+  SELL_WAITING_DELIVERY_SUCCESS,
+  SELL_WAITING_DELIVERY_FAIL,
+  COUNT_SELL_WAITING_DELIVERY,
+  COUNT_SELL_WAITING_DELIVERY_SUCCESS,
+  COUNT_SELL_WAITING_DELIVERY_FAIL,
 } from "../constants/Order";
 
 export const orderRequest = (data, jwtToken) => {
@@ -97,11 +108,12 @@ export const countPurchaseFail = (error) => {
   };
 };
 
-export const waitingDeliveryRequest = (userId, status) => {
+export const waitingDeliveryRequest = (userId, status, params) => {
   return {
     type: WAITING_DELIVERY_REQUEST,
     userId,
     status,
+    params,
   };
 };
 
@@ -115,6 +127,28 @@ export const waitingDeliveryRequestSuccess = (product) => {
 export const waitingDeliveryRequestFail = (error) => {
   return {
     type: WAITING_DELIVERY_FAIL,
+    error,
+  };
+};
+
+export const countWaitingDelivery = (userId, status) => {
+  return {
+    type: COUNT_WAITING_DELIVERY,
+    userId,
+    status,
+  };
+};
+
+export const countWaitingDeliverySuccess = (product) => {
+  return {
+    type: COUNT_WAITING_DELIVERY_SUCCESS,
+    product: product.data.Count,
+  };
+};
+
+export const countWaitingDeliveryFail = (error) => {
+  return {
+    type: COUNT_WAITING_DELIVERY_FAIL,
     error,
   };
 };
@@ -163,11 +197,12 @@ export const deliveryInfoRequestFail = (error) => {
   };
 };
 
-export const sellRequest = (userId, status) => {
+export const sellRequest = (userId, status, params) => {
   return {
     type: SELL_REQUEST,
     userId,
     status,
+    params,
   };
 };
 
@@ -181,6 +216,75 @@ export const sellRequestSuccess = (product) => {
 export const sellRequestFail = (error) => {
   return {
     type: SELL_FAIL,
+    error,
+  };
+};
+
+export const countSell = (userId, status, params) => {
+  return {
+    type: COUNT_SELL,
+    userId,
+    status,
+    params,
+  };
+};
+
+export const countSellSuccess = (product) => {
+  return {
+    type: COUNT_SELL_SUCCESS,
+    product: product.data.Count,
+  };
+};
+
+export const countSellFail = (error) => {
+  return {
+    type: COUNT_PURCHASE_FAIL,
+    error,
+  };
+};
+
+export const sellWaitingDeliveryRequest = (userId, status, params) => {
+  return {
+    type: SELL_WAITING_DELIVERY,
+    userId,
+    status,
+    params,
+  };
+};
+
+export const sellWaitingDeliverySuccess = (product) => {
+  return {
+    type: SELL_WAITING_DELIVERY_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const sellWaitingDeliveryFail = (error) => {
+  return {
+    type: SELL_WAITING_DELIVERY_FAIL,
+    error,
+  };
+};
+
+export const countSellWaitingDelivery = (userId, status, params) => {
+  return {
+    type: COUNT_SELL_WAITING_DELIVERY,
+    userId,
+    status,
+    params,
+  };
+};
+
+export const countSellWaitingDeliverySuccess = (product) => {
+  return {
+    type: COUNT_SELL_WAITING_DELIVERY_SUCCESS,
+    product: product.data.Count,
+  };
+};
+
+export const countSellWaitingDeliveryFail = (error) => {
+  return {
+    type: COUNT_SELL_WAITING_DELIVERY_FAIL,
     error,
   };
 };

@@ -6,24 +6,19 @@ import Tabs from "@material-ui/core/Tabs";
 import Typography from "@material-ui/core/Typography";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import WaitingConfirm from "./WaitingConfirm";
-import WaitingDelivery from "./WaitingDelivery";
-import Delivery from "./Delivery";
-import CompleteDelivery from "./CompleteDelivery";
-import Cancelled from "./Cancelled";
-import Return from "./Return";
+import { DELIVERY, DELIVERY_INFO } from "../../../../configs/Constants";
 import {
+  deliveryInfoRequest,
+  deliveryRequest,
   purchaseRequest,
   waitingDeliveryRequest,
-  deliveryRequest,
-  deliveryInfoRequest,
 } from "../../../../redux/actions/Order";
-import {
-  DELIVERY,
-  DELIVERY_INFO,
-  WAITING_FOR_CONFIRM,
-  WAITING_FOR_DELIVERY,
-} from "../../../../configs/Constants";
+import Cancelled from "./Cancelled";
+import CompleteDelivery from "./CompleteDelivery";
+import Delivery from "./Delivery";
+import Return from "./Return";
+import WaitingConfirm from "./WaitingConfirm";
+import WaitingDelivery from "./WaitingDelivery";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -64,16 +59,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ScrollableTabsButtonAuto = (props) => {
-  const {
-    purchaseRequest,
-    waitingDeliveryRequest,
-    deliveryRequest,
-    purchase,
-    waitingDelivery,
-    delivery,
-    deliveryInfoRequest,
-    deliveryInfo,
-  } = props;
+  const { deliveryRequest, delivery, deliveryInfoRequest, deliveryInfo } =
+    props;
   const own = JSON.parse(localStorage.getItem("userInfo"));
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -81,10 +68,6 @@ const ScrollableTabsButtonAuto = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  useEffect(() => {
-    waitingDeliveryRequest(own && own.id, WAITING_FOR_DELIVERY);
-  }, []);
 
   useEffect(() => {
     deliveryRequest(own && own.id, DELIVERY);
@@ -104,30 +87,26 @@ const ScrollableTabsButtonAuto = (props) => {
           aria-label="scrollable auto tabs example"
         >
           <Tab
-            label="Waiting for confirmation"
+            label="Chờ xác nhận"
             {...a11yProps(0)}
             className={classes.label}
           />
           <Tab
-            label="Waiting for delivery"
+            label="Chờ lấy hàng"
             {...a11yProps(1)}
             className={classes.label}
           />
-          <Tab label="Delivery" {...a11yProps(2)} className={classes.label} />
-          <Tab
-            label="Completed delivery"
-            {...a11yProps(3)}
-            className={classes.label}
-          />
-          <Tab label="Cancelled" {...a11yProps(4)} className={classes.label} />
-          <Tab label="Return" {...a11yProps(5)} className={classes.label} />
+          <Tab label="Đang giao" {...a11yProps(2)} className={classes.label} />
+          <Tab label="Đã giao" {...a11yProps(3)} className={classes.label} />
+          <Tab label="Đã hủy" {...a11yProps(4)} className={classes.label} />
+          <Tab label="Trả hàng" {...a11yProps(5)} className={classes.label} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <WaitingConfirm purchase={purchase} />
+        <WaitingConfirm />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <WaitingDelivery waitingDelivery={waitingDelivery} />
+        <WaitingDelivery />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Delivery delivery={delivery} deliveryInfo={deliveryInfo} />
@@ -147,7 +126,6 @@ const ScrollableTabsButtonAuto = (props) => {
 
 const mapStateToProps = ({ order }) => {
   return {
-    purchase: order && order.purchase,
     waitingDelivery: order && order.waitingDelivery,
     delivery: order && order.delivery,
     deliveryInfo: order && order.deliveryInfo,

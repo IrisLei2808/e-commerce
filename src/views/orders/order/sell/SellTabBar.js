@@ -6,8 +6,14 @@ import Tabs from "@material-ui/core/Tabs";
 import Typography from "@material-ui/core/Typography";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { WAITING_FOR_CONFIRM } from "../../../../configs/Constants";
-import { resetOrderType, sellRequest } from "../../../../redux/actions/Order";
+import {
+  resetOrderType,
+  sellRequest,
+  countSell,
+} from "../../../../redux/actions/Order";
 import {
   ACCEPT_ORDER_SUCCESS,
   CANCEL_ORDER_SUCCESS,
@@ -18,8 +24,6 @@ import Delivery from "./Delivery";
 import Return from "./Return";
 import WaitingConfirm from "./WaitingConfirm";
 import WaitingDelivery from "./WaitingDelivery";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -60,30 +64,34 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ScrollableTabsButtonAuto = (props) => {
-  const { sellRequest, purchase, resetOrderType, type } = props;
+  const { sellRequest, countSell, cresetOrderType, type } = props;
   const own = JSON.parse(localStorage.getItem("userInfo"));
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
-  const notify = () => toast.success("Accept order successful!");
-  const notifyCancel = () => toast.success("Cancel order successful!");
+  const notify = () => toast.success("Đã chấp nhận đơn hàng!");
+  const notifyCancel = () => toast.success("Đã hủy đơn hàng!");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   useEffect(() => {
-    sellRequest(own && own.id, WAITING_FOR_CONFIRM);
-  }, []);
-
-  useEffect(() => {
     switch (type) {
       case ACCEPT_ORDER_SUCCESS:
-        sellRequest(own && own.id, WAITING_FOR_CONFIRM);
+        sellRequest(own && own.id, WAITING_FOR_CONFIRM, {
+          page: 1,
+          limit: 5,
+        });
+        countSell(own && own.id, WAITING_FOR_CONFIRM);
         notify();
         break;
       case CANCEL_ORDER_SUCCESS:
-        sellRequest(own && own.id, WAITING_FOR_CONFIRM);
+        sellRequest(own && own.id, WAITING_FOR_CONFIRM, {
+          page: 1,
+          limit: 5,
+        });
+        countSell(own && own.id, WAITING_FOR_CONFIRM);
         notifyCancel();
         break;
       default:
@@ -107,27 +115,23 @@ const ScrollableTabsButtonAuto = (props) => {
           aria-label="scrollable auto tabs example"
         >
           <Tab
-            label="Waiting for confirmation"
+            label="Chờ xác nhận"
             {...a11yProps(0)}
             className={classes.label}
           />
           <Tab
-            label="Waiting for delivery"
+            label="Chờ lấy hàng"
             {...a11yProps(1)}
             className={classes.label}
           />
-          <Tab label="Delivery" {...a11yProps(2)} className={classes.label} />
-          <Tab
-            label="Completed delivery"
-            {...a11yProps(3)}
-            className={classes.label}
-          />
-          <Tab label="Cancelled" {...a11yProps(4)} className={classes.label} />
-          <Tab label="Return" {...a11yProps(5)} className={classes.label} />
+          <Tab label="Đang giao" {...a11yProps(2)} className={classes.label} />
+          <Tab label="Đã giao" {...a11yProps(3)} className={classes.label} />
+          <Tab label="Đã hủy" {...a11yProps(4)} className={classes.label} />
+          <Tab label="Trả hàng" {...a11yProps(5)} className={classes.label} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <WaitingConfirm purchase={purchase} />
+        <WaitingConfirm />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <WaitingDelivery />
@@ -151,13 +155,13 @@ const ScrollableTabsButtonAuto = (props) => {
 
 const mapStateToProps = ({ order }) => {
   return {
-    purchase: order && order.purchase,
     type: order && order.type,
   };
 };
 
 const mapDispatchToProps = {
   sellRequest,
+  countSell,
   resetOrderType,
 };
 

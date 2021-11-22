@@ -35,17 +35,19 @@ const OrderDialog = ({
 }) => {
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true}>
-      <DialogTitle>{accept ? "Accept Order" : "Cancel Order"}</DialogTitle>
+      <DialogTitle>
+        {accept ? "Chấp nhận đơn hàng" : "Hủy đơn hàng"}
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
           {accept
-            ? "Are you sure you want to accept order"
-            : "Are you sure you want to cancel order"}
+            ? "Bạn có chắc muốn chấp nhận đơn hàng"
+            : "Bạn có chắc muốn hủy đơn hàng"}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={handleClose} color="primary">
-          Close
+          Không
         </Button>
         <Button
           className="btn btn-primary "
@@ -59,7 +61,7 @@ const OrderDialog = ({
             role="status"
             aria-hidden="true"
           ></span>
-          {loading ? "Loading..." : accept ? "Accept" : "OK"}
+          {loading ? "Loading..." : accept ? "Chấp nhận" : "Hủy đơn hàng"}
         </Button>
       </DialogActions>
     </Dialog>

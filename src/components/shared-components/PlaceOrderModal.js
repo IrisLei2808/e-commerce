@@ -21,11 +21,11 @@ const PlaceOrderModal = ({ show, handleClose, goToHomePage, message }) => {
           {message}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Cancel
+          <Button variant="primary" onClick={handleClose}>
+            Xem đơn mua hàng
           </Button>
           <Button variant="primary" onClick={goToHomePage}>
-            Go back to home page
+            Quay lại trang chủ
           </Button>
         </Modal.Footer>
       </Modal>

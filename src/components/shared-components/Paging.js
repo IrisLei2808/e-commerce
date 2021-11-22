@@ -22,6 +22,7 @@ export default function PaginationControlled({
   limit,
   purchaseRequest,
   own,
+  type,
 }) {
   const classes = useStyles();
 
@@ -29,7 +30,7 @@ export default function PaginationControlled({
 
   const handleChange = (event, value) => {
     setPage(value);
-    purchaseRequest(own && own.id, WAITING_FOR_CONFIRM, {
+    purchaseRequest(own && own.id, type, {
       page: value,
       limit: limit,
     });

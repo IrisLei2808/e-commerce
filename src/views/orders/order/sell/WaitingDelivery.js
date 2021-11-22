@@ -1,22 +1,56 @@
-import React from "react";
-import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
-import Message from "../../../../components/shared-components/ErrorMessage";
-import { formatMoney } from "../../../../utils/formatText";
-import { Link } from "react-router-dom";
-import PurchaseItem from "./PurchaseItem";
+import React, { useState, useEffect } from "react";
+import { Col, ListGroup, Row } from "react-bootstrap";
+import { connect } from "react-redux";
+import Paging from "../../../../components/shared-components/Paging";
+import {
+  countSellWaitingDelivery,
+  sellWaitingDeliveryRequest,
+} from "../../../../redux/actions/Order";
 import NoOrderScreen from "../NoOrderScreen";
+import DeliveryItem from "./DeliveryItem";
+import { WAITING_FOR_DELIVERY } from "../../../../configs/Constants";
 
-const WaitingConfirm = (props) => {
-  const { purchase } = props;
-  return purchase ? (
+const WaitingDelivery = (props) => {
+  const {
+    sellWaitingDeliveryRequest,
+    sellWaitingDelivery,
+    countSellWaitingDelivery,
+    purSellWaitingDeliveryCount,
+  } = props;
+
+  const own = JSON.parse(localStorage.getItem("userInfo"));
+  const [limit, setLimit] = useState(5);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    sellWaitingDeliveryRequest(own && own.id, WAITING_FOR_DELIVERY, {
+      page: page,
+      limit: limit,
+    });
+  }, []);
+
+  useEffect(() => {
+    countSellWaitingDelivery(own && own.id, WAITING_FOR_DELIVERY);
+  }, []);
+
+  return sellWaitingDelivery && sellWaitingDelivery.length > 0 ? (
     <Row>
       <Col>
         <ListGroup variant="flush">
-          {purchase &&
-            purchase.map((item) => (
-              <PurchaseItem key={item.idOrderDetail} item={item} />
+          {sellWaitingDelivery &&
+            sellWaitingDelivery.map((item) => (
+              <DeliveryItem key={item.idOrderDetail} item={item} status={2} />
             ))}
         </ListGroup>
+        <Paging
+          count={purSellWaitingDeliveryCount && purSellWaitingDeliveryCount}
+          page={page}
+          setPage={setPage}
+          limit={limit}
+          purchaseRequest={sellWaitingDeliveryRequest}
+          own={own}
+          type={WAITING_FOR_DELIVERY}
+        />
       </Col>
     </Row>
   ) : (
@@ -24,4 +58,16 @@ const WaitingConfirm = (props) => {
   );
 };
 
-export default WaitingConfirm;
+const mapStateToProps = ({ order }) => {
+  return {
+    sellWaitingDelivery: order && order.sellWaitingDelivery,
+    purSellWaitingDeliveryCount: order && order.purSellWaitingDeliveryCount,
+  };
+};
+
+const mapDispatchToProps = {
+  sellWaitingDeliveryRequest,
+  countSellWaitingDelivery,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WaitingDelivery);

@@ -31,10 +31,19 @@ orderService.countPurchase = function (data, params) {
   });
 };
 
-orderService.sell = function (data) {
+orderService.sell = function (data, params) {
   return axios({
     method: "post",
     url: `${API_ENDPOINT}/api/order/sell`,
+    data,
+    params,
+  });
+};
+
+orderService.countSell = function (data, params) {
+  return axios({
+    method: "post",
+    url: `${API_ENDPOINT}/api/order/countSell`,
     data,
   });
 };

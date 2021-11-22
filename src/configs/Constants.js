@@ -4,4 +4,6 @@ export const AVATAR_NO_URL =
 export const WAITING_FOR_CONFIRM = 1;
 export const WAITING_FOR_DELIVERY = 2;
 export const DELIVERY = 3;
+export const COMPLETE_DELIVERY = 4;
+export const CANCELLED = 5;
 export const DELIVERY_INFO = 7;

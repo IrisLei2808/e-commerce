@@ -148,6 +148,34 @@ const WaitingConfirm = ({
                   />
                 </span>
               )}
+              {status === 4 && (
+                <span
+                  className="ml-auto d-flex align-items-center"
+                  style={{
+                    background: "#00A86B",
+                    color: "white",
+                    padding: "5px 15px",
+                    borderRadius: 4,
+                  }}
+                >
+                  <i class="fas fa-check mr-2"></i>
+                  Đã giao
+                </span>
+              )}
+              {status === 5 && (
+                <span
+                  className="ml-auto d-flex align-items-center"
+                  style={{
+                    background: "#D21404",
+                    color: "white",
+                    padding: "5px 15px",
+                    borderRadius: 4,
+                  }}
+                >
+                  <i class="fas fa-times mr-2"></i>
+                  Đã hủy
+                </span>
+              )}
             </Row>
             <Row style={{ borderBottom: "1px solid #E8E9EB", padding: 20 }}>
               <Col md={2}>

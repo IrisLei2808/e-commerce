@@ -47,6 +47,30 @@ import {
   SELL_COUNT_DELIVERY,
   SELL_COUNT_DELIVERY_SUCCESS,
   SELL_COUNT_DELIVERY_FAIL,
+  COMPLETE_DELIVERY_SUCCESS,
+  COMPLETE_DELIVERY_REQUEST,
+  COMPLETE_DELIVERY_FAIL,
+  COUNT_COMPLETE_DELIVERY,
+  COUNT_COMPLETE_DELIVERY_SUCCESS,
+  COUNT_COMPLETE_DELIVERY_FAIL,
+  CANCELLED_REQUEST,
+  CANCELLED_SUCCESS,
+  CANCELLED_FAIL,
+  COUNT_CANCELLED,
+  COUNT_CANCELLED_SUCCESS,
+  COUNT_CANCELLED_FAIL,
+  SELL_COMPLETE_DELIVERY,
+  SELL_COMPLETE_DELIVERY_SUCCESS,
+  SELL_COMPLETE_DELIVERY_FAIL,
+  COUNT_SELL_COMPLETE_DELIVERY,
+  COUNT_SELL_COMPLETE_DELIVERY_SUCCESS,
+  COUNT_SELL_COMPLETE_DELIVERY_FAIL,
+  SELL_CANCELLED_REQUEST,
+  SELL_CANCELLED_SUCCESS,
+  SELL_CANCELLED_FAIL,
+  COUNT_SELL_CANCELLED,
+  COUNT_SELL_CANCELLED_SUCCESS,
+  COUNT_SELL_CANCELLED_FAIL,
 } from "../constants/Order";
 
 export const orderRequest = (data, jwtToken) => {
@@ -158,6 +182,190 @@ export const countWaitingDeliverySuccess = (product) => {
 export const countWaitingDeliveryFail = (error) => {
   return {
     type: COUNT_WAITING_DELIVERY_FAIL,
+    error,
+  };
+};
+
+export const completeDelivery = (userId, status, params) => {
+  return {
+    type: COMPLETE_DELIVERY_REQUEST,
+    userId,
+    status,
+    params,
+  };
+};
+
+export const completeDeliverySuccess = (product) => {
+  return {
+    type: COMPLETE_DELIVERY_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const completeDeliveryFail = (error) => {
+  return {
+    type: COMPLETE_DELIVERY_FAIL,
+    error,
+  };
+};
+
+export const countCompleteDelivery = (userId, status, params) => {
+  return {
+    type: COUNT_COMPLETE_DELIVERY,
+    userId,
+    status,
+    params,
+  };
+};
+
+export const countCompleteDeliverySuccess = (product) => {
+  return {
+    type: COUNT_COMPLETE_DELIVERY_SUCCESS,
+    product: product.data.Count,
+  };
+};
+
+export const countCompleteDeliveryFail = (error) => {
+  return {
+    type: COUNT_COMPLETE_DELIVERY_FAIL,
+    error,
+  };
+};
+
+export const cancelled = (userId, status, params) => {
+  return {
+    type: CANCELLED_REQUEST,
+    userId,
+    status,
+    params,
+  };
+};
+
+export const cancelledSuccess = (product) => {
+  return {
+    type: CANCELLED_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const cancelledFail = (error) => {
+  return {
+    type: CANCELLED_FAIL,
+    error,
+  };
+};
+
+export const countCancelled = (userId, status, params) => {
+  return {
+    type: COUNT_CANCELLED,
+    userId,
+    status,
+    params,
+  };
+};
+
+export const countCancelledSuccess = (product) => {
+  return {
+    type: COUNT_CANCELLED_SUCCESS,
+    product: product.data.Count,
+  };
+};
+
+export const countCancelledFail = (error) => {
+  return {
+    type: COUNT_CANCELLED_FAIL,
+    error,
+  };
+};
+
+export const sellCompleteDelivery = (userId, status, params) => {
+  return {
+    type: SELL_COMPLETE_DELIVERY,
+    userId,
+    status,
+    params,
+  };
+};
+
+export const sellCompleteDeliverySuccess = (product) => {
+  return {
+    type: SELL_COMPLETE_DELIVERY_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const sellCompleteDeliveryFail = (error) => {
+  return {
+    type: SELL_COMPLETE_DELIVERY_FAIL,
+    error,
+  };
+};
+
+export const sellCountCompleteDelivery = (userId, status, params) => {
+  return {
+    type: COUNT_SELL_COMPLETE_DELIVERY,
+    userId,
+    status,
+    params,
+  };
+};
+
+export const sellCountCompleteDeliverySuccess = (product) => {
+  return {
+    type: COUNT_SELL_COMPLETE_DELIVERY_SUCCESS,
+    product: product.data.Count,
+  };
+};
+
+export const sellCountCompleteDeliveryFail = (error) => {
+  return {
+    type: COUNT_SELL_COMPLETE_DELIVERY_FAIL,
+    error,
+  };
+};
+
+export const sellCancelled = (userId, status, params) => {
+  return {
+    type: SELL_CANCELLED_REQUEST,
+    userId,
+    status,
+    params,
+  };
+};
+
+export const sellCancelledSuccess = (product) => {
+  return {
+    type: SELL_CANCELLED_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const sellCancelledFail = (error) => {
+  return {
+    type: SELL_CANCELLED_FAIL,
+    error,
+  };
+};
+
+export const countSellCancelled = (userId, status, params) => {
+  return {
+    type: COUNT_SELL_CANCELLED,
+    userId,
+    status,
+    params,
+  };
+};
+
+export const countSellCancelledSuccess = (product) => {
+  return {
+    type: COUNT_SELL_CANCELLED_SUCCESS,
+    product: product.data.Count,
+  };
+};
+
+export const countSellCancelledFail = (error) => {
+  return {
+    type: COUNT_SELL_CANCELLED_FAIL,
     error,
   };
 };

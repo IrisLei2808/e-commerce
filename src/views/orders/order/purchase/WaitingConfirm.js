@@ -34,7 +34,7 @@ const WaitingConfirm = (props) => {
         <ListGroup variant="flush">
           {purchase &&
             purchase.map((item) => (
-              <PurchaseItem key={item.idOrderDetail} item={item} />
+              <PurchaseItem key={item.idOrderDetail} item={item} status={1} />
             ))}
         </ListGroup>
         <Paging

@@ -3,12 +3,22 @@ import orderService from "../../services/OrderService";
 import {
   acceptOrderFail,
   acceptOrderSuccess,
+  cancelledFail,
+  cancelledSuccess,
   cancelOrderFail,
   cancelOrderSuccess,
+  completeDeliveryFail,
+  completeDeliverySuccess,
+  countCancelledFail,
+  countCancelledSuccess,
+  countCompleteDeliveryFail,
+  countCompleteDeliverySuccess,
   countDeliveryFail,
   countDeliverySuccess,
   countPurchaseFail,
   countPurchaseSuccess,
+  countSellCancelledFail,
+  countSellCancelledSuccess,
   countSellFail,
   countSellSuccess,
   countSellWaitingDeliveryFail,
@@ -23,6 +33,12 @@ import {
   orderRequestSuccess,
   purchaseRequestFail,
   purchaseRequestSuccess,
+  sellCancelledFail,
+  sellCancelledSuccess,
+  sellCompleteDeliveryFail,
+  sellCompleteDeliverySuccess,
+  sellCountCompleteDeliveryFail,
+  sellCountCompleteDeliverySuccess,
   sellCountDeliveryFail,
   sellCountDeliverySuccess,
   sellDeliveryFail,
@@ -36,16 +52,24 @@ import {
 } from "../actions/Order";
 import {
   ACCEPT_ORDER_REQUEST,
+  CANCELLED_REQUEST,
   CANCEL_ORDER_REQUEST,
+  COMPLETE_DELIVERY_REQUEST,
+  COUNT_CANCELLED,
+  COUNT_COMPLETE_DELIVERY,
   COUNT_DELIVERY,
   COUNT_PURCHASE,
   COUNT_SELL,
+  COUNT_SELL_CANCELLED,
+  COUNT_SELL_COMPLETE_DELIVERY,
   COUNT_SELL_WAITING_DELIVERY,
   COUNT_WAITING_DELIVERY,
   DELIVERY_INFO_REQUEST,
   DELIVERY_REQUEST,
   ORDER_CREATE_REQUEST,
   PURCHASE_REQUEST,
+  SELL_CANCELLED_REQUEST,
+  SELL_COMPLETE_DELIVERY,
   SELL_COUNT_DELIVERY,
   SELL_DELIVERY_REQUEST,
   SELL_REQUEST,
@@ -242,6 +266,87 @@ export function* countDelivery() {
   });
 }
 
+export function* completeDelivery() {
+  yield takeEvery(
+    COMPLETE_DELIVERY_REQUEST,
+    function* ({ userId, status, params }) {
+      const { page, limit } = params;
+      const product = {
+        page: page,
+        limit: limit,
+      };
+      try {
+        const productData = yield call(
+          orderService.purchase,
+          {
+            id: userId,
+            status,
+          },
+          product
+        );
+        yield put(completeDeliverySuccess(productData));
+      } catch (err) {
+        yield put(
+          completeDeliveryFail(err.response && err.response.data.result)
+        );
+      }
+    }
+  );
+}
+
+export function* countCompleteDelivery() {
+  yield takeEvery(COUNT_COMPLETE_DELIVERY, function* ({ userId, status }) {
+    try {
+      const productData = yield call(orderService.countPurchase, {
+        id: userId,
+        status,
+      });
+      yield put(countCompleteDeliverySuccess(productData));
+    } catch (err) {
+      yield put(
+        countCompleteDeliveryFail(err.response && err.response.data.result)
+      );
+    }
+  });
+}
+
+export function* cancelled() {
+  yield takeEvery(CANCELLED_REQUEST, function* ({ userId, status, params }) {
+    const { page, limit } = params;
+    const product = {
+      page: page,
+      limit: limit,
+    };
+    try {
+      const productData = yield call(
+        orderService.purchase,
+        {
+          id: userId,
+          status,
+        },
+        product
+      );
+      yield put(cancelledSuccess(productData));
+    } catch (err) {
+      yield put(cancelledFail(err.response && err.response.data.result));
+    }
+  });
+}
+
+export function* countCancelled() {
+  yield takeEvery(COUNT_CANCELLED, function* ({ userId, status }) {
+    try {
+      const productData = yield call(orderService.countPurchase, {
+        id: userId,
+        status,
+      });
+      yield put(countCancelledSuccess(productData));
+    } catch (err) {
+      yield put(countCancelledFail(err.response && err.response.data.result));
+    }
+  });
+}
+
 export function* sellDelivery() {
   yield takeEvery(
     SELL_DELIVERY_REQUEST,
@@ -279,6 +384,92 @@ export function* sellCountDelivery() {
     } catch (err) {
       yield put(
         sellCountDeliveryFail(err.response && err.response.data.result)
+      );
+    }
+  });
+}
+
+export function* sellCompleteDelivery() {
+  yield takeEvery(
+    SELL_COMPLETE_DELIVERY,
+    function* ({ userId, status, params }) {
+      const { page, limit } = params;
+      const product = {
+        page: page,
+        limit: limit,
+      };
+      try {
+        const productData = yield call(
+          orderService.sell,
+          {
+            id: userId,
+            status,
+          },
+          product
+        );
+        yield put(sellCompleteDeliverySuccess(productData));
+      } catch (err) {
+        yield put(
+          sellCompleteDeliveryFail(err.response && err.response.data.result)
+        );
+      }
+    }
+  );
+}
+
+export function* sellCountCompleteDelivery() {
+  yield takeEvery(COUNT_SELL_COMPLETE_DELIVERY, function* ({ userId, status }) {
+    try {
+      const productData = yield call(orderService.countSell, {
+        id: userId,
+        status,
+      });
+      yield put(sellCountCompleteDeliverySuccess(productData));
+    } catch (err) {
+      yield put(
+        sellCountCompleteDeliveryFail(err.response && err.response.data.result)
+      );
+    }
+  });
+}
+
+export function* sellCancelled() {
+  yield takeEvery(
+    SELL_CANCELLED_REQUEST,
+    function* ({ userId, status, params }) {
+      const { page, limit } = params;
+      const product = {
+        page: page,
+        limit: limit,
+      };
+      try {
+        const productData = yield call(
+          orderService.sell,
+          {
+            id: userId,
+            status,
+          },
+          product
+        );
+        yield put(sellCancelledSuccess(productData));
+      } catch (err) {
+        yield put(sellCancelledFail(err.response && err.response.data.result));
+      }
+    }
+  );
+}
+
+export function* sellCountCancell() {
+  yield takeEvery(COUNT_SELL_CANCELLED, function* ({ userId, status }) {
+    try {
+      const productData = yield call(orderService.countSell, {
+        id: userId,
+        status,
+      });
+      yield put(countSellCancelledSuccess(productData));
+    } catch (err) {
+      yield put(
+        countSellCancelledFail(err.response && err.response.data.result)
       );
     }
   });
@@ -381,5 +572,13 @@ export default function* rootSaga() {
     fork(countSellWaitingDelivery),
     fork(sellDelivery),
     fork(sellCountDelivery),
+    fork(completeDelivery),
+    fork(countCompleteDelivery),
+    fork(cancelled),
+    fork(countCancelled),
+    fork(sellCompleteDelivery),
+    fork(sellCountCompleteDelivery),
+    fork(sellCancelled),
+    fork(sellCountCancell),
   ]);
 }

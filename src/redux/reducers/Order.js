@@ -2,9 +2,21 @@ import {
   ACCEPT_ORDER_FAIL,
   ACCEPT_ORDER_REQUEST,
   ACCEPT_ORDER_SUCCESS,
+  CANCELLED_FAIL,
+  CANCELLED_REQUEST,
+  CANCELLED_SUCCESS,
   CANCEL_ORDER_FAIL,
   CANCEL_ORDER_REQUEST,
   CANCEL_ORDER_SUCCESS,
+  COMPLETE_DELIVERY_FAIL,
+  COMPLETE_DELIVERY_REQUEST,
+  COMPLETE_DELIVERY_SUCCESS,
+  COUNT_CANCELLED,
+  COUNT_CANCELLED_FAIL,
+  COUNT_CANCELLED_SUCCESS,
+  COUNT_COMPLETE_DELIVERY,
+  COUNT_COMPLETE_DELIVERY_FAIL,
+  COUNT_COMPLETE_DELIVERY_SUCCESS,
   COUNT_DELIVERY,
   COUNT_DELIVERY_FAIL,
   COUNT_DELIVERY_SUCCESS,
@@ -12,6 +24,12 @@ import {
   COUNT_PURCHASE_FAIL,
   COUNT_PURCHASE_SUCCESS,
   COUNT_SELL,
+  COUNT_SELL_CANCELLED,
+  COUNT_SELL_CANCELLED_FAIL,
+  COUNT_SELL_CANCELLED_SUCCESS,
+  COUNT_SELL_COMPLETE_DELIVERY,
+  COUNT_SELL_COMPLETE_DELIVERY_FAIL,
+  COUNT_SELL_COMPLETE_DELIVERY_SUCCESS,
   COUNT_SELL_FAIL,
   COUNT_SELL_SUCCESS,
   COUNT_SELL_WAITING_DELIVERY,
@@ -32,6 +50,12 @@ import {
   PURCHASE_FAIL,
   PURCHASE_REQUEST,
   PURCHASE_SUCCESS,
+  SELL_CANCELLED_FAIL,
+  SELL_CANCELLED_REQUEST,
+  SELL_CANCELLED_SUCCESS,
+  SELL_COMPLETE_DELIVERY,
+  SELL_COMPLETE_DELIVERY_FAIL,
+  SELL_COMPLETE_DELIVERY_SUCCESS,
   SELL_COUNT_DELIVERY,
   SELL_COUNT_DELIVERY_FAIL,
   SELL_COUNT_DELIVERY_SUCCESS,
@@ -252,6 +276,166 @@ const order = (state = initState, action) => {
         type: action.type,
       };
     case COUNT_DELIVERY_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case COMPLETE_DELIVERY_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case COMPLETE_DELIVERY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        completeDelivery: action.product,
+        type: action.type,
+      };
+    case COMPLETE_DELIVERY_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case COUNT_COMPLETE_DELIVERY: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case COUNT_COMPLETE_DELIVERY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        countCompleteDelivery: action.product,
+        type: action.type,
+      };
+    case COUNT_COMPLETE_DELIVERY_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case CANCELLED_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case CANCELLED_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        cancelled: action.product,
+        type: action.type,
+      };
+    case CANCELLED_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case COUNT_CANCELLED: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case COUNT_CANCELLED_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        countCancelled: action.product,
+        type: action.type,
+      };
+    case COUNT_CANCELLED_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case SELL_COMPLETE_DELIVERY: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case SELL_COMPLETE_DELIVERY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        sellCompleteDelivery: action.product,
+        type: action.type,
+      };
+    case SELL_COMPLETE_DELIVERY_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case COUNT_SELL_COMPLETE_DELIVERY: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case COUNT_SELL_COMPLETE_DELIVERY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        countSellCompleteDelivery: action.product,
+        type: action.type,
+      };
+    case COUNT_SELL_COMPLETE_DELIVERY_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case SELL_CANCELLED_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case SELL_CANCELLED_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        sellCancelled: action.product,
+        type: action.type,
+      };
+    case SELL_CANCELLED_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case COUNT_SELL_CANCELLED: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case COUNT_SELL_CANCELLED_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        countSellCancelled: action.product,
+        type: action.type,
+      };
+    case COUNT_SELL_CANCELLED_FAIL:
       return {
         ...state,
         loading: false,

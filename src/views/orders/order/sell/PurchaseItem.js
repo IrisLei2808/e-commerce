@@ -48,7 +48,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WaitingConfirm = ({ item, loading, acceptOrder, cancelOrder }) => {
+const WaitingConfirm = ({
+  item,
+  loading,
+  acceptOrder,
+  cancelOrder,
+  status,
+}) => {
   const [open, setOpen] = React.useState(false);
   const [denyOpen, setDenyOpen] = React.useState(false);
   const theme = useTheme();
@@ -113,20 +119,35 @@ const WaitingConfirm = ({ item, loading, acceptOrder, cancelOrder }) => {
               >
                 {item && item.user && item.user[0] && item.user[0].fullName}
               </span>
-              <span className="ml-auto d-flex">
-                <LoadingButton
-                  title="Chấp nhận"
-                  loading={loading}
-                  accept={true}
-                  handleClickOpen={handleClickOpen}
-                />
-                <LoadingButton
-                  title="Hủy"
-                  loading={loading}
-                  accept={false}
-                  handleClickOpen={handleDenyOpen}
-                />
-              </span>
+              {status === 2 && (
+                <span
+                  className="ml-auto d-flex"
+                  style={{
+                    background: "#D21404",
+                    color: "white",
+                    padding: "5px 15px",
+                    borderRadius: 4,
+                  }}
+                >
+                  Đang chờ lấy hàng
+                </span>
+              )}
+              {status === 1 && (
+                <span className="ml-auto d-flex">
+                  <LoadingButton
+                    title="Chấp nhận"
+                    loading={loading}
+                    accept={true}
+                    handleClickOpen={handleClickOpen}
+                  />
+                  <LoadingButton
+                    title="Hủy"
+                    loading={loading}
+                    accept={false}
+                    handleClickOpen={handleDenyOpen}
+                  />
+                </span>
+              )}
             </Row>
             <Row style={{ borderBottom: "1px solid #E8E9EB", padding: 20 }}>
               <Col md={2}>

@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, ListGroup, Row } from "react-bootstrap";
 import { connect } from "react-redux";
 import Paging from "../../../../components/shared-components/Paging";
+import { WAITING_FOR_DELIVERY } from "../../../../configs/Constants";
 import {
   countSellWaitingDelivery,
   sellWaitingDeliveryRequest,
 } from "../../../../redux/actions/Order";
 import NoOrderScreen from "../NoOrderScreen";
-import DeliveryItem from "./DeliveryItem";
-import { WAITING_FOR_DELIVERY } from "../../../../configs/Constants";
+import PurchaseItem from "./PurchaseItem";
 
 const WaitingDelivery = (props) => {
   const {
@@ -39,7 +39,7 @@ const WaitingDelivery = (props) => {
         <ListGroup variant="flush">
           {sellWaitingDelivery &&
             sellWaitingDelivery.map((item) => (
-              <DeliveryItem key={item.idOrderDetail} item={item} status={2} />
+              <PurchaseItem key={item.idOrderDetail} item={item} status={2} />
             ))}
         </ListGroup>
         <Paging

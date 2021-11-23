@@ -7,6 +7,7 @@ import { IMAGE_UPLOAD_SUCCESS } from "../../redux/constants/Product";
 const FileUpload = (props) => {
   const { image, setImage, imageUpload, resetProductType, type, imageFile } =
     props;
+  console.log("D: ", image);
   const fileUploadAndResize = (e) => {
     let files = e.target.files;
     if (files) {

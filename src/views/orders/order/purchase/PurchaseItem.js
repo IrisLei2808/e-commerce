@@ -1,8 +1,10 @@
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
+import React, { useState } from "react";
 import { Col, Image, ListGroup, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { formatMoney } from "../../../../utils/formatText";
+import FeedBackDialog from "../../../../components/layout-components/FeedBackDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +24,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const WaitingConfirm = ({ item, status }) => {
+  const [open, setOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
+
   const classes = useStyles();
   return (
     <>
@@ -139,7 +151,17 @@ const WaitingConfirm = ({ item, status }) => {
                 {formatMoney(item && item.price)}
               </Col>
             </Row>
-            <Row style={{ padding: 20 }}>
+            <Row style={{ padding: 20, alignItems: "center" }}>
+              {status === 4 && (
+                <Col>
+                  <a
+                    onClickCapture={handleOpenModal}
+                    style={{ color: "#00A86B" }}
+                  >
+                    <i class="far fa-comments mr-2"></i>Đánh giá sản phẩm ?
+                  </a>
+                </Col>
+              )}
               <div
                 className="d-flex justify-content-center align-items-center"
                 style={{ marginLeft: "auto" }}
@@ -156,6 +178,11 @@ const WaitingConfirm = ({ item, status }) => {
             </Row>
           </>
         </ListGroup>
+        <FeedBackDialog
+          handleOpenModal={handleOpenModal}
+          handleCloseModal={handleCloseModal}
+          open={open}
+        />
       </ListGroup.Item>
     </>
   );

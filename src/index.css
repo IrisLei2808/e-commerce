@@ -17,6 +17,10 @@ h3 {
   background-color: red;
 }
 
+a:hover {
+  font-weight: bold;
+}
+
 @media screen and (max-width: 1024px) {
 }
 @media screen and (max-width: 768px) {

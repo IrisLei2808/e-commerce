@@ -80,6 +80,11 @@ const ScrollableTabsButtonAuto = (props) => {
             className={classes.label}
           />
           <Tab
+            label="Yêu cầu trao đổi"
+            {...a11yProps(7)}
+            className={classes.label}
+          />
+          <Tab
             label="Chờ lấy hàng"
             {...a11yProps(1)}
             className={classes.label}
@@ -93,19 +98,22 @@ const ScrollableTabsButtonAuto = (props) => {
       <TabPanel value={value} index={0}>
         <WaitingConfirm />
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={value} index={2}>
         <WaitingDelivery />
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={value} index={3}>
         <Delivery />
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      <TabPanel value={value} index={4}>
         <CompleteDelivery />
       </TabPanel>
-      <TabPanel value={value} index={4}>
+      <TabPanel value={value} index={5}>
         <Cancelled />
       </TabPanel>
-      <TabPanel value={value} index={5}>
+      <TabPanel value={value} index={6}>
+        <Return />
+      </TabPanel>
+      <TabPanel value={value} index={7}>
         <Return />
       </TabPanel>
     </div>

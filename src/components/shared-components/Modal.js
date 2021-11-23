@@ -11,21 +11,21 @@ const ProductModal = ({ show, handleClose, goToDetail }) => {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Create Product</Modal.Title>
+          <Modal.Title>Đăng sản phẩm</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ display: "flex", alignItems: "center" }}>
           <i
             className="fas fa-check-circle mr-2"
             style={{ color: "green", fontSize: 25 }}
           ></i>
-          Create Product Successful!
+          Đăng sản phẩm thành công!
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Go back to home page
+            Quay về trang chủ
           </Button>
           <Button variant="primary" onClick={goToDetail}>
-            View product's details
+            Xem chi tiết sản phẩm
           </Button>
         </Modal.Footer>
       </Modal>

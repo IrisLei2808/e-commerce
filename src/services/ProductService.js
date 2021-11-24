@@ -11,6 +11,14 @@ productService.createProduct = function (data) {
   });
 };
 
+productService.feedbackProduct = function (data) {
+  return axios({
+    method: "post",
+    url: `${API_ENDPOINT}/api/users/feedback`,
+    data,
+  });
+};
+
 productService.addProductImage = function (data) {
   return axios({
     method: "post",

@@ -14,10 +14,8 @@
   margin-left: 40px;
 }
 .description {
-  width: 480px;
   font-size: 20px;
   font-weight: 400;
-  margin-left: 40px;
   margin-top: 10px;
 }
 .address {
@@ -78,8 +76,6 @@ a:hover {
 .exchange {
   color: #1a9cb7;
   font-size: 15px;
-  margin-left: 180px;
-  margin-top: 37px;
 }
 .cartbtn {
   margin-left: 40px;
@@ -98,7 +94,7 @@ a:hover {
   height: 50px;
 }
 .be_comment_block {
-  padding: 50px 70px;
+  padding: 50px 0px;
 }
 
 .comments_title {

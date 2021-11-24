@@ -11,6 +11,7 @@ import {
   CREATE_PRODUCT_FAIL,
   CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
+  FEEDBACK_PRODUCT_REQUEST,
   IMAGE_REMOVE_FAIL,
   IMAGE_REMOVE_REQUEST,
   IMAGE_REMOVE_SUCCESS,
@@ -86,6 +87,37 @@ export const createProductSuccess = (product) => {
 };
 
 export const createProductFail = (error) => {
+  return {
+    type: CREATE_PRODUCT_FAIL,
+    error,
+  };
+};
+
+export const feedbackProduct = (
+  productId,
+  orderDetailId,
+  content,
+  image,
+  star
+) => {
+  return {
+    type: FEEDBACK_PRODUCT_REQUEST,
+    productId,
+    orderDetailId,
+    content,
+    image,
+    star,
+  };
+};
+
+export const feedbackProductSuccess = (product) => {
+  return {
+    type: CREATE_PRODUCT_SUCCESS,
+    product,
+  };
+};
+
+export const feedbackProductFail = (error) => {
   return {
     type: CREATE_PRODUCT_FAIL,
     error,

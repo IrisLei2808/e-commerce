@@ -35,13 +35,11 @@ const OrderDialog = ({
 }) => {
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true}>
-      <DialogTitle>
-        {accept ? "Chấp nhận đơn hàng" : "Hủy đơn hàng"}
-      </DialogTitle>
+      <DialogTitle>{accept ? "Xác nhận đơn hàng" : "Hủy đơn hàng"}</DialogTitle>
       <DialogContent>
         <DialogContentText>
           {accept
-            ? "Bạn có chắc muốn chấp nhận đơn hàng"
+            ? "Bạn có chắc muốn xác nhận đơn hàng"
             : "Bạn có chắc muốn hủy đơn hàng"}
         </DialogContentText>
       </DialogContent>
@@ -61,7 +59,7 @@ const OrderDialog = ({
             role="status"
             aria-hidden="true"
           ></span>
-          {loading ? "Loading..." : accept ? "Chấp nhận" : "Hủy đơn hàng"}
+          {loading ? "Loading..." : accept ? "Xác nhận" : "Hủy đơn hàng"}
         </Button>
       </DialogActions>
     </Dialog>

@@ -135,7 +135,7 @@ const WaitingConfirm = ({
               {status === 1 && (
                 <span className="ml-auto d-flex">
                   <LoadingButton
-                    title="Chấp nhận"
+                    title="Xác nhận đơn hàng"
                     loading={loading}
                     accept={true}
                     handleClickOpen={handleClickOpen}

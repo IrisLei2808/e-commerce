@@ -69,7 +69,7 @@ const ScrollableTabsButtonAuto = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
-  const notify = () => toast.success("Đã chấp nhận đơn hàng!");
+  const notify = () => toast.success("Đã xác nhận đơn hàng!");
   const notifyCancel = () => toast.success("Đã hủy đơn hàng!");
 
   const handleChange = (event, newValue) => {

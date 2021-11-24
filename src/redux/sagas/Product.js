@@ -4,6 +4,7 @@ import {
   CATEGORY_BY_BRAND_REQUEST,
   CATEGORY_NAME_REQUEST,
   CREATE_PRODUCT_REQUEST,
+  FEEDBACK_PRODUCT_REQUEST,
   IMAGE_REMOVE_REQUEST,
   IMAGE_UPLOAD_REQUEST,
   PRODUCT_BY_BRAND_REQUEST,
@@ -32,6 +33,8 @@ import {
   createProductFail,
   getAllCategorySuccess,
   getAllCategoryFail,
+  feedbackProductSuccess,
+  feedbackProductFail,
 } from "../actions/Product";
 import productService from "../../services/ProductService";
 
@@ -185,6 +188,27 @@ export function* createProduct() {
   );
 }
 
+export function* feedbackProduct() {
+  yield takeEvery(
+    FEEDBACK_PRODUCT_REQUEST,
+    function* ({ productId, orderDetailId, content, image, star }) {
+      console.log(productId, orderDetailId, content, image, star);
+      try {
+        const product = yield call(productService.feedbackProduct, {
+          productId,
+          orderDetailId,
+          content,
+          image,
+          star,
+        });
+        yield put(feedbackProductSuccess(product.data));
+      } catch (err) {
+        yield put(feedbackProductFail(err.response && err.response.data));
+      }
+    }
+  );
+}
+
 export default function* rootSaga() {
   yield all([
     fork(fetchProductList),
@@ -197,5 +221,6 @@ export default function* rootSaga() {
     fork(imageRemove),
     fork(createProduct),
     fork(fetchAllCategory),
+    fork(feedbackProduct),
   ]);
 }

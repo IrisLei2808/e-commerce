@@ -54,7 +54,7 @@ const CompleteDelivery = (props) => {
   );
 };
 
-const mapStateToProps = ({ order }) => {
+const mapStateToProps = ({ order, product }) => {
   return {
     purchase: order && order.completeDelivery,
     purchaseCount: order && order.countCompleteDelivery,

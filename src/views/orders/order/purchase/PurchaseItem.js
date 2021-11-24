@@ -182,6 +182,7 @@ const WaitingConfirm = ({ item, status }) => {
           handleOpenModal={handleOpenModal}
           handleCloseModal={handleCloseModal}
           open={open}
+          item={item}
         />
       </ListGroup.Item>
     </>

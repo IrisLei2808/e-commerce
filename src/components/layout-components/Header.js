@@ -46,15 +46,13 @@ const Header = (props) => {
     getProfile(own && own.token);
   }, []);
 
+  const handleLogout = () => {
+    signOut();
+    history.push("/login");
+  };
+
   return (
     <header>
-      {/* <img
-        class="image"
-        src="//icms-image.slatic.net/images/ims-web/26e000f2-824d-4717-b539-f7bdce8224ef.jpg"
-        alt="10.7"
-        data-spm-anchor-id="a2o4n.home.0.i0.68b4e1826jx3lr"
-        style={{ height: "94px", width: "100%", cursor: "pointer" }}
-      /> */}
       <Navbar
         style={{ background: "linear-gradient(to right, #525252, #3d72b4)" }}
         variant="dark"
@@ -127,7 +125,7 @@ const Header = (props) => {
                       </NavDropdown.Item>
                     </LinkContainer>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item onClick={signOut}>
+                    <NavDropdown.Item onClick={handleLogout}>
                       <i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất
                     </NavDropdown.Item>
                   </NavDropdown>

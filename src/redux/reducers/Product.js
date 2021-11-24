@@ -11,6 +11,9 @@ import {
   CREATE_PRODUCT_FAIL,
   CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
+  FEEDBACK_PRODUCT_FAIL,
+  FEEDBACK_PRODUCT_REQUEST,
+  FEEDBACK_PRODUCT_SUCCESS,
   IMAGE_REMOVE_FAIL,
   IMAGE_REMOVE_REQUEST,
   IMAGE_REMOVE_SUCCESS,
@@ -232,6 +235,26 @@ const product = (state = initState, action) => {
         type: action.type,
       };
     case CREATE_PRODUCT_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+        type: action.type,
+      };
+    case FEEDBACK_PRODUCT_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case FEEDBACK_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        newProductId: action.product,
+        type: action.type,
+      };
+    case FEEDBACK_PRODUCT_FAIL:
       return {
         ...state,
         loading: false,

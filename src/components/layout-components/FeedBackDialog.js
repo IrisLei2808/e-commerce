@@ -8,7 +8,6 @@ import Rating from "@material-ui/lab/Rating";
 import React, { useEffect, useState } from "react";
 import { Col, Form, Image, Row } from "react-bootstrap";
 import { connect } from "react-redux";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FileUpload from "../../components/layout-components/FileUpload";
 import {
@@ -17,6 +16,7 @@ import {
   resetProductType,
 } from "../../redux/actions/Product";
 import {
+  FEEDBACK_PRODUCT_FAIL,
   FEEDBACK_PRODUCT_SUCCESS,
   IMAGE_REMOVE_SUCCESS,
 } from "../../redux/constants/Product";
@@ -36,7 +36,7 @@ const FeedBackDialog = (props) => {
   const [productId, setProductId] = useState();
   const [content, setContent] = useState();
   const [star, setStar] = useState();
-  const notify = () => toast.success("Đã gửi đánh giá!");
+  const own = JSON.parse(localStorage.getItem("userInfo"));
 
   const openInNewTab = (url) => {
     const newWindow = window.open(url, "_blank", "noopener,noreferrer");
@@ -52,6 +52,7 @@ const FeedBackDialog = (props) => {
     cloudinaryId,
     feedbackProduct,
     item,
+    notify,
   } = props;
 
   function handleSubmit(event) {
@@ -61,7 +62,8 @@ const FeedBackDialog = (props) => {
       item && item.idOrderDetail,
       content,
       image,
-      star
+      star,
+      own && own.token
     );
   }
 
@@ -74,7 +76,9 @@ const FeedBackDialog = (props) => {
         setImage(filteredImages);
         break;
       case FEEDBACK_PRODUCT_SUCCESS:
-        notify();
+        handleCloseModal();
+        break;
+      case FEEDBACK_PRODUCT_FAIL:
         handleCloseModal();
         break;
       default:
@@ -127,9 +131,9 @@ const FeedBackDialog = (props) => {
             <FileUpload image={image} setImage={setImage} />
           </Row>
           {image && image.length > 0 && (
-            <Row className="d-flex align-items-center py-3">
+            <Row className="d-flex align-items-center py-3 w-100">
               {image.map((item, index) => (
-                <Col sm={12} md={8} lg={4} xl={4}>
+                <Col sm={12} md={8} lg={4} xl={3}>
                   <Badge
                     color="secondary"
                     badgeContent={<i class="fas fa-times"></i>}

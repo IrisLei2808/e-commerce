@@ -11,7 +11,9 @@ import {
   CREATE_PRODUCT_FAIL,
   CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
+  FEEDBACK_PRODUCT_FAIL,
   FEEDBACK_PRODUCT_REQUEST,
+  FEEDBACK_PRODUCT_SUCCESS,
   IMAGE_REMOVE_FAIL,
   IMAGE_REMOVE_REQUEST,
   IMAGE_REMOVE_SUCCESS,
@@ -98,7 +100,8 @@ export const feedbackProduct = (
   orderDetailId,
   content,
   image,
-  star
+  star,
+  token
 ) => {
   return {
     type: FEEDBACK_PRODUCT_REQUEST,
@@ -107,19 +110,20 @@ export const feedbackProduct = (
     content,
     image,
     star,
+    token,
   };
 };
 
 export const feedbackProductSuccess = (product) => {
   return {
-    type: CREATE_PRODUCT_SUCCESS,
+    type: FEEDBACK_PRODUCT_SUCCESS,
     product,
   };
 };
 
 export const feedbackProductFail = (error) => {
   return {
-    type: CREATE_PRODUCT_FAIL,
+    type: FEEDBACK_PRODUCT_FAIL,
     error,
   };
 };

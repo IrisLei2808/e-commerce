@@ -11,11 +11,14 @@ productService.createProduct = function (data) {
   });
 };
 
-productService.feedbackProduct = function (data) {
+productService.feedbackProduct = function (data, jwtToken) {
   return axios({
     method: "post",
     url: `${API_ENDPOINT}/api/users/feedback`,
     data,
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+    },
   });
 };
 

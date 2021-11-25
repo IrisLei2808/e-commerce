@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WaitingConfirm = ({ item, status }) => {
+const WaitingConfirm = ({ item, status, notify }) => {
   const [open, setOpen] = useState(false);
 
   const handleOpenModal = () => {
@@ -183,6 +183,7 @@ const WaitingConfirm = ({ item, status }) => {
           handleCloseModal={handleCloseModal}
           open={open}
           item={item}
+          notify={notify}
         />
       </ListGroup.Item>
     </>

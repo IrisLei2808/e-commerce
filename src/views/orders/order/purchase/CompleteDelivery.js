@@ -9,10 +9,24 @@ import {
 } from "../../../../redux/actions/Order";
 import NoOrderScreen from "../NoOrderScreen";
 import PurchaseItem from "./PurchaseItem";
+import { toast, ToastContainer } from "react-toastify";
+import {
+  FEEDBACK_PRODUCT_FAIL,
+  FEEDBACK_PRODUCT_SUCCESS,
+} from "../../../../redux/constants/Product";
 
 const CompleteDelivery = (props) => {
-  const { completeDelivery, purchase, countCompleteDelivery, purchaseCount } =
-    props;
+  const {
+    completeDelivery,
+    purchase,
+    countCompleteDelivery,
+    purchaseCount,
+    type,
+  } = props;
+
+  const notify = () => toast.success("Gửi đánh giá thành công!");
+  const notifyFail = () =>
+    toast.error("Không thể gửi đánh giá hoặc bạn đã đánh giá sản phẩm này!");
 
   const own = JSON.parse(localStorage.getItem("userInfo"));
   const [limit, setLimit] = useState(5);
@@ -29,13 +43,31 @@ const CompleteDelivery = (props) => {
     countCompleteDelivery(own && own.id, COMPLETE_DELIVERY);
   }, []);
 
+  useEffect(() => {
+    switch (type) {
+      case FEEDBACK_PRODUCT_SUCCESS:
+        notify();
+        break;
+      case FEEDBACK_PRODUCT_FAIL:
+        notifyFail();
+        break;
+      default:
+        break;
+    }
+  }, [type]);
+
   return purchase && purchase.length > 0 ? (
     <Row>
       <Col>
         <ListGroup variant="flush">
           {purchase &&
             purchase.map((item) => (
-              <PurchaseItem key={item.idOrderDetail} item={item} status={4} />
+              <PurchaseItem
+                key={item.idOrderDetail}
+                item={item}
+                status={4}
+                notify={notify}
+              />
             ))}
         </ListGroup>
         <Paging
@@ -48,6 +80,7 @@ const CompleteDelivery = (props) => {
           type={COMPLETE_DELIVERY}
         />
       </Col>
+      <ToastContainer position="top-center" />
     </Row>
   ) : (
     <NoOrderScreen />
@@ -58,6 +91,7 @@ const mapStateToProps = ({ order, product }) => {
   return {
     purchase: order && order.completeDelivery,
     purchaseCount: order && order.countCompleteDelivery,
+    type: product.type,
   };
 };
 

@@ -191,16 +191,19 @@ export function* createProduct() {
 export function* feedbackProduct() {
   yield takeEvery(
     FEEDBACK_PRODUCT_REQUEST,
-    function* ({ productId, orderDetailId, content, image, star }) {
-      console.log(productId, orderDetailId, content, image, star);
+    function* ({ productId, orderDetailId, content, image, star, token }) {
       try {
-        const product = yield call(productService.feedbackProduct, {
-          productId,
-          orderDetailId,
-          content,
-          image,
-          star,
-        });
+        const product = yield call(
+          productService.feedbackProduct,
+          {
+            productId,
+            orderDetailId,
+            content,
+            image,
+            star,
+          },
+          token
+        );
         yield put(feedbackProductSuccess(product.data));
       } catch (err) {
         yield put(feedbackProductFail(err.response && err.response.data));

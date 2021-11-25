@@ -1,10 +1,29 @@
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useState } from "react";
-import { Col, Image, ListGroup, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { formatMoney } from "../../../../utils/formatText";
+import { Button, Col, Image, ListGroup, Row } from "react-bootstrap";
+import { connect } from "react-redux";
 import FeedBackDialog from "../../../../components/layout-components/FeedBackDialog";
+import OrderDialog from "../../../../components/shared-components/OrderDialog";
+import { cancelOrder } from "../../../../redux/actions/Order";
+import { formatMoney } from "../../../../utils/formatText";
+
+const LoadingButton = ({ title, loading, accept, handleClickOpen }) => {
+  return (
+    <div>
+      <Button
+        className="btn btn-primary px-3 py-2"
+        type="submit"
+        disabled={loading}
+        variant={accept ? "success" : "danger"}
+        onClick={handleClickOpen}
+      >
+        <i class="fas fa-times mr-2"></i>
+        {title}
+      </Button>
+    </div>
+  );
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,8 +42,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WaitingConfirm = ({ item, status, notify }) => {
+const WaitingConfirm = ({ item, status, notify, loading, cancelOrder }) => {
   const [open, setOpen] = useState(false);
+  const [denyOpen, setDenyOpen] = React.useState(false);
+
+  const handleDenyOpen = () => {
+    setDenyOpen(true);
+  };
+
+  const handleDenyClose = () => {
+    setDenyOpen(false);
+  };
+
+  const handleDeny = () => {
+    cancelOrder(item && item.idOrderDetail);
+    setOpen(false);
+  };
 
   const handleOpenModal = () => {
     setOpen(true);
@@ -162,6 +195,14 @@ const WaitingConfirm = ({ item, status, notify }) => {
                   </a>
                 </Col>
               )}
+              {status === 1 && (
+                <Col>
+                  <LoadingButton
+                    title="Hủy đơn hàng"
+                    handleClickOpen={handleDenyOpen}
+                  />
+                </Col>
+              )}
               <div
                 className="d-flex justify-content-center align-items-center"
                 style={{ marginLeft: "auto" }}
@@ -186,8 +227,25 @@ const WaitingConfirm = ({ item, status, notify }) => {
           notify={notify}
         />
       </ListGroup.Item>
+      <OrderDialog
+        open={denyOpen}
+        handleClose={handleDenyClose}
+        handleDeny={handleDeny}
+        loading={loading}
+        accept={false}
+      />
     </>
   );
 };
 
-export default WaitingConfirm;
+const mapStateToProps = ({ order }) => {
+  return {
+    loading: order && order.loading,
+  };
+};
+
+const mapDispatchToProps = {
+  cancelOrder,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WaitingConfirm);

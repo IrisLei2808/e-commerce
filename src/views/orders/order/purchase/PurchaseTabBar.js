@@ -4,8 +4,17 @@ import { makeStyles } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Typography from "@material-ui/core/Typography";
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { WAITING_FOR_CONFIRM } from "../../../../configs/Constants";
+import {
+  countPurchase,
+  purchaseRequest,
+  resetOrderType,
+} from "../../../../redux/actions/Order";
+import { CANCEL_ORDER_SUCCESS } from "../../../../redux/constants/Order";
 import Cancelled from "./Cancelled";
 import CompleteDelivery from "./CompleteDelivery";
 import Delivery from "./Delivery";
@@ -52,15 +61,34 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ScrollableTabsButtonAuto = (props) => {
-  const { deliveryRequest, delivery, deliveryInfoRequest, deliveryInfo } =
-    props;
+  const { type, purchaseRequest, countPurchase } = props;
   const own = JSON.parse(localStorage.getItem("userInfo"));
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
+  const notifyCancel = () => toast.success("Đã hủy đơn hàng!");
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    switch (type) {
+      case CANCEL_ORDER_SUCCESS:
+        purchaseRequest(own && own.id, WAITING_FOR_CONFIRM, {
+          page: 1,
+          limit: 5,
+        });
+        countPurchase(own && own.id, WAITING_FOR_CONFIRM);
+        notifyCancel();
+        break;
+      default:
+        break;
+    }
+    return function cleanup() {
+      resetOrderType();
+    };
+  }, [type]);
 
   return (
     <div className={classes.root}>
@@ -116,15 +144,22 @@ const ScrollableTabsButtonAuto = (props) => {
       <TabPanel value={value} index={7}>
         <Return />
       </TabPanel>
+      <ToastContainer position="top-center" />
     </div>
   );
 };
 
 const mapStateToProps = ({ order }) => {
-  return {};
+  return {
+    type: order && order.type,
+  };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  resetOrderType,
+  purchaseRequest,
+  countPurchase,
+};
 
 export default connect(
   mapStateToProps,

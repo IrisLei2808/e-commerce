@@ -14,6 +14,9 @@ import {
   FEEDBACK_PRODUCT_FAIL,
   FEEDBACK_PRODUCT_REQUEST,
   FEEDBACK_PRODUCT_SUCCESS,
+  FEED_BACK_FAIL,
+  FEED_BACK_REQUEST,
+  FEED_BACK_SUCCESS,
   IMAGE_REMOVE_FAIL,
   IMAGE_REMOVE_REQUEST,
   IMAGE_REMOVE_SUCCESS,
@@ -33,11 +36,11 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
   RESET_PRODUCT_TYPE,
-} from "../constants/Product";
+} from '../constants/Product';
 
 const initState = {
   loading: false,
-  message: "",
+  message: '',
   showMessage: false,
 };
 
@@ -153,6 +156,25 @@ const product = (state = initState, action) => {
         type: action.type,
       };
     case PRODUCT_DETAILS_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.message,
+      };
+    case FEED_BACK_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        type: action.type,
+      };
+    case FEED_BACK_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        feedback: action.productDetails,
+        type: action.type,
+      };
+    case FEED_BACK_FAIL:
       return {
         ...state,
         isLoading: false,

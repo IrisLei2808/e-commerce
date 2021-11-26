@@ -1,17 +1,18 @@
-import { all, takeEvery, put, fork, call } from "redux-saga/effects";
+import { all, takeEvery, put, fork, call } from 'redux-saga/effects';
 import {
   ALL_CATEGORY_REQUEST,
   CATEGORY_BY_BRAND_REQUEST,
   CATEGORY_NAME_REQUEST,
   CREATE_PRODUCT_REQUEST,
   FEEDBACK_PRODUCT_REQUEST,
+  FEED_BACK_REQUEST,
   IMAGE_REMOVE_REQUEST,
   IMAGE_UPLOAD_REQUEST,
   PRODUCT_BY_BRAND_REQUEST,
   PRODUCT_BY_CATEGORY_REQUEST,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_LIST_REQUEST,
-} from "../constants/Product";
+} from '../constants/Product';
 import {
   fetchProductListSuccess,
   fetchProductListFailed,
@@ -35,8 +36,10 @@ import {
   getAllCategoryFail,
   feedbackProductSuccess,
   feedbackProductFail,
-} from "../actions/Product";
-import productService from "../../services/ProductService";
+  getFeedbackFailed,
+  getFeedbackSuccess,
+} from '../actions/Product';
+import productService from '../../services/ProductService';
 
 export function* fetchProductList() {
   yield takeEvery(PRODUCT_LIST_REQUEST, function* () {
@@ -113,6 +116,25 @@ export function* fetchProductDetails() {
       }
     } catch (error) {
       yield put(fetchProductDetailsFailed(error));
+    }
+  });
+}
+
+export function* getFeedback() {
+  yield takeEvery(FEED_BACK_REQUEST, function* (params) {
+    const { productId } = params;
+    try {
+      if (productId !== undefined) {
+        const productDetails = yield call(
+          productService.getFeedback,
+          productId
+        );
+        yield put(getFeedbackSuccess(productDetails));
+      } else {
+        yield put(getFeedbackFailed);
+      }
+    } catch (error) {
+      yield put(getFeedbackFailed(error));
     }
   });
 }
@@ -225,5 +247,6 @@ export default function* rootSaga() {
     fork(createProduct),
     fork(fetchAllCategory),
     fork(feedbackProduct),
+    fork(getFeedback),
   ]);
 }

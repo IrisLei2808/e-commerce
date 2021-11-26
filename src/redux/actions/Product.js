@@ -33,7 +33,10 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
   RESET_PRODUCT_TYPE,
-} from "../constants/Product";
+  FEED_BACK_REQUEST,
+  FEED_BACK_SUCCESS,
+  FEED_BACK_FAIL,
+} from '../constants/Product';
 
 export const fetchProductList = (params) => {
   return {
@@ -224,6 +227,26 @@ export const fetchProductDetailsSuccess = (product) => {
 export const fetchProductDetailsFailed = (message) => {
   return {
     type: PRODUCT_DETAILS_FAIL,
+    message,
+  };
+};
+
+export const getFeedback = (productId) => {
+  return {
+    type: FEED_BACK_REQUEST,
+    productId,
+  };
+};
+export const getFeedbackSuccess = (product) => {
+  return {
+    type: FEED_BACK_SUCCESS,
+    productDetails: product && product.data,
+  };
+};
+
+export const getFeedbackFailed = (message) => {
+  return {
+    type: FEED_BACK_FAIL,
     message,
   };
 };

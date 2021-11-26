@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import FormContainer from "../../components/layout-components/FormContainer";
-import Message from "../../components/shared-components/ErrorMessage";
-import Loader from "../../components/shared-components/Spinner";
-import { resetAuthType, signIn } from "../../redux/actions/Auth";
-import { USER_LOGIN_SUCCESS } from "../../redux/constants/Auth";
+import React, { useEffect, useState } from 'react';
+import { Button, Col, Form, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import FormContainer from '../../components/layout-components/FormContainer';
+import Message from '../../components/shared-components/ErrorMessage';
+import Loader from '../../components/shared-components/Spinner';
+import { resetAuthType, signIn, getProfile } from '../../redux/actions/Auth';
+import { USER_LOGIN_SUCCESS } from '../../redux/constants/Auth';
 
 const LoginScreen = (props) => {
   const {
@@ -18,11 +18,12 @@ const LoginScreen = (props) => {
     user,
     location,
     history,
+    getProfile,
   } = props;
 
-  const redirect = location.search ? location.search.split("=")[1] : "/";
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const redirect = location.search ? location.search.split('=')[1] : '/';
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -32,6 +33,7 @@ const LoginScreen = (props) => {
   useEffect(() => {
     switch (type) {
       case USER_LOGIN_SUCCESS:
+        getProfile(user && user.token);
         history.push(redirect);
         break;
     }
@@ -97,6 +99,7 @@ const mapStateToProps = ({ auth }) => {
 const mapDispatchToProps = {
   signIn,
   resetAuthType,
+  getProfile,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

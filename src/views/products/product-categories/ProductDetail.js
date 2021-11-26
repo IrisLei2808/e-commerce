@@ -205,7 +205,7 @@ const ProductDetail = (props) => {
                 }}
               >
                 {feedback && feedback.AVGStar > 0 ? (
-                  <span className={styles.rating}>
+                  <span style={{ color: 'orangered', fontSize: 17 }}>
                     <Rating
                       value={feedback && feedback.AVGStar}
                       text={`${feedback && feedback.AVGStar} reviews`}

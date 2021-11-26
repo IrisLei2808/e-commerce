@@ -11,7 +11,6 @@
 .productDetailName {
   color: orangered;
   font-size: 30px;
-  margin-left: 40px;
 }
 .description {
   font-size: 20px;
@@ -67,18 +66,18 @@ a:hover {
 .rating {
   color: #1a9cb7;
   font-size: 17px;
-  margin-left: 30px;
 }
 .price {
   color: #f57224;
   font-size: 30px;
 }
 .exchange {
-  color: #1a9cb7;
-  font-size: 15px;
+  color: #2ecc40;
+  font-size: 17px;
+  font-weight: bold;
+  margin-left: auto;
 }
 .cartbtn {
-  margin-left: 40px;
   width: 180px;
   height: 50px;
 }
@@ -100,7 +99,7 @@ a:hover {
 .comments_title {
   font-size: 16px;
   color: #262626;
-  font-family: "Conv_helveticaneuecyr-bold";
+  font-family: 'Conv_helveticaneuecyr-bold';
 }
 
 .be_img_comment {
@@ -126,7 +125,7 @@ a:hover {
 
 .be_comment_name {
   font-size: 13px;
-  font-family: "Conv_helveticaneuecyr-bold";
+  font-family: 'Conv_helveticaneuecyr-bold';
 }
 
 .be-comment-content a {

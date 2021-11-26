@@ -220,7 +220,7 @@ export const fetchProductDetails = (productId) => {
 export const fetchProductDetailsSuccess = (product) => {
   return {
     type: PRODUCT_DETAILS_SUCCESS,
-    productDetails: product.data && product.data[0],
+    productDetails: product && product.data,
   };
 };
 

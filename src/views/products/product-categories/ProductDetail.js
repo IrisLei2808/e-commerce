@@ -143,6 +143,9 @@ const ProductDetail = (props) => {
         <div
           style={{
             padding: 20,
+            background: 'white',
+            boxShadow:
+              'rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px',
           }}
         >
           <Row>
@@ -157,6 +160,40 @@ const ProductDetail = (props) => {
               <h2 className={styles.productDetailName}>
                 {product && product.name}
               </h2>
+              <Row
+                style={{
+                  justifyContent: 'center',
+                  padding: 10,
+                }}
+              >
+                <span className="d-flex align-items-center">
+                  <Avatar
+                    alt="Remy Sharp"
+                    src={`${product && product.avatar}`}
+                    sx={{ width: 24, height: 24 }}
+                    className="mr-2"
+                  />
+                </span>
+                <span
+                  className={styles.rating}
+                  style={{ display: 'flex', flexDirection: 'column' }}
+                >
+                  <span style={{ fontWeight: 'bold', color: '#001f3f' }}>
+                    {product && product.fullName}
+                  </span>
+                  <span style={{ cursor: 'pointer' }}>
+                    <i class="fas fa-store mr-2"></i>Xem shop
+                  </span>
+                </span>
+                {!isOwn && (
+                  <span
+                    className={styles.rating}
+                    style={{ marginLeft: 'auto' }}
+                  >
+                    {getStatus(product && product.status)}
+                  </span>
+                )}
+              </Row>
               <p className={styles.description}>
                 {product && product.description}
               </p>
@@ -177,57 +214,47 @@ const ProductDetail = (props) => {
                 ) : (
                   <span className={styles.rating}>Chưa có đánh giá nào</span>
                 )}
-
-                {/* <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="23"
-                  height="23"
-                  fill="currentColor"
-                  class="bi bi-heart"
-                  viewBox="0 0 16 16"
-                  className={styles.heart}
-                >
-                  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
-                </svg> */}
               </div>
               <Row
                 style={{
                   display: 'flex',
                   margin: '20px 0px',
                   alignItems: 'center',
-                  justifyContent: 'center',
+                  justifyContent: 'space-between',
                 }}
               >
-                <Col>
+                <div>
                   <span className={styles.price}>
                     {formatMoney(product && product.price)}
                   </span>
-                </Col>
-                <Col>
+                </div>
+                <div>
                   {!isOwn && (
                     <span className={styles.exchange}>
-                      {getStatus(product && product.status)}
+                      Số lượng sản phẩm: {product && product.quantity}
                     </span>
                   )}
-                </Col>
+                </div>
               </Row>
               {!isOwn && (
-                <div className="mt-3">
+                <div>
                   {isBuy && (
                     <Button
                       className={styles.cartbtn}
                       variant="danger"
                       onClick={addToCartHandler}
+                      disabled={product && product.quantity <= 0}
                     >
-                      Thêm vào giỏ hàng
+                      <i class="fas fa-shopping-cart mr-2"></i>Thêm vào giỏ hàng
                     </Button>
                   )}
                   {isExchange && (
                     <Button
                       className={styles.exchangbtn}
                       style={{ marginLeft: isBuy ? 20 : 40 }}
+                      disabled={product && product.quantity <= 0}
                     >
-                      Trao đổi
+                      <i class="fas fa-exchange-alt mr-2"></i>Trao đổi
                     </Button>
                   )}
                 </div>
@@ -270,73 +297,29 @@ const ProductDetail = (props) => {
                             {item.content}
                           </Typography>
                           <Row style={{ margin: 'auto' }}>
-                            <Col
-                              sm={12}
-                              md={4}
-                              lg={2}
-                              xl={2}
-                              className="mt-3 mb-2 mr-3"
-                              style={{ padding: 0 }}
-                            >
-                              <Image
-                                src={
-                                  'https://res.cloudinary.com/fpt-company/image/upload/v1637812747/yknyc7huieoobn4qustt.jpg'
-                                }
-                                style={{
-                                  width: '100%',
-                                  height: '100%',
-                                  cursor: 'pointer',
-                                  padding: 0,
-                                }}
-                                //onClick={() => openInNewTab(item.url)}
-                              />
-                            </Col>
-                            <Col
-                              sm={12}
-                              md={4}
-                              lg={2}
-                              xl={2}
-                              className="mt-3 mb-2 mr-3"
-                              style={{ padding: 0 }}
-                            >
-                              <Image
-                                src={
-                                  'https://res.cloudinary.com/fpt-company/image/upload/v1637812747/yknyc7huieoobn4qustt.jpg'
-                                }
-                                style={{
-                                  width: '100%',
-                                  height: '100%',
-                                  cursor: 'pointer',
-                                  padding: 0,
-                                }}
-                                onClick={() =>
-                                  openInNewTab(
-                                    'https://res.cloudinary.com/fpt-company/image/upload/v1637812747/yknyc7huieoobn4qustt.jpg'
-                                  )
-                                }
-                              />
-                            </Col>
-                            <Col
-                              sm={12}
-                              md={4}
-                              lg={2}
-                              xl={2}
-                              className="mt-3 mb-2 mr-3"
-                              style={{ padding: 0 }}
-                            >
-                              <Image
-                                src={
-                                  'https://res.cloudinary.com/fpt-company/image/upload/v1637812747/yknyc7huieoobn4qustt.jpg'
-                                }
-                                style={{
-                                  width: '100%',
-                                  height: '100%',
-                                  cursor: 'pointer',
-                                  padding: 0,
-                                }}
-                                //onClick={() => openInNewTab(item.url)}
-                              />
-                            </Col>
+                            {item.image &&
+                              item.image.length > 0 &&
+                              item.image.map((img) => (
+                                <Col
+                                  sm={12}
+                                  md={4}
+                                  lg={2}
+                                  xl={2}
+                                  className="mt-3 mb-2 mr-3"
+                                  style={{ padding: 0 }}
+                                >
+                                  <Image
+                                    src={`${img.address}`}
+                                    style={{
+                                      width: '100%',
+                                      height: '100%',
+                                      cursor: 'pointer',
+                                      padding: 0,
+                                    }}
+                                    onClick={() => openInNewTab(img.address)}
+                                  />
+                                </Col>
+                              ))}
                           </Row>
                         </span>
                       }

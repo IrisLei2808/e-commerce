@@ -62,7 +62,9 @@ const ProductDetail = (props) => {
     resetProductType,
   } = props;
 
-  const own = JSON.parse(localStorage.getItem('userInfo'));
+  const own = JSON.parse(localStorage.getItem('userInfo'))
+    ? JSON.parse(localStorage.getItem('userInfo'))
+    : 0;
   const isOwn = product && product.own === own.id;
   const isExchange =
     (product && product.status === 'EXCHANGE') ||

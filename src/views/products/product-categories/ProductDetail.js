@@ -85,6 +85,14 @@ const ProductDetail = (props) => {
     history.push(`/cart/${match.params.id}?qty=1`);
   };
 
+  const exchangeHandler = () => {
+    if (!own) {
+      history.push('/login?redirect=exchange');
+    } else {
+      history.push(`/exchange/${match.params.id}?qty=1`);
+    }
+  };
+
   const getStatus = (status) => {
     switch (status) {
       case 'EXCHANGE':
@@ -253,8 +261,9 @@ const ProductDetail = (props) => {
                   {isExchange && (
                     <Button
                       className={styles.exchangbtn}
-                      style={{ marginLeft: isBuy ? 20 : 40 }}
+                      style={{ marginLeft: isBuy ? 20 : 0 }}
                       disabled={product && product.quantity <= 0}
+                      onClick={exchangeHandler}
                     >
                       <i class="fas fa-exchange-alt mr-2"></i>Trao đổi
                     </Button>

@@ -12,6 +12,7 @@ import {
   PRODUCT_BY_CATEGORY_REQUEST,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_LIST_REQUEST,
+  PRODUCT_OWN_REQUEST,
 } from '../constants/Product';
 import {
   fetchProductListSuccess,
@@ -38,6 +39,8 @@ import {
   feedbackProductFail,
   getFeedbackFailed,
   getFeedbackSuccess,
+  fetchProductOwnSuccess,
+  fetchProductOwnFailed,
 } from '../actions/Product';
 import productService from '../../services/ProductService';
 
@@ -48,6 +51,17 @@ export function* fetchProductList() {
       yield put(fetchProductListSuccess(product));
     } catch (error) {
       yield put(fetchProductListFailed(error));
+    }
+  });
+}
+
+export function* fetchProductOwn() {
+  yield takeEvery(PRODUCT_OWN_REQUEST, function* ({ params }) {
+    try {
+      const product = yield call(productService.getProductOwn, params);
+      yield put(fetchProductOwnSuccess(product));
+    } catch (error) {
+      yield put(fetchProductOwnFailed(error));
     }
   });
 }
@@ -248,5 +262,6 @@ export default function* rootSaga() {
     fork(fetchAllCategory),
     fork(feedbackProduct),
     fork(getFeedback),
+    fork(fetchProductOwn),
   ]);
 }

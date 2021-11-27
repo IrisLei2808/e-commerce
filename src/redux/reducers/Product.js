@@ -35,6 +35,9 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_OWN_FAIL,
+  PRODUCT_OWN_REQUEST,
+  PRODUCT_OWN_SUCCESS,
   RESET_PRODUCT_TYPE,
 } from '../constants/Product';
 
@@ -60,6 +63,25 @@ const product = (state = initState, action) => {
         type: action.type,
       };
     case PRODUCT_LIST_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.message,
+      };
+    case PRODUCT_OWN_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        type: action.type,
+      };
+    case PRODUCT_OWN_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        listOwn: action.productList,
+        type: action.type,
+      };
+    case PRODUCT_OWN_FAIL:
       return {
         ...state,
         isLoading: false,

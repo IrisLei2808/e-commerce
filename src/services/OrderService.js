@@ -1,11 +1,11 @@
-import axios from "axios";
-import { API_ENDPOINT, LOCAL_API_ENDPOINT } from "../configs/AppConfig";
+import axios from 'axios';
+import { API_ENDPOINT, LOCAL_API_ENDPOINT } from '../configs/AppConfig';
 
 const orderService = {};
 
 orderService.order = function (data, jwtToken) {
   return axios({
-    method: "post",
+    method: 'post',
     url: `${API_ENDPOINT}/api/order`,
     data,
     headers: {
@@ -16,7 +16,7 @@ orderService.order = function (data, jwtToken) {
 
 orderService.purchase = function (data, params) {
   return axios({
-    method: "post",
+    method: 'post',
     url: `${API_ENDPOINT}/api/order/purchase`,
     data,
     params,
@@ -25,7 +25,7 @@ orderService.purchase = function (data, params) {
 
 orderService.countPurchase = function (data, params) {
   return axios({
-    method: "post",
+    method: 'post',
     url: `${API_ENDPOINT}/api/order/countPurchase`,
     data,
   });
@@ -33,7 +33,7 @@ orderService.countPurchase = function (data, params) {
 
 orderService.sell = function (data, params) {
   return axios({
-    method: "post",
+    method: 'post',
     url: `${API_ENDPOINT}/api/order/sell`,
     data,
     params,
@@ -42,7 +42,7 @@ orderService.sell = function (data, params) {
 
 orderService.countSell = function (data, params) {
   return axios({
-    method: "post",
+    method: 'post',
     url: `${API_ENDPOINT}/api/order/countSell`,
     data,
   });
@@ -50,7 +50,7 @@ orderService.countSell = function (data, params) {
 
 orderService.accept = function (data) {
   return axios({
-    method: "post",
+    method: 'post',
     url: `${API_ENDPOINT}/api/orderDetail/acceptOrderDetail`,
     data,
   });
@@ -58,9 +58,23 @@ orderService.accept = function (data) {
 
 orderService.cancel = function (data) {
   return axios({
-    method: "post",
+    method: 'post',
     url: `${API_ENDPOINT}/api/orderDetail/cancelOrderDetail`,
     data,
+  });
+};
+
+orderService.getWantChangePurchase = function (userId) {
+  return axios({
+    method: 'post',
+    url: `${API_ENDPOINT}/api/exchange/listRequestWantChangePurchase/${userId}`,
+  });
+};
+
+orderService.getWantChangeSell = function (userId) {
+  return axios({
+    method: 'post',
+    url: `${API_ENDPOINT}/api/exchange/listRequestWantChangeSeller/${userId}`,
   });
 };
 

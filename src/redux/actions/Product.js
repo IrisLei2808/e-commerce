@@ -36,6 +36,9 @@ import {
   FEED_BACK_REQUEST,
   FEED_BACK_SUCCESS,
   FEED_BACK_FAIL,
+  PRODUCT_OWN_REQUEST,
+  PRODUCT_OWN_SUCCESS,
+  PRODUCT_OWN_FAIL,
 } from '../constants/Product';
 
 export const fetchProductList = (params) => {
@@ -55,6 +58,27 @@ export const fetchProductListSuccess = (product) => {
 export const fetchProductListFailed = (message) => {
   return {
     type: PRODUCT_LIST_FAIL,
+    message,
+  };
+};
+
+export const fetchProductOwn = (params) => {
+  return {
+    type: PRODUCT_OWN_REQUEST,
+    params,
+  };
+};
+
+export const fetchProductOwnSuccess = (product) => {
+  return {
+    type: PRODUCT_OWN_SUCCESS,
+    productList: product.data,
+  };
+};
+
+export const fetchProductOwnFailed = (message) => {
+  return {
+    type: PRODUCT_OWN_FAIL,
     message,
   };
 };

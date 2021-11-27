@@ -1,26 +1,27 @@
-import AppBar from "@material-ui/core/AppBar";
-import Box from "@material-ui/core/Box";
-import { makeStyles } from "@material-ui/core/styles";
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
-import Typography from "@material-ui/core/Typography";
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { WAITING_FOR_CONFIRM } from "../../../../configs/Constants";
+import AppBar from '@material-ui/core/AppBar';
+import Box from '@material-ui/core/Box';
+import { makeStyles } from '@material-ui/core/styles';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Typography from '@material-ui/core/Typography';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { WAITING_FOR_CONFIRM } from '../../../../configs/Constants';
 import {
   countPurchase,
   purchaseRequest,
   resetOrderType,
-} from "../../../../redux/actions/Order";
-import { CANCEL_ORDER_SUCCESS } from "../../../../redux/constants/Order";
-import Cancelled from "./Cancelled";
-import CompleteDelivery from "./CompleteDelivery";
-import Delivery from "./Delivery";
-import Return from "./Return";
-import WaitingConfirm from "./WaitingConfirm";
-import WaitingDelivery from "./WaitingDelivery";
+} from '../../../../redux/actions/Order';
+import { CANCEL_ORDER_SUCCESS } from '../../../../redux/constants/Order';
+import Cancelled from './Cancelled';
+import CompleteDelivery from './CompleteDelivery';
+import Delivery from './Delivery';
+import Return from './Return';
+import WaitingConfirm from './WaitingConfirm';
+import WaitingDelivery from './WaitingDelivery';
+import Exchange from './Exchange';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -45,28 +46,28 @@ function TabPanel(props) {
 function a11yProps(index) {
   return {
     id: `scrollable-auto-tab-${index}`,
-    "aria-controls": `scrollable-auto-tabpanel-${index}`,
+    'aria-controls': `scrollable-auto-tabpanel-${index}`,
   };
 }
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    width: "100%",
+    width: '100%',
     backgroundColor: theme.palette.background.paper,
   },
   label: {
-    textTransform: "none",
+    textTransform: 'none',
   },
 }));
 
 const ScrollableTabsButtonAuto = (props) => {
   const { type, purchaseRequest, countPurchase } = props;
-  const own = JSON.parse(localStorage.getItem("userInfo"));
+  const own = JSON.parse(localStorage.getItem('userInfo'));
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
-  const notifyCancel = () => toast.success("Đã hủy đơn hàng!");
+  const notifyCancel = () => toast.success('Đã hủy đơn hàng!');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -109,22 +110,25 @@ const ScrollableTabsButtonAuto = (props) => {
           />
           <Tab
             label="Yêu cầu trao đổi"
-            {...a11yProps(7)}
+            {...a11yProps(1)}
             className={classes.label}
           />
           <Tab
             label="Chờ lấy hàng"
-            {...a11yProps(1)}
+            {...a11yProps(2)}
             className={classes.label}
           />
-          <Tab label="Đang giao" {...a11yProps(2)} className={classes.label} />
-          <Tab label="Đã giao" {...a11yProps(3)} className={classes.label} />
-          <Tab label="Đã hủy" {...a11yProps(4)} className={classes.label} />
-          <Tab label="Trả hàng" {...a11yProps(5)} className={classes.label} />
+          <Tab label="Đang giao" {...a11yProps(3)} className={classes.label} />
+          <Tab label="Đã giao" {...a11yProps(4)} className={classes.label} />
+          <Tab label="Đã hủy" {...a11yProps(5)} className={classes.label} />
+          <Tab label="Trả hàng" {...a11yProps(6)} className={classes.label} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
         <WaitingConfirm />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <Exchange />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <WaitingDelivery />
@@ -139,9 +143,6 @@ const ScrollableTabsButtonAuto = (props) => {
         <Cancelled />
       </TabPanel>
       <TabPanel value={value} index={6}>
-        <Return />
-      </TabPanel>
-      <TabPanel value={value} index={7}>
         <Return />
       </TabPanel>
       <ToastContainer position="top-center" />

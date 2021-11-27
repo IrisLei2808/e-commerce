@@ -46,6 +46,16 @@ productService.getProduct = function (data) {
   });
 };
 
+productService.getProductOwn = function (jwtToken) {
+  return axios({
+    method: 'get',
+    url: `${API_ENDPOINT}/api/users/product`,
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+    },
+  });
+};
+
 productService.getAllCategory = function (data) {
   return axios({
     method: 'get',

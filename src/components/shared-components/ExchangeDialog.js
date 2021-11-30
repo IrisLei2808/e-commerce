@@ -1,17 +1,12 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const PlaceOrderModal = ({ show, handleClose, goToHomePage, message }) => {
+const ExchangeDialog = ({ show, setShow, handleClose, message }) => {
   return (
     <div>
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
+      <Modal show={show} backdrop="static" keyboard={false}>
         <Modal.Header closeButton>
-          <Modal.Title>Đặt hàng</Modal.Title>
+          <Modal.Title>Yêu cầu trao đổi</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ display: 'flex', alignItems: 'center' }}>
           {/* <i
@@ -22,10 +17,10 @@ const PlaceOrderModal = ({ show, handleClose, goToHomePage, message }) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleClose}>
-            Xem đơn mua hàng
-          </Button>
-          <Button variant="primary" onClick={goToHomePage}>
             Quay lại trang chủ
+          </Button>
+          <Button variant="primary" onClick={() => setShow(false)}>
+            OK
           </Button>
         </Modal.Footer>
       </Modal>
@@ -33,4 +28,4 @@ const PlaceOrderModal = ({ show, handleClose, goToHomePage, message }) => {
   );
 };
 
-export default PlaceOrderModal;
+export default ExchangeDialog;

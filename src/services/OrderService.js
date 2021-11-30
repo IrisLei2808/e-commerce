@@ -64,10 +64,11 @@ orderService.cancel = function (data) {
   });
 };
 
-orderService.getWantChangePurchase = function (userId) {
+orderService.getWantChangePurchase = function (userId, params) {
   return axios({
-    method: 'post',
+    method: 'get',
     url: `${API_ENDPOINT}/api/exchange/listRequestWantChangePurchase/${userId}`,
+    params,
   });
 };
 

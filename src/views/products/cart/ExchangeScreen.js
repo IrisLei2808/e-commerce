@@ -10,12 +10,39 @@ import {
   resetCartType,
 } from '../../../redux/actions/Cart';
 import {
+  exchangeRequest,
+  resetExchangeType,
+} from '../../../redux/actions/Exchange';
+import {
   fetchProductDetails,
   fetchProductOwn,
   resetProductType,
 } from '../../../redux/actions/Product';
-import { PRODUCT_DETAILS_SUCCESS } from '../../../redux/constants/Product';
+import { EXCHANGE_SUCCESS } from '../../../redux/constants/Exchange';
 import { formatMoney } from '../../../utils/formatText';
+import ExchangeDialog from '../../../components/shared-components/ExchangeDialog';
+import { PRODUCT_OWN_REQUEST } from '../../../redux/constants/Product';
+
+const LoadingButton = ({ title, loading, handleClickOpen, disabled }) => {
+  return (
+    <div>
+      <Button
+        className="btn btn-primary btn-block"
+        type="submit"
+        disabled={disabled || loading}
+        onClick={handleClickOpen}
+        style={{ padding: '10px 0px' }}
+      >
+        <span
+          className={loading ? 'spinner-border spinner-border-sm' : ''}
+          role="status"
+          aria-hidden="true"
+        ></span>
+        {title}
+      </Button>
+    </div>
+  );
+};
 
 const ExchangeScreen = (props) => {
   const [name, setName] = useState('Bạn chưa chọn sản phẩm nào');
@@ -23,23 +50,27 @@ const ExchangeScreen = (props) => {
   const [image, setImage] = useState();
   const [active, setActive] = useState();
   const [disabled, setDisabled] = useState(false);
+  const [idProduct, setIdProduct] = useState();
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState();
 
   let history = useHistory();
   const {
-    addToCart,
+    exchangeRequest,
     resetCartType,
     match,
     location,
-    cartItems,
     type,
-    productDetails,
     fetchProductDetails,
     resetProductType,
-    removeFromCart,
     fetchProductOwn,
     cartType,
     listOwn,
     loading,
+    exchangeLoading,
+    exchangeType,
+    exchangeMsg,
+    resetExchangeType,
   } = props;
   const defaultImage =
     'https://cdn.tgdd.vn/Products/Images/42/228744/iphone-12-pro-max-512gb-191020-021035-200x200.jpg';
@@ -50,12 +81,8 @@ const ExchangeScreen = (props) => {
     ? JSON.parse(localStorage.getItem('userInfo'))
     : [];
 
-  const checkoutHandler = () => {
-    if (!userInfo) {
-      history.push('/login?redirect=placeorder');
-    } else {
-      history.push('/placeorder');
-    }
+  const exchangeHandler = () => {
+    exchangeRequest(userInfo && userInfo.id, productId, idProduct);
   };
 
   const viewProductDetail = (id) => {
@@ -67,7 +94,13 @@ const ExchangeScreen = (props) => {
     setPrice(item.price);
     setImage(item.image);
     setActive(item.id);
+    setIdProduct(item.idProduct);
     setDisabled(true);
+  };
+
+  const handleClose = () => {
+    setShow(false);
+    history.push('/');
   };
 
   useEffect(() => {
@@ -79,10 +112,21 @@ const ExchangeScreen = (props) => {
   }, [userInfo.token]);
 
   useEffect(() => {
-    switch (type) {
-      case PRODUCT_DETAILS_SUCCESS:
-        addToCart(productDetails, productId, qty);
+    switch (exchangeType) {
+      case EXCHANGE_SUCCESS:
+        fetchProductOwn(userInfo && userInfo.token);
+        setMessage(exchangeMsg && exchangeMsg);
+        setShow(true);
+      default:
         break;
+    }
+    return function cleanup() {
+      resetExchangeType();
+    };
+  }, [exchangeType]);
+
+  useEffect(() => {
+    switch (type) {
       default:
         break;
     }
@@ -90,15 +134,6 @@ const ExchangeScreen = (props) => {
       resetProductType();
     };
   }, [type]);
-  useEffect(() => {
-    switch (cartType) {
-      default:
-        break;
-    }
-    return function cleanup() {
-      resetCartType();
-    };
-  }, [cartType]);
 
   return loading ? (
     <Loader />
@@ -113,63 +148,69 @@ const ExchangeScreen = (props) => {
         ) : (
           <ListGroup variant="flush">
             {listOwn &&
-              listOwn.map((item, index) => (
-                <ListGroup.Item
-                  style={{ background: index === active && '#DCDEE6' }}
-                >
-                  <Row>
-                    <Col md={2}>
-                      <Image
-                        src={
-                          item &&
-                          item.Images &&
-                          item.Images[0] &&
-                          item.Images[0].address
-                            ? item.Images[0].address
-                            : defaultImage
-                        }
-                        alt={item && item.name}
-                        fluid
-                        rounded
-                        style={{ height: 75 }}
-                      />
-                    </Col>
-                    <Col md={2}>
-                      <Link to={`/product/${item.idProduct}`}>{item.name}</Link>
-                    </Col>
-                    <Col md={2}>{formatMoney(item.price)}</Col>
-                    <Col md={3}>
-                      <Button
-                        type="button"
-                        onClick={() => viewProductDetail(item.idProduct)}
-                        className="w-100"
-                        variant="light"
-                      >
-                        <i class="fas fa-eye mr-2"></i>
-                        Xem chi tiết
-                      </Button>
-                    </Col>
-                    <Col md={3}>
-                      <Button
-                        type="button"
-                        variant="info"
-                        onClick={() =>
-                          selectProduct({
-                            id: index,
-                            name: item.name,
-                            image: item.Images[0] && item.Images[0].address,
-                            price: item.price,
-                          })
-                        }
-                        className="w-100"
-                      >
-                        <i class="far fa-hand-pointer mr-2"></i>
-                        Chọn sản phẩm
-                      </Button>
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-              ))}
+              listOwn.map(
+                (item, index) =>
+                  (item.status === 'EXCHANGE' || item.status === 'BOTH') && (
+                    <ListGroup.Item
+                      style={{ background: index === active && '#DCDEE6' }}
+                    >
+                      <Row>
+                        <Col md={2}>
+                          <Image
+                            src={
+                              item &&
+                              item.Images &&
+                              item.Images[0] &&
+                              item.Images[0].address
+                                ? item.Images[0].address
+                                : defaultImage
+                            }
+                            alt={item && item.name}
+                            fluid
+                            rounded
+                            style={{ height: 75 }}
+                          />
+                        </Col>
+                        <Col md={2}>
+                          <Link to={`/product/${item.idProduct}`}>
+                            {item.name}
+                          </Link>
+                        </Col>
+                        <Col md={2}>{formatMoney(item.price)}</Col>
+                        <Col md={3}>
+                          <Button
+                            type="button"
+                            onClick={() => viewProductDetail(item.idProduct)}
+                            className="w-100"
+                            variant="light"
+                          >
+                            <i class="fas fa-eye mr-2"></i>
+                            Xem chi tiết
+                          </Button>
+                        </Col>
+                        <Col md={3}>
+                          <Button
+                            type="button"
+                            variant="info"
+                            onClick={() =>
+                              selectProduct({
+                                id: index,
+                                name: item.name,
+                                image: item.Images[0] && item.Images[0].address,
+                                price: item.price,
+                                idProduct: item.idProduct,
+                              })
+                            }
+                            className="w-100"
+                          >
+                            <i class="far fa-hand-pointer mr-2"></i>
+                            Chọn sản phẩm
+                          </Button>
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  )
+              )}
           </ListGroup>
         )}
       </Col>
@@ -201,23 +242,27 @@ const ExchangeScreen = (props) => {
               </div>
             </ListGroup.Item>
             <ListGroup.Item>
-              <Button
-                type="button"
-                className="btn-block"
-                onClick={checkoutHandler}
+              <LoadingButton
+                handleClickOpen={exchangeHandler}
                 disabled={!disabled}
-              >
-                Thực hiện trao đổi
-              </Button>
+                title="Thực hiện trao đổi"
+                loading={exchangeLoading}
+              />
             </ListGroup.Item>
           </ListGroup>
         </Card>
       </Col>
+      <ExchangeDialog
+        show={show}
+        setShow={setShow}
+        handleClose={handleClose}
+        message={message}
+      />
     </Row>
   );
 };
 
-const mapStateToProps = ({ cart, product }) => {
+const mapStateToProps = ({ cart, product, exchange }) => {
   return {
     cartItems: cart && cart.cartItems,
     type: product.type,
@@ -226,16 +271,21 @@ const mapStateToProps = ({ cart, product }) => {
     cartItemsFromStorage: cart.cartItemsFromStorage,
     listOwn: product.listOwn,
     loading: product.isLoading,
+    exchangeLoading: exchange.loading,
+    exchangeType: exchange.type,
+    exchangeMsg: exchange.exchangeMsg,
   };
 };
 
 const mapDispatchToProps = {
   addToCart,
   removeFromCart,
+  exchangeRequest,
   resetCartType,
   fetchProductDetails,
   fetchProductOwn,
   resetProductType,
+  resetExchangeType,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExchangeScreen);

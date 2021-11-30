@@ -4,45 +4,50 @@ import { connect } from 'react-redux';
 import Paging from '../../../../components/shared-components/Paging';
 import { WAITING_FOR_CONFIRM } from '../../../../configs/Constants';
 import {
-  purchaseRequest,
-  countPurchase,
-} from '../../../../redux/actions/Order';
+  wantChangePurchase,
+  countWantPurchase,
+} from '../../../../redux/actions/Exchange';
 import NoOrderScreen from '../NoOrderScreen';
-import PurchaseItem from './PurchaseItem';
+import ExchangeItem from './ExchangeItem';
 
 const WaitingConfirm = (props) => {
-  const { purchaseRequest, purchase, countPurchase, purchaseCount } = props;
+  const {
+    wantChangePurchase,
+    wantPurchase,
+    countWantPurchase,
+    wantPurchaseCount,
+  } = props;
 
   const own = JSON.parse(localStorage.getItem('userInfo'));
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    purchaseRequest(own && own.id, WAITING_FOR_CONFIRM, {
+    wantChangePurchase(own && own.id, {
       page: page,
       limit: limit,
     });
   }, []);
 
   useEffect(() => {
-    countPurchase(own && own.id, WAITING_FOR_CONFIRM);
+    countWantPurchase(own && own.id);
   }, []);
 
-  return purchase && purchase.length > 0 ? (
+  return wantPurchase && wantPurchase.length > 0 ? (
     <Row>
       <Col>
         <ListGroup variant="flush">
-          {purchase &&
-            purchase.map((item) => (
-              <PurchaseItem key={item.idOrderDetail} item={item} status={1} />
+          {wantPurchase &&
+            wantPurchase.map((item) => (
+              <ExchangeItem key={item.idOrderDetail} item={item} status={1} />
             ))}
         </ListGroup>
         <Paging
-          count={purchaseCount && purchaseCount}
+          count={wantPurchaseCount && wantPurchaseCount}
           page={page}
           setPage={setPage}
           limit={limit}
-          purchaseRequest={purchaseRequest}
+          purchaseRequest={wantChangePurchase}
           own={own}
           type={WAITING_FOR_CONFIRM}
         />
@@ -53,16 +58,18 @@ const WaitingConfirm = (props) => {
   );
 };
 
-const mapStateToProps = ({ order }) => {
+const mapStateToProps = ({ order, exchange }) => {
   return {
     purchase: order && order.purchase,
     purchaseCount: order && order.purchaseCount,
+    wantPurchase: exchange.wantPurchase,
+    wantPurchaseCount: exchange.wantPurchaseCount,
   };
 };
 
 const mapDispatchToProps = {
-  purchaseRequest,
-  countPurchase,
+  wantChangePurchase,
+  countWantPurchase,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WaitingConfirm);

@@ -1,27 +1,27 @@
-import Avatar from "@material-ui/core/Avatar";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import React from "react";
-import { Button, Col, Image, ListGroup, Row } from "react-bootstrap";
-import { connect } from "react-redux";
-import OrderDialog from "../../../../components/shared-components/OrderDialog";
-import { acceptOrder, cancelOrder } from "../../../../redux/actions/Order";
-import { formatMoney } from "../../../../utils/formatText";
+import Avatar from '@material-ui/core/Avatar';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import React from 'react';
+import { Button, Col, Image, ListGroup, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import OrderDialog from '../../../../components/shared-components/OrderDialog';
+import { acceptOrder, cancelOrder } from '../../../../redux/actions/Order';
+import { formatMoney } from '../../../../utils/formatText';
 
 const LoadingButton = ({ title, loading, accept, handleClickOpen }) => {
   return (
     <div>
       <Button
         className={
-          accept ? "btn btn-primary mr-2" : "btn btn-primary btn-block"
+          accept ? 'btn btn-primary mr-2' : 'btn btn-primary btn-block'
         }
         type="submit"
         disabled={loading}
-        variant={accept ? "success" : "danger"}
+        variant={accept ? 'success' : 'danger'}
         onClick={handleClickOpen}
       >
         <span
-          className={accept ? "fas fa-check mr-2" : "fas fa-times mr-2"}
+          className={accept ? 'fas fa-check mr-2' : 'fas fa-times mr-2'}
           role="status"
           aria-hidden="true"
         ></span>
@@ -33,8 +33,8 @@ const LoadingButton = ({ title, loading, accept, handleClickOpen }) => {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    "& > *": {
+    display: 'flex',
+    '& > *': {
       margin: theme.spacing(1),
     },
   },
@@ -58,7 +58,7 @@ const WaitingConfirm = ({
   const [open, setOpen] = React.useState(false);
   const [denyOpen, setDenyOpen] = React.useState(false);
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -92,16 +92,16 @@ const WaitingConfirm = ({
       <ListGroup.Item
         style={{
           marginBottom: 20,
-          boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+          boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
         }}
       >
-        <ListGroup variant="flush" style={{ padding: "0px 20px" }}>
+        <ListGroup variant="flush" style={{ padding: '0px 20px' }}>
           <>
             <Row
               style={{
-                borderBottom: "1px solid #E8E9EB",
+                borderBottom: '1px solid #E8E9EB',
                 padding: 10,
-                alignItems: "center",
+                alignItems: 'center',
               }}
             >
               <Avatar
@@ -111,9 +111,9 @@ const WaitingConfirm = ({
               />
               <span
                 style={{
-                  alignSelf: "center",
+                  alignSelf: 'center',
                   fontSize: 14,
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                 }}
                 className="ml-2"
               >
@@ -123,9 +123,9 @@ const WaitingConfirm = ({
                 <span
                   className="ml-auto d-flex"
                   style={{
-                    background: "#D21404",
-                    color: "white",
-                    padding: "5px 15px",
+                    background: '#D21404',
+                    color: 'white',
+                    padding: '5px 15px',
                     borderRadius: 4,
                   }}
                 >
@@ -152,13 +152,12 @@ const WaitingConfirm = ({
                 <span
                   className="ml-auto d-flex align-items-center"
                   style={{
-                    background: "#00A86B",
-                    color: "white",
-                    padding: "5px 15px",
+                    background: '#00A86B',
+                    color: 'white',
+                    padding: '5px 15px',
                     borderRadius: 4,
                   }}
                 >
-                  <i class="fas fa-check mr-2"></i>
                   Đã giao
                 </span>
               )}
@@ -166,18 +165,17 @@ const WaitingConfirm = ({
                 <span
                   className="ml-auto d-flex align-items-center"
                   style={{
-                    background: "#D21404",
-                    color: "white",
-                    padding: "5px 15px",
+                    background: '#D21404',
+                    color: 'white',
+                    padding: '5px 15px',
                     borderRadius: 4,
                   }}
                 >
-                  <i class="fas fa-times mr-2"></i>
                   Đã hủy
                 </span>
               )}
             </Row>
-            <Row style={{ borderBottom: "1px solid #E8E9EB", padding: 20 }}>
+            <Row style={{ borderBottom: '1px solid #E8E9EB', padding: 20 }}>
               <Col md={2}>
                 <Image
                   src={
@@ -202,20 +200,20 @@ const WaitingConfirm = ({
                 </Row>
                 <Row className="mt-2">x{item && item.quantity}</Row>
               </Col>
-              <Col md={4} style={{ color: "#d73211" }}>
+              <Col md={4} style={{ color: '#d73211' }}>
                 {formatMoney(item && item.price)}
               </Col>
             </Row>
             <Row style={{ padding: 20 }}>
               <div
                 className="d-flex justify-content-center align-items-center"
-                style={{ marginLeft: "auto" }}
+                style={{ marginLeft: 'auto' }}
               >
                 <i class="fas fa-receipt mr-2 fa-2x"></i>
                 Tổng số tiền:
                 <span
                   className="ml-2"
-                  style={{ fontSize: 20, color: "#d73211" }}
+                  style={{ fontSize: 20, color: '#d73211' }}
                 >
                   {formatMoney(item && item.price)}
                 </span>

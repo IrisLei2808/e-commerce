@@ -71,7 +71,7 @@ export const wantChangeSell = (jwtToken, params) => {
 export const wantChangeSellSuccess = (product) => {
   return {
     type: WANT_SELL_SUCCESS,
-    product: product.data.result,
+    product: product.data,
   };
 };
 
@@ -82,10 +82,10 @@ export const wantChangeSellFail = (error) => {
   };
 };
 
-export const countWantSell = (params) => {
+export const countWantSell = (userId) => {
   return {
     type: COUNT_WANT_SELL_REQUEST,
-    params,
+    userId,
   };
 };
 

@@ -72,10 +72,11 @@ orderService.getWantChangePurchase = function (userId, params) {
   });
 };
 
-orderService.getWantChangeSell = function (userId) {
+orderService.getWantChangeSell = function (userId, params) {
   return axios({
-    method: 'post',
+    method: 'get',
     url: `${API_ENDPOINT}/api/exchange/listRequestWantChangeSeller/${userId}`,
+    params,
   });
 };
 

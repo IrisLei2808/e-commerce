@@ -10,9 +10,12 @@ import {
   exchangeRequestFail,
   countWantPurchaseSuccess,
   countWantPurchaseFail,
+  countWantSellSuccess,
+  countWantSellFail,
 } from '../actions/Exchange';
 import {
   COUNT_WANT_PURCHASE_REQUEST,
+  COUNT_WANT_SELL_REQUEST,
   EXCHANGE_REQUEST,
   WANT_PURCHASE_REQUEST,
   WANT_SELL_REQUEST,
@@ -54,12 +57,32 @@ export function* countWantPurchase() {
 }
 
 export function* wantSellRequest() {
-  yield takeEvery(WANT_SELL_REQUEST, function* ({ userId }) {
+  yield takeEvery(WANT_SELL_REQUEST, function* ({ jwtToken, params }) {
+    const { page, limit } = params;
+    const product = {
+      page: page,
+      limit: limit,
+    };
     try {
-      const productData = yield call(orderService.getWantChangeSell, userId);
+      const productData = yield call(
+        orderService.getWantChangeSell,
+        jwtToken,
+        product
+      );
       yield put(wantChangeSellSuccess(productData));
     } catch (err) {
       yield put(wantChangeSellFail(err.response && err.response.data.result));
+    }
+  });
+}
+
+export function* countWantSell() {
+  yield takeEvery(COUNT_WANT_SELL_REQUEST, function* ({ userId }) {
+    try {
+      const productData = yield call(exchangeService.countWantSell, userId);
+      yield put(countWantSellSuccess(productData));
+    } catch (err) {
+      yield put(countWantSellFail(err.response && err.response.data.result));
     }
   });
 }
@@ -90,5 +113,6 @@ export default function* rootSaga() {
     fork(wantSellRequest),
     fork(exchangeRequest),
     fork(countWantPurchase),
+    fork(countWantSell),
   ]);
 }

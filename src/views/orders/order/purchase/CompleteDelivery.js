@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { Col, ListGroup, Row } from "react-bootstrap";
-import { connect } from "react-redux";
-import Paging from "../../../../components/shared-components/Paging";
-import { COMPLETE_DELIVERY } from "../../../../configs/Constants";
+import React, { useEffect, useState } from 'react';
+import { Col, ListGroup, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import Paging from '../../../../components/shared-components/Paging';
+import { COMPLETE_DELIVERY } from '../../../../configs/Constants';
 import {
   completeDelivery,
   countCompleteDelivery,
-} from "../../../../redux/actions/Order";
-import NoOrderScreen from "../NoOrderScreen";
-import PurchaseItem from "./PurchaseItem";
-import { toast, ToastContainer } from "react-toastify";
+} from '../../../../redux/actions/Order';
+import NoOrderScreen from '../NoOrderScreen';
+import PurchaseItem from './PurchaseItem';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   FEEDBACK_PRODUCT_FAIL,
   FEEDBACK_PRODUCT_SUCCESS,
-} from "../../../../redux/constants/Product";
+} from '../../../../redux/constants/Product';
+import Loader from '../../../../components/shared-components/Spinner';
 
 const CompleteDelivery = (props) => {
   const {
@@ -22,13 +23,14 @@ const CompleteDelivery = (props) => {
     countCompleteDelivery,
     purchaseCount,
     type,
+    loading,
   } = props;
 
-  const notify = () => toast.success("Gửi đánh giá thành công!");
+  const notify = () => toast.success('Gửi đánh giá thành công!');
   const notifyFail = () =>
-    toast.error("Không thể gửi đánh giá hoặc bạn đã đánh giá sản phẩm này!");
+    toast.error('Không thể gửi đánh giá hoặc bạn đã đánh giá sản phẩm này!');
 
-  const own = JSON.parse(localStorage.getItem("userInfo"));
+  const own = JSON.parse(localStorage.getItem('userInfo'));
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
 
@@ -56,7 +58,9 @@ const CompleteDelivery = (props) => {
     }
   }, [type]);
 
-  return purchase && purchase.length > 0 ? (
+  return loading ? (
+    <Loader />
+  ) : purchase && purchase.length > 0 ? (
     <Row>
       <Col>
         <ListGroup variant="flush">
@@ -92,6 +96,7 @@ const mapStateToProps = ({ order, product }) => {
     purchase: order && order.completeDelivery,
     purchaseCount: order && order.countCompleteDelivery,
     type: product.type,
+    loading: order && order.loading,
   };
 };
 

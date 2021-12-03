@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import FormContainer from "../../components/layout-components/FormContainer";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Message from "../../components/shared-components/ErrorMessage";
+import React, { useState, useEffect } from 'react';
+import { Button, Col, Form, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import FormContainer from '../../components/layout-components/FormContainer';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Message from '../../components/shared-components/ErrorMessage';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
-} from "@material-ui/pickers";
-import Grid from "@material-ui/core/Grid";
-import DateFnsUtils from "@date-io/date-fns";
+} from '@material-ui/pickers';
+import Grid from '@material-ui/core/Grid';
+import DateFnsUtils from '@date-io/date-fns';
 import {
   resetAuthType,
   register,
   avatarUpload,
-} from "../../redux/actions/Auth";
-import Loader from "../../components/shared-components/Spinner";
-import AvatarUpload from "../../components/layout-components/AvatarUpload";
+} from '../../redux/actions/Auth';
+import Loader from '../../components/shared-components/Spinner';
+import AvatarUpload from '../../components/layout-components/AvatarUpload';
 import {
   AVATAR_UPLOAD_FAIL,
   AVATAR_UPLOAD_SUCCESS,
   USER_REGISTER_SUCCESS,
-} from "../../redux/constants/Auth";
+} from '../../redux/constants/Auth';
 
 const RegisterScreen = (props) => {
   const {
@@ -38,20 +38,20 @@ const RegisterScreen = (props) => {
     avatarUpload,
     fileList,
   } = props;
-  const redirect = location.search ? location.search.split("=")[1] : "/";
+  const redirect = location.search ? location.search.split('=')[1] : '/';
 
   const [preview, setPreview] = useState(null);
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [address, setAddress] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [value, setValue] = useState("female");
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [address, setAddress] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [value, setValue] = useState('female');
   const [selectedDate, setSelectedDate] = React.useState(
-    new Date("2014-08-18T21:11:54")
+    new Date('2014-08-18T21:11:54')
   );
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
@@ -62,7 +62,7 @@ const RegisterScreen = (props) => {
 
   const finalDate = (date) => {
     return (
-      date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+      date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
     );
   };
   finalDate(selectedDate);
@@ -78,7 +78,7 @@ const RegisterScreen = (props) => {
         history.push(redirect);
       case AVATAR_UPLOAD_SUCCESS:
         if (password !== confirmPassword) {
-          setMessage("Passwords do not match");
+          setMessage('Passwords do not match');
         } else {
           register(
             name,
@@ -97,7 +97,7 @@ const RegisterScreen = (props) => {
   }, [type]);
 
   return (
-    <FormContainer>
+    <FormContainer color={'red'}>
       <h1>Đăng ký</h1>
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error && error.message}</Message>}
@@ -186,7 +186,7 @@ const RegisterScreen = (props) => {
                 value={selectedDate}
                 onChange={handleDateChange}
                 KeyboardButtonProps={{
-                  "aria-label": "change date",
+                  'aria-label': 'change date',
                 }}
               />
             </Grid>
@@ -198,16 +198,16 @@ const RegisterScreen = (props) => {
           disabled={loading}
         >
           <span
-            className={loading ? "spinner-border spinner-border-sm" : ""}
+            className={loading ? 'spinner-border spinner-border-sm' : ''}
             role="status"
             aria-hidden="true"
           ></span>
-          {loading ? "Loading..." : "Đăng ký"}
+          {loading ? 'Loading...' : 'Đăng ký'}
         </button>
       </Form>
       <Row className="py-3">
         <Col>
-          Chưa có tài khoản? <Link to="/register">Đăng nhập</Link>
+          Chưa có tài khoản? <Link to="/login">Đăng nhập</Link>
         </Col>
       </Row>
     </FormContainer>

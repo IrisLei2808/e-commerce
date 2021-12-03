@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Col, ListGroup, Row } from "react-bootstrap";
-import { connect } from "react-redux";
-import Paging from "../../../../components/shared-components/Paging";
-import { WAITING_FOR_DELIVERY } from "../../../../configs/Constants";
+import React, { useEffect, useState } from 'react';
+import { Col, ListGroup, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import Paging from '../../../../components/shared-components/Paging';
+import { WAITING_FOR_DELIVERY } from '../../../../configs/Constants';
 import {
   countSellWaitingDelivery,
   sellWaitingDeliveryRequest,
-} from "../../../../redux/actions/Order";
-import NoOrderScreen from "../NoOrderScreen";
-import PurchaseItem from "./PurchaseItem";
+} from '../../../../redux/actions/Order';
+import NoOrderScreen from '../NoOrderScreen';
+import PurchaseItem from './PurchaseItem';
+import Loader from '../../../../components/shared-components/Spinner';
 
 const WaitingDelivery = (props) => {
   const {
@@ -16,9 +17,10 @@ const WaitingDelivery = (props) => {
     sellWaitingDelivery,
     countSellWaitingDelivery,
     purSellWaitingDeliveryCount,
+    loading,
   } = props;
 
-  const own = JSON.parse(localStorage.getItem("userInfo"));
+  const own = JSON.parse(localStorage.getItem('userInfo'));
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
 
@@ -33,7 +35,9 @@ const WaitingDelivery = (props) => {
     countSellWaitingDelivery(own && own.id, WAITING_FOR_DELIVERY);
   }, []);
 
-  return sellWaitingDelivery && sellWaitingDelivery.length > 0 ? (
+  return loading ? (
+    <Loader />
+  ) : sellWaitingDelivery && sellWaitingDelivery.length > 0 ? (
     <Row>
       <Col>
         <ListGroup variant="flush">
@@ -62,6 +66,7 @@ const mapStateToProps = ({ order }) => {
   return {
     sellWaitingDelivery: order && order.sellWaitingDelivery,
     purSellWaitingDeliveryCount: order && order.purSellWaitingDeliveryCount,
+    loading: order && order.loading,
   };
 };
 

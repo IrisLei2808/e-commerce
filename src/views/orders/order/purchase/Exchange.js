@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Col, ListGroup, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import Paging from '../../../../components/shared-components/Paging';
+import Paging from '../../../../components/shared-components/ExchangePaging';
 import { WAITING_FOR_CONFIRM } from '../../../../configs/Constants';
 import {
-  wantChangePurchase,
   countWantPurchase,
+  wantChangePurchase,
 } from '../../../../redux/actions/Exchange';
 import NoOrderScreen from '../NoOrderScreen';
 import ExchangeItem from './ExchangeItem';
+import Loader from '../../../../components/shared-components/Spinner';
 
 const WaitingConfirm = (props) => {
   const {
@@ -16,6 +17,7 @@ const WaitingConfirm = (props) => {
     wantPurchase,
     countWantPurchase,
     wantPurchaseCount,
+    loading,
   } = props;
 
   const own = JSON.parse(localStorage.getItem('userInfo'));
@@ -33,7 +35,9 @@ const WaitingConfirm = (props) => {
     countWantPurchase(own && own.id);
   }, []);
 
-  return wantPurchase && wantPurchase.length > 0 ? (
+  return loading ? (
+    <Loader />
+  ) : wantPurchase && wantPurchase.length > 0 ? (
     <Row>
       <Col>
         <ListGroup variant="flush">
@@ -60,10 +64,9 @@ const WaitingConfirm = (props) => {
 
 const mapStateToProps = ({ order, exchange }) => {
   return {
-    purchase: order && order.purchase,
-    purchaseCount: order && order.purchaseCount,
     wantPurchase: exchange.wantPurchase,
     wantPurchaseCount: exchange.wantPurchaseCount,
+    loading: exchange.loading,
   };
 };
 

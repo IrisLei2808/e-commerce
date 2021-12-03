@@ -1,45 +1,57 @@
 import React, { useEffect, useState } from 'react';
 import { Col, ListGroup, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import Paging from '../../../../components/shared-components/Paging';
+import Paging from '../../../../components/shared-components/ExchangePaging';
 import { WAITING_FOR_CONFIRM } from '../../../../configs/Constants';
-import { countSell, sellRequest } from '../../../../redux/actions/Order';
+import {
+  countWantSell,
+  wantChangeSell,
+} from '../../../../redux/actions/Exchange';
 import NoOrderScreen from '../NoOrderScreen';
-import PurchaseItem from './PurchaseItem';
+import ExchangeItem from './ExchangeItem';
+import Loader from '../../../../components/shared-components/Spinner';
 
 const WaitingConfirm = (props) => {
-  const { sellRequest, purchase, countSell, sell, sellCount } = props;
+  const {
+    wantChangeSell,
+    wantPurchase,
+    countWantSell,
+    wantPurchaseCount,
+    loading,
+  } = props;
 
   const own = JSON.parse(localStorage.getItem('userInfo'));
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    sellRequest(own && own.id, WAITING_FOR_CONFIRM, {
+    wantChangeSell(own && own.id, {
       page: page,
       limit: limit,
     });
   }, []);
 
   useEffect(() => {
-    countSell(own && own.id, WAITING_FOR_CONFIRM);
+    countWantSell(own && own.id);
   }, []);
 
-  return sell && sell.length > 0 ? (
+  return loading ? (
+    <Loader />
+  ) : wantPurchase && wantPurchase.length > 0 ? (
     <Row>
       <Col>
         <ListGroup variant="flush">
-          {sell &&
-            sell.map((item) => (
-              <PurchaseItem key={item.idOrderDetail} item={item} status={1} />
+          {wantPurchase &&
+            wantPurchase.map((item) => (
+              <ExchangeItem key={item.idOrderDetail} item={item} status={1} />
             ))}
         </ListGroup>
         <Paging
-          count={sellCount && sellCount}
+          count={wantPurchaseCount && wantPurchaseCount}
           page={page}
           setPage={setPage}
           limit={limit}
-          purchaseRequest={sellRequest}
+          purchaseRequest={wantChangeSell}
           own={own}
           type={WAITING_FOR_CONFIRM}
         />
@@ -50,16 +62,18 @@ const WaitingConfirm = (props) => {
   );
 };
 
-const mapStateToProps = ({ order }) => {
+const mapStateToProps = ({ exchange }) => {
+  console.log(exchange.type, exchange.loading);
   return {
-    sell: order && order.sell,
-    sellCount: order && order.sellCount,
+    wantPurchase: exchange.wantSell,
+    wantPurchaseCount: exchange.wantSellCount,
+    loading: exchange && exchange.loading,
   };
 };
 
 const mapDispatchToProps = {
-  sellRequest,
-  countSell,
+  wantChangeSell,
+  countWantSell,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WaitingConfirm);

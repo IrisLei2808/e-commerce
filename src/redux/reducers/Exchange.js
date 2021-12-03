@@ -2,6 +2,9 @@ import {
   COUNT_WANT_PURCHASE_FAIL,
   COUNT_WANT_PURCHASE_REQUEST,
   COUNT_WANT_PURCHASE_SUCCESS,
+  COUNT_WANT_SELL_FAIL,
+  COUNT_WANT_SELL_REQUEST,
+  COUNT_WANT_SELL_SUCCESS,
   EXCHANGE_FAIL,
   EXCHANGE_REQUEST,
   EXCHANGE_SUCCESS,
@@ -95,7 +98,21 @@ const exchange = (state = initState, action) => {
         wantPurchaseCount: action.product,
         type: action.type,
       };
-    case COUNT_WANT_PURCHASE_FAIL:
+    case COUNT_WANT_SELL_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        message: action.error,
+        type: action.type,
+      };
+    case COUNT_WANT_SELL_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        wantSellCount: action.product,
+        type: action.type,
+      };
+    case COUNT_WANT_SELL_FAIL:
       return {
         ...state,
         loading: false,

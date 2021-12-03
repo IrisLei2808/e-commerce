@@ -20,7 +20,9 @@ const LoadingButton = ({ title, loading, accept, handleClickOpen }) => {
     <div>
       <Button
         className={
-          accept ? 'btn btn-primary px-3 py-2' : 'btn btn-primary btn-block'
+          accept
+            ? 'btn btn-primary px-3 py-2 mr-3'
+            : 'btn btn-primary px-3 py-2'
         }
         type="submit"
         disabled={loading}
@@ -58,7 +60,7 @@ const ExchangeItem = ({ item, status }) => {
     <Popover id="popover-basic">
       <PopoverTitle>Trao đổi</PopoverTitle>
       <PopoverContent>
-        Bạn đã gửi yêu cầu trao đổi sản phẩm{' '}
+        Bạn đã nhận yêu cầu trao đổi sản phẩm{' '}
         <span style={{ fontWeight: 'bold' }}>
           {myproduct && myproduct.name}
         </span>{' '}
@@ -236,8 +238,9 @@ const ExchangeItem = ({ item, status }) => {
                   </Col>
                 </>
               )}
-              <Col>
+              <Col style={{ display: 'flex' }}>
                 <LoadingButton title="Hủy yêu cầu trao đổi" accept={true} />
+                <LoadingButton title="Đồng ý trao đổi" accept={false} />
               </Col>
               <div
                 className="d-flex justify-content-center align-items-center"

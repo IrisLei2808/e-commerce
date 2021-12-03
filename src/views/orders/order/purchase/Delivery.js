@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { Col, ListGroup, Row } from "react-bootstrap";
-import { connect } from "react-redux";
-import Paging from "../../../../components/shared-components/Paging";
-import { DELIVERY } from "../../../../configs/Constants";
+import React, { useEffect, useState } from 'react';
+import { Col, ListGroup, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import Paging from '../../../../components/shared-components/Paging';
+import { DELIVERY } from '../../../../configs/Constants';
 import {
   countDelivery,
   deliveryRequest,
-} from "../../../../redux/actions/Order";
-import NoOrderScreen from "../NoOrderScreen";
-import DeliveryItem from "./DeliveryItem";
+} from '../../../../redux/actions/Order';
+import NoOrderScreen from '../NoOrderScreen';
+import DeliveryItem from './DeliveryItem';
+import Loader from '../../../../components/shared-components/Spinner';
 
 const Delivery = (props) => {
-  const { deliveryRequest, countDelivery, delivery, deliveryCount } = props;
+  const { deliveryRequest, countDelivery, delivery, deliveryCount, loading } =
+    props;
 
-  const own = JSON.parse(localStorage.getItem("userInfo"));
+  const own = JSON.parse(localStorage.getItem('userInfo'));
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
 
@@ -28,7 +30,9 @@ const Delivery = (props) => {
     countDelivery(own && own.id, DELIVERY);
   }, []);
 
-  return delivery && delivery.length > 0 ? (
+  return loading ? (
+    <Loader />
+  ) : delivery && delivery.length > 0 ? (
     <>
       <Row>
         <Col>
@@ -59,6 +63,7 @@ const mapStateToProps = ({ order }) => {
   return {
     delivery: order && order.delivery,
     deliveryCount: order && order.deliveryCount,
+    loading: order && order.loading,
   };
 };
 

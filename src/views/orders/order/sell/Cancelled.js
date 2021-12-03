@@ -1,19 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { Col, ListGroup, Row } from "react-bootstrap";
-import { connect } from "react-redux";
-import Paging from "../../../../components/shared-components/Paging";
-import { CANCELLED } from "../../../../configs/Constants";
+import React, { useEffect, useState } from 'react';
+import { Col, ListGroup, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import Paging from '../../../../components/shared-components/Paging';
+import { CANCELLED } from '../../../../configs/Constants';
 import {
   sellCancelled,
   countSellCancelled,
-} from "../../../../redux/actions/Order";
-import NoOrderScreen from "../NoOrderScreen";
-import PurchaseItem from "./PurchaseItem";
+} from '../../../../redux/actions/Order';
+import NoOrderScreen from '../NoOrderScreen';
+import PurchaseItem from './PurchaseItem';
+import Loader from '../../../../components/shared-components/Spinner';
 
 const Cancelled = (props) => {
-  const { sellCancelled, purchase, countSellCancelled, purchaseCount } = props;
+  const {
+    sellCancelled,
+    purchase,
+    countSellCancelled,
+    purchaseCount,
+    loading,
+  } = props;
 
-  const own = JSON.parse(localStorage.getItem("userInfo"));
+  const own = JSON.parse(localStorage.getItem('userInfo'));
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
 
@@ -28,7 +35,9 @@ const Cancelled = (props) => {
     countSellCancelled(own && own.id, CANCELLED);
   }, []);
 
-  return purchase && purchase.length > 0 ? (
+  return loading ? (
+    <Loader />
+  ) : purchase && purchase.length > 0 ? (
     <Row>
       <Col>
         <ListGroup variant="flush">
@@ -57,6 +66,7 @@ const mapStateToProps = ({ order }) => {
   return {
     purchase: order && order.sellCancelled,
     purchaseCount: order && order.countSellCancelled,
+    loading: order && order.loading,
   };
 };
 

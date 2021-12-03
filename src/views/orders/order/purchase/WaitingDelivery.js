@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Col, ListGroup, Row } from "react-bootstrap";
-import { connect } from "react-redux";
-import Paging from "../../../../components/shared-components/Paging";
+import React, { useState, useEffect } from 'react';
+import { Col, ListGroup, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import Paging from '../../../../components/shared-components/Paging';
 import {
   countWaitingDelivery,
   waitingDeliveryRequest,
-} from "../../../../redux/actions/Order";
-import NoOrderScreen from "../NoOrderScreen";
-import PurchaseItem from "./PurchaseItem";
-import { WAITING_FOR_DELIVERY } from "../../../../configs/Constants";
+} from '../../../../redux/actions/Order';
+import NoOrderScreen from '../NoOrderScreen';
+import PurchaseItem from './PurchaseItem';
+import { WAITING_FOR_DELIVERY } from '../../../../configs/Constants';
+import Loader from '../../../../components/shared-components/Spinner';
 
 const WaitingDelivery = (props) => {
   const {
@@ -16,9 +17,10 @@ const WaitingDelivery = (props) => {
     waitingDelivery,
     countWaitingDelivery,
     purWaitingDeliveryCount,
+    loading,
   } = props;
 
-  const own = JSON.parse(localStorage.getItem("userInfo"));
+  const own = JSON.parse(localStorage.getItem('userInfo'));
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
 
@@ -33,7 +35,9 @@ const WaitingDelivery = (props) => {
     countWaitingDelivery(own && own.id, WAITING_FOR_DELIVERY);
   }, []);
 
-  return waitingDelivery && waitingDelivery.length > 0 ? (
+  return loading ? (
+    <Loader />
+  ) : waitingDelivery && waitingDelivery.length > 0 ? (
     <Row>
       <Col>
         <ListGroup variant="flush">
@@ -62,6 +66,7 @@ const mapStateToProps = ({ order }) => {
   return {
     waitingDelivery: order && order.waitingDelivery,
     purWaitingDeliveryCount: order && order.purWaitingDeliveryCount,
+    loading: order && order.loading,
   };
 };
 

@@ -18,4 +18,11 @@ exchangeService.countWantPurchase = function (userId) {
   });
 };
 
+exchangeService.countWantSell = function (userId) {
+  return axios({
+    method: 'get',
+    url: `${API_ENDPOINT}/api/exchange/countListRequestWantChangeSeller/${userId}`,
+  });
+};
+
 export default exchangeService;

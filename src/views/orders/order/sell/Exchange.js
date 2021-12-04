@@ -63,7 +63,6 @@ const WaitingConfirm = (props) => {
 };
 
 const mapStateToProps = ({ exchange }) => {
-  console.log(exchange.type, exchange.loading);
   return {
     wantPurchase: exchange.wantSell,
     wantPurchaseCount: exchange.wantSellCount,

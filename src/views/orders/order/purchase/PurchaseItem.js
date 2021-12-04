@@ -238,7 +238,7 @@ const WaitingConfirm = ({ item, status, notify, loading, cancelOrder }) => {
 
 const mapStateToProps = ({ order }) => {
   return {
-    loading: order && order.loading,
+    loading: order && order.orderLoading,
   };
 };
 

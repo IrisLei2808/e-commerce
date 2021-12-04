@@ -15,6 +15,12 @@ import {
   COUNT_WANT_SELL_REQUEST,
   COUNT_WANT_SELL_SUCCESS,
   COUNT_WANT_SELL_FAIL,
+  ACCEPT_EXCHANGE_REQUEST,
+  ACCEPT_EXCHANGE_SUCCESS,
+  ACCEPT_EXCHANGE_FAIL,
+  CANCEL_EXCHANGE_FAIL,
+  CANCEL_EXCHANGE_REQUEST,
+  CANCEL_EXCHANGE_SUCCESS,
 } from '../constants/Exchange';
 
 export const wantChangePurchase = (jwtToken, params) => {
@@ -122,6 +128,49 @@ export const exchangeRequestSuccess = (exchangeMsg) => {
 export const exchangeRequestFail = (error) => {
   return {
     type: EXCHANGE_FAIL,
+    error,
+  };
+};
+
+export const acceptExchange = (idOrderDetail, jwtToken) => {
+  return {
+    type: ACCEPT_EXCHANGE_REQUEST,
+    idOrderDetail,
+    jwtToken,
+  };
+};
+
+export const acceptExchangeSuccess = (product) => {
+  return {
+    type: ACCEPT_EXCHANGE_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const acceptExchangeFail = (error) => {
+  return {
+    type: ACCEPT_EXCHANGE_FAIL,
+    error,
+  };
+};
+
+export const cancelExchange = (idOrderDetail) => {
+  return {
+    type: CANCEL_EXCHANGE_REQUEST,
+    idOrderDetail,
+  };
+};
+
+export const cancelExchangeSuccess = (product) => {
+  return {
+    type: CANCEL_EXCHANGE_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const cancelExchangeFail = (error) => {
+  return {
+    type: CANCEL_EXCHANGE_FAIL,
     error,
   };
 };

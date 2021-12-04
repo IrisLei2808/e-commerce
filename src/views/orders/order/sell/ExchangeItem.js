@@ -2,18 +2,25 @@ import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import {
+  Button,
   Col,
   Image,
   ListGroup,
   PopoverContent,
   PopoverTitle,
   Row,
-  Button,
 } from 'react-bootstrap';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import WantChangeDialog from '../../../../components/layout-components/WantChangeDialog';
+import {
+  acceptExchange,
+  cancelExchange,
+} from '../../../../redux/actions/Exchange';
 import { formatMoney } from '../../../../utils/formatText';
+import { useLocalStorage } from '../../../../utils/utilities';
 
 const LoadingButton = ({ title, loading, accept, handleClickOpen }) => {
   return (
@@ -54,7 +61,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ExchangeItem = ({ item, status }) => {
+const ExchangeItem = ({
+  item,
+  status,
+  acceptExchange,
+  cancelExchange,
+  loading,
+}) => {
+  const [user, setUser] = useLocalStorage('userInfo');
+  const [open, setOpen] = React.useState(false);
+  const [denyOpen, setDenyOpen] = React.useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleAccept = () => {
+    acceptExchange(item && item.idRequest, user && user.token);
+  };
+
+  const handleDenyClose = () => {
+    setDenyOpen(false);
+  };
+
+  const handleDeny = () => {
+    cancelExchange(item && item.idRequest);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDenyOpen = () => {
+    setDenyOpen(true);
+  };
+
   const { myproduct } = item;
   const popover = (
     <Popover id="popover-basic">
@@ -239,8 +279,16 @@ const ExchangeItem = ({ item, status }) => {
                 </>
               )}
               <Col style={{ display: 'flex' }}>
-                <LoadingButton title="Hủy yêu cầu trao đổi" accept={true} />
-                <LoadingButton title="Đồng ý trao đổi" accept={false} />
+                <LoadingButton
+                  title="Hủy yêu cầu trao đổi"
+                  accept={true}
+                  handleClickOpen={handleDenyOpen}
+                />
+                <LoadingButton
+                  title="Đồng ý trao đổi"
+                  accept={false}
+                  handleClickOpen={handleClickOpen}
+                />
               </Col>
               <div
                 className="d-flex justify-content-center align-items-center"
@@ -261,8 +309,33 @@ const ExchangeItem = ({ item, status }) => {
           </>
         </ListGroup>
       </ListGroup.Item>
+      <WantChangeDialog
+        open={open}
+        handleClose={handleClose}
+        handleAccept={handleAccept}
+        loading={loading}
+        accept={true}
+      />
+      <WantChangeDialog
+        open={denyOpen}
+        handleClose={handleDenyClose}
+        handleDeny={handleDeny}
+        loading={loading}
+        accept={false}
+      />
     </>
   );
 };
 
-export default ExchangeItem;
+const mapStateToProps = ({ exchange }) => {
+  return {
+    loading: exchange && exchange.exchangeLoading,
+  };
+};
+
+const mapDispatchToProps = {
+  acceptExchange,
+  cancelExchange,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExchangeItem);

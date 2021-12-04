@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const OrderDialog = ({
+const WantChangeDialog = ({
   open,
   handleClose,
   handleAccept,
@@ -35,12 +35,14 @@ const OrderDialog = ({
 }) => {
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true}>
-      <DialogTitle>{accept ? 'Xác nhận đơn hàng' : 'Hủy đơn hàng'}</DialogTitle>
+      <DialogTitle>
+        {accept ? 'Đồng ý trao đổi' : 'Hủy yêu cầu trao đổi'}
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
           {accept
-            ? 'Bạn có chắc muốn xác nhận đơn hàng ?'
-            : 'Bạn có chắc muốn hủy đơn hàng ?'}
+            ? 'Bạn có chắc muốn đồng ý trao đổi ?'
+            : 'Bạn có chắc muốn hủy yêu cầu trao đổi ?'}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -59,11 +61,11 @@ const OrderDialog = ({
             role="status"
             aria-hidden="true"
           ></span>
-          {loading ? 'Loading...' : accept ? 'Xác nhận' : 'Hủy đơn hàng'}
+          {loading ? 'Loading...' : accept ? 'Xác nhận' : 'Hủy trao đổi'}
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default OrderDialog;
+export default WantChangeDialog;

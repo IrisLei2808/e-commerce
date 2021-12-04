@@ -12,8 +12,14 @@ import {
   countWantPurchaseFail,
   countWantSellSuccess,
   countWantSellFail,
+  acceptExchangeSuccess,
+  acceptExchangeFail,
+  cancelExchangeSuccess,
+  cancelExchangeFail,
 } from '../actions/Exchange';
 import {
+  ACCEPT_EXCHANGE_REQUEST,
+  CANCEL_EXCHANGE_REQUEST,
   COUNT_WANT_PURCHASE_REQUEST,
   COUNT_WANT_SELL_REQUEST,
   EXCHANGE_REQUEST,
@@ -107,6 +113,39 @@ export function* exchangeRequest() {
   );
 }
 
+export function* acceptExchange() {
+  yield takeEvery(
+    ACCEPT_EXCHANGE_REQUEST,
+    function* ({ idOrderDetail, jwtToken }) {
+      try {
+        const productData = yield call(
+          exchangeService.acceptExchange,
+          {
+            idRequest: idOrderDetail,
+          },
+          jwtToken
+        );
+        yield put(acceptExchangeSuccess(productData));
+      } catch (err) {
+        yield put(acceptExchangeFail(err.response && err.response.data.result));
+      }
+    }
+  );
+}
+
+export function* cancelExchange() {
+  yield takeEvery(CANCEL_EXCHANGE_REQUEST, function* ({ idOrderDetail }) {
+    try {
+      const productData = yield call(exchangeService.cancelExchange, {
+        idRequest: idOrderDetail,
+      });
+      yield put(cancelExchangeSuccess(productData));
+    } catch (err) {
+      yield put(cancelExchangeFail(err.response && err.response.data.result));
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
     fork(wantPurchaseRequest),
@@ -114,5 +153,7 @@ export default function* rootSaga() {
     fork(exchangeRequest),
     fork(countWantPurchase),
     fork(countWantSell),
+    fork(acceptExchange),
+    fork(cancelExchange),
   ]);
 }

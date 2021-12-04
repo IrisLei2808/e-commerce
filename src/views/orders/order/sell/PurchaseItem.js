@@ -242,7 +242,7 @@ const WaitingConfirm = ({
 
 const mapStateToProps = ({ order }) => {
   return {
-    loading: order && order.loading,
+    loading: order && order.orderLoading,
   };
 };
 

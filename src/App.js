@@ -14,6 +14,7 @@ import PostScreen from './views/products/product-post/PostScreen';
 import PlaceOrderScreen from './views/products/cart/PlaceOrderScreen';
 import PurchaseScreen from './views/orders/order/PurchaseScreen';
 import SellScreen from './views/orders/order/SellScreen';
+import MappingScreen from './views/products/mapping/MappingListScreen';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/placeorder" component={PlaceOrderScreen} />
           <Route path="/purchase" component={PurchaseScreen} />
           <Route path="/sell" component={SellScreen} />
+          <Route path="/mapping" component={MappingScreen} />
         </Container>
       </main>
       <Footer />

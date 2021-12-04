@@ -1,43 +1,43 @@
-import { Box, MenuItem, TextField } from "@material-ui/core";
-import Badge from "@material-ui/core/Badge";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import React, { useEffect, useState } from "react";
-import { Col, Form, Image, Row } from "react-bootstrap";
-import CurrencyInput from "react-currency-input-field";
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import FileUpload from "../../../components/layout-components/FileUpload";
-import LoadingButton from "../../../components/shared-components/LoadingButton";
-import ProductModal from "../../../components/shared-components/Modal";
+import { Box, MenuItem, TextField } from '@material-ui/core';
+import Badge from '@material-ui/core/Badge';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import React, { useEffect, useState } from 'react';
+import { Col, Form, Image, Row } from 'react-bootstrap';
+import CurrencyInput from 'react-currency-input-field';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import FileUpload from '../../../components/layout-components/FileUpload';
+import LoadingButton from '../../../components/shared-components/LoadingButton';
+import ProductModal from '../../../components/shared-components/Modal';
 import {
   createProduct,
   fetchCategoryByBrand,
   getAllCategory,
   imageRemove,
   resetProductType,
-} from "../../../redux/actions/Product";
+} from '../../../redux/actions/Product';
 import {
   ALL_CATEGORY_SUCCESS,
   CATEGORY_BY_BRAND_SUCCESS,
   CREATE_PRODUCT_SUCCESS,
   IMAGE_REMOVE_SUCCESS,
-} from "../../../redux/constants/Product";
+} from '../../../redux/constants/Product';
+import { useLocalStorage } from '../../../utils/utilities';
 
-const own = JSON.parse(localStorage.getItem("userInfo"));
 const currencies = [
   {
-    value: "SELL",
-    label: "BÁN",
+    value: 'SELL',
+    label: 'BÁN',
   },
   {
-    value: "EXCHANGE",
-    label: "TRAO ĐỔI",
+    value: 'EXCHANGE',
+    label: 'TRAO ĐỔI',
   },
   {
-    value: "BOTH",
-    label: "BÁN HOẶC TRAO ĐỔI",
+    value: 'BOTH',
+    label: 'BÁN HOẶC TRAO ĐỔI',
   },
 ];
 
@@ -56,27 +56,27 @@ const ProductPost = (props) => {
   } = props;
   let history = useHistory();
   const [show, setShow] = useState(false);
-
-  const handleClose = () => history.push("/");
+  const [userId, setUserId] = useLocalStorage('userInfo');
+  const handleClose = () => history.push('/');
   const goToDetail = () => history.push(`/product/${newProductId}`);
 
   const [image, setImage] = useState([]);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [price, setPrice] = useState("");
-  const [brand, setBrand] = useState("");
-  const [brandWantChange, setBrandWantChange] = useState("");
-  const [category, setCategory] = useState("");
-  const [categoryWantChange, setCategoryWantChange] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [categoryIdWantChange, setCategoryIdWantChange] = useState("");
-  const [currency, setCurrency] = useState("");
-  const wantChangeStatus = currency === "EXCHANGE" || currency === "BOTH";
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [price, setPrice] = useState('');
+  const [brand, setBrand] = useState('');
+  const [brandWantChange, setBrandWantChange] = useState('');
+  const [category, setCategory] = useState('');
+  const [categoryWantChange, setCategoryWantChange] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+  const [categoryIdWantChange, setCategoryIdWantChange] = useState('');
+  const [currency, setCurrency] = useState('');
+  const wantChangeStatus = currency === 'EXCHANGE' || currency === 'BOTH';
   const handleStatusChange = (event) => {
     const { value } = event.target;
     setCurrency(event.target.value);
-    if (value === "EXCHANGE" || value === "BOTH") {
+    if (value === 'EXCHANGE' || value === 'BOTH') {
       setQuantity(1);
     }
   };
@@ -89,7 +89,7 @@ const ProductPost = (props) => {
       quantity,
       price,
       image,
-      own && own.id,
+      userId && userId.id,
       currency,
       categoryId,
       categoryIdWantChange
@@ -97,7 +97,7 @@ const ProductPost = (props) => {
   }
 
   const openInNewTab = (url) => {
-    const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
     if (newWindow) newWindow.opener = null;
   };
 
@@ -169,25 +169,25 @@ const ProductPost = (props) => {
   return (
     <Box
       sx={{
-        backgroundColor: "#fff",
-        boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-        "&:hover": {
-          backgroundColor: "primary.main",
+        backgroundColor: '#fff',
+        boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+        '&:hover': {
+          backgroundColor: 'primary.main',
           opacity: [0.9, 0.8, 0.7],
         },
         borderRadius: 5,
-        padding: "20px 0px",
-        justifyContent: "space-around",
+        padding: '20px 0px',
+        justifyContent: 'space-around',
       }}
     >
       <ToastContainer position="top-center" autoClose={5000} />
-      <h2 style={{ textAlign: "center" }}>Đăng sản phẩm</h2>
+      <h2 style={{ textAlign: 'center' }}>Đăng sản phẩm</h2>
       <Form
         onSubmit={handleSubmit}
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
         {image && image.length > 0 && (
@@ -197,13 +197,13 @@ const ProductPost = (props) => {
                 <Badge
                   color="secondary"
                   badgeContent={<i class="fas fa-times"></i>}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: 'pointer' }}
                   onClick={() => imageRemove(item && item.cloudinaryId)}
                 >
                   <Image
                     key={item.cloudinaryId}
                     src={item.url}
-                    style={{ width: 120, height: 100, cursor: "pointer" }}
+                    style={{ width: 120, height: 100, cursor: 'pointer' }}
                     onClick={() => openInNewTab(item.url)}
                   />
                 </Badge>
@@ -248,7 +248,7 @@ const ProductPost = (props) => {
         <Form.Control
           as="textarea"
           placeholder="Mô tả"
-          style={{ height: "100px" }}
+          style={{ height: '100px' }}
           className="mt-4 w-50"
           required
           onChange={(e) => setDescription(e.target.value)}
@@ -275,9 +275,9 @@ const ProductPost = (props) => {
           onValueChange={(value, name) => setPrice(value)}
           className="mt-4 w-50"
           style={{
-            padding: "16px 14px",
+            padding: '16px 14px',
             borderRadius: 5,
-            border: "1px solid #bfbfbf",
+            border: '1px solid #bfbfbf',
           }}
           required
         />

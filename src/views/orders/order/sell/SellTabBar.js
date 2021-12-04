@@ -15,6 +15,11 @@ import {
   countSell,
 } from '../../../../redux/actions/Order';
 import {
+  wantChangeSell,
+  countWantSell,
+  resetExchangeType,
+} from '../../../../redux/actions/Exchange';
+import {
   ACCEPT_ORDER_SUCCESS,
   CANCEL_ORDER_SUCCESS,
 } from '../../../../redux/constants/Order';
@@ -25,6 +30,11 @@ import Return from './Return';
 import WaitingConfirm from './WaitingConfirm';
 import WaitingDelivery from './WaitingDelivery';
 import Exchange from './Exchange';
+import { useLocalStorage } from '../../../../utils/utilities';
+import {
+  ACCEPT_EXCHANGE_SUCCESS,
+  CANCEL_EXCHANGE_SUCCESS,
+} from '../../../../redux/constants/Exchange';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -65,13 +75,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ScrollableTabsButtonAuto = (props) => {
-  const { sellRequest, countSell, cresetOrderType, type } = props;
+  const {
+    sellRequest,
+    countSell,
+    cresetOrderType,
+    type,
+    wantChangeSell,
+    countWantSell,
+    resetExchangeType,
+    exchangeType,
+  } = props;
+  const [user, setUser] = useLocalStorage('userInfo');
   const own = JSON.parse(localStorage.getItem('userInfo'));
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const notify = () => toast.success('Đã xác nhận đơn hàng!');
   const notifyCancel = () => toast.success('Đã hủy đơn hàng!');
+
+  const notifyWant = () => toast.success('Đã đồng ý yêu cầu trao đổi!');
+  const notifyWantCancel = () => toast.success('Đã hủy yêu cầu trao đổi!');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -102,6 +125,32 @@ const ScrollableTabsButtonAuto = (props) => {
       resetOrderType();
     };
   }, [type]);
+
+  useEffect(() => {
+    switch (exchangeType) {
+      case CANCEL_EXCHANGE_SUCCESS:
+        wantChangeSell(user && user.id, {
+          page: 1,
+          limit: 5,
+        });
+        countWantSell(user && user.id);
+        notifyWantCancel();
+        break;
+      case ACCEPT_EXCHANGE_SUCCESS:
+        wantChangeSell(user && user.id, {
+          page: 1,
+          limit: 5,
+        });
+        countWantSell(user && user.id);
+        notifyWant();
+        break;
+      default:
+        break;
+    }
+    return function cleanup() {
+      resetExchangeType();
+    };
+  }, [exchangeType]);
 
   return (
     <div className={classes.root}>
@@ -162,9 +211,10 @@ const ScrollableTabsButtonAuto = (props) => {
   );
 };
 
-const mapStateToProps = ({ order }) => {
+const mapStateToProps = ({ order, exchange }) => {
   return {
     type: order && order.type,
+    exchangeType: exchange && exchange.type,
   };
 };
 
@@ -172,6 +222,9 @@ const mapDispatchToProps = {
   sellRequest,
   countSell,
   resetOrderType,
+  wantChangeSell,
+  countWantSell,
+  resetExchangeType,
 };
 
 export default connect(

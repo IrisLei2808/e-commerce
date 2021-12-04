@@ -1,18 +1,21 @@
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
+import React, { useState } from 'react';
 import {
+  Button,
   Col,
   Image,
   ListGroup,
   PopoverContent,
   PopoverTitle,
   Row,
-  Button,
 } from 'react-bootstrap';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import WantChangeDialog from '../../../../components/layout-components/WantChangeDialog';
+import { cancelExchange } from '../../../../redux/actions/Exchange';
 import { formatMoney } from '../../../../utils/formatText';
 
 const LoadingButton = ({ title, loading, accept, handleClickOpen }) => {
@@ -52,7 +55,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ExchangeItem = ({ item, status }) => {
+const ExchangeItem = ({ item, status, cancelExchange, loading }) => {
+  const [open, setOpen] = useState(false);
+  const [denyOpen, setDenyOpen] = React.useState(false);
+
+  const handleDenyOpen = () => {
+    setDenyOpen(true);
+  };
+
+  const handleDenyClose = () => {
+    setDenyOpen(false);
+  };
+
+  const handleDeny = () => {
+    cancelExchange(item && item.idRequest);
+  };
+
   const { myproduct } = item;
   const popover = (
     <Popover id="popover-basic">
@@ -237,7 +255,11 @@ const ExchangeItem = ({ item, status }) => {
                 </>
               )}
               <Col>
-                <LoadingButton title="Hủy yêu cầu trao đổi" accept={true} />
+                <LoadingButton
+                  title="Hủy yêu cầu trao đổi"
+                  accept={true}
+                  handleClickOpen={handleDenyOpen}
+                />
               </Col>
               <div
                 className="d-flex justify-content-center align-items-center"
@@ -258,8 +280,25 @@ const ExchangeItem = ({ item, status }) => {
           </>
         </ListGroup>
       </ListGroup.Item>
+      <WantChangeDialog
+        open={denyOpen}
+        handleClose={handleDenyClose}
+        handleDeny={handleDeny}
+        loading={loading}
+        accept={false}
+      />
     </>
   );
 };
 
-export default ExchangeItem;
+const mapStateToProps = ({ exchange }) => {
+  return {
+    loading: exchange && exchange.exchangeLoading,
+  };
+};
+
+const mapDispatchToProps = {
+  cancelExchange,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExchangeItem);

@@ -71,12 +71,12 @@ import {
   WAITING_DELIVERY_FAIL,
   WAITING_DELIVERY_REQUEST,
   WAITING_DELIVERY_SUCCESS,
-} from "../constants/Order";
-import { RESET_ORDER_TYPE } from "../constants/Order";
+} from '../constants/Order';
+import { RESET_ORDER_TYPE } from '../constants/Order';
 
 const initState = {
   loading: false,
-  message: "",
+  message: '',
   showMessage: false,
 };
 
@@ -525,40 +525,40 @@ const order = (state = initState, action) => {
     case ACCEPT_ORDER_REQUEST: {
       return {
         ...state,
-        loading: true,
+        orderLoading: true,
       };
     }
     case ACCEPT_ORDER_SUCCESS:
       return {
         ...state,
-        loading: false,
+        orderLoading: false,
         purchase: action.product,
         type: action.type,
       };
     case ACCEPT_ORDER_FAIL:
       return {
         ...state,
-        loading: false,
+        orderLoading: false,
         message: action.error,
         type: action.type,
       };
     case CANCEL_ORDER_REQUEST: {
       return {
         ...state,
-        loading: true,
+        orderLoading: true,
       };
     }
     case CANCEL_ORDER_SUCCESS:
       return {
         ...state,
-        loading: false,
+        orderLoading: false,
         purchase: action.product,
         type: action.type,
       };
     case CANCEL_ORDER_FAIL:
       return {
         ...state,
-        loading: false,
+        orderLoading: false,
         message: action.error,
         type: action.type,
       };

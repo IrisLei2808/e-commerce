@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState } from 'react';
 import {
   Col,
   Container,
@@ -7,16 +7,16 @@ import {
   NavDropdown,
   Row,
   Image,
-} from "react-bootstrap";
-import { connect } from "react-redux";
-import { LinkContainer } from "react-router-bootstrap";
-import { signOut } from "../../redux/actions/Auth";
-import { fetchCategoryByBrand } from "../../redux/actions/Product";
-import { getProfile } from "../../redux/actions/Auth";
-import { formatMoney } from "../../utils/formatText";
-import { getIcon } from "../../utils/iconText";
-import { useHistory } from "react-router-dom";
-import { AVATAR_NO_URL } from "../../configs/Constants";
+} from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { LinkContainer } from 'react-router-bootstrap';
+import { signOut } from '../../redux/actions/Auth';
+import { fetchCategoryByBrand } from '../../redux/actions/Product';
+import { getProfile } from '../../redux/actions/Auth';
+import { formatMoney } from '../../utils/formatText';
+import { getIcon } from '../../utils/iconText';
+import { useHistory } from 'react-router-dom';
+import { AVATAR_NO_URL } from '../../configs/Constants';
 
 const Header = (props) => {
   let history = useHistory();
@@ -29,7 +29,7 @@ const Header = (props) => {
     balance,
   } = props;
   const [curDropdownID, setCurDropdownID] = useState(null);
-  const own = JSON.parse(localStorage.getItem("userInfo"));
+  const own = JSON.parse(localStorage.getItem('userInfo'));
   const isOpen = (id) => {
     return curDropdownID === id;
   };
@@ -48,13 +48,13 @@ const Header = (props) => {
 
   const handleLogout = () => {
     signOut();
-    history.push("/login");
+    history.push('/login');
   };
 
   return (
     <header>
       <Navbar
-        style={{ background: "linear-gradient(to right, #525252, #3d72b4)" }}
+        style={{ background: 'linear-gradient(to right, #525252, #3d72b4)' }}
         variant="dark"
         expand="lg"
         collapseOnSelec
@@ -69,7 +69,16 @@ const Header = (props) => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
               <LinkContainer
-                to={userInfoFromStorage ? "/post" : "/login?redirect=post"}
+                to={
+                  userInfoFromStorage ? '/mapping' : '/login?redirect=mapping'
+                }
+              >
+                <Nav.Link>
+                  <i class="fas fa-lightbulb mr-2"></i>Gợi ý trao đổi
+                </Nav.Link>
+              </LinkContainer>
+              <LinkContainer
+                to={userInfoFromStorage ? '/post' : '/login?redirect=post'}
               >
                 <Nav.Link>
                   <i class="fas fa-cart-plus mr-2"></i>Đăng sản phẩm
@@ -88,7 +97,7 @@ const Header = (props) => {
                     className="ml-3"
                   >
                     <NavDropdown.Item
-                      style={{ color: "#02aab0", fontWeight: "bold" }}
+                      style={{ color: '#02aab0', fontWeight: 'bold' }}
                       disabled={true}
                     >
                       <i
@@ -151,24 +160,24 @@ const Header = (props) => {
       </Navbar>
       <Navbar
         expand="lg"
-        style={{ background: "linear-gradient(to left, #ff5f6d, #ffc371)" }}
+        style={{ background: 'linear-gradient(to left, #ff5f6d, #ffc371)' }}
         variant="dark"
       >
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse
           id="basic-navbar-nav"
-          style={{ justifyContent: "center" }}
+          style={{ justifyContent: 'center' }}
         >
           <Nav
             style={{
-              width: "100%",
-              justifyContent: "center",
+              width: '100%',
+              justifyContent: 'center',
             }}
           >
             <Row
               style={{
-                width: "100%",
-                justifyContent: "center",
+                width: '100%',
+                justifyContent: 'center',
               }}
             >
               {categoryList &&
@@ -186,7 +195,7 @@ const Header = (props) => {
                               category && category.idbrand
                             )} mr-2`}
                           ></i>
-                          <span style={{ fontWeight: "bold" }}>
+                          <span style={{ fontWeight: 'bold' }}>
                             {category && category.brandname}
                           </span>
                         </span>
@@ -194,10 +203,10 @@ const Header = (props) => {
                       id="basic-nav-dropdown"
                       show={isOpen(category.idbrand)}
                       onMouseEnter={() => toggle(category.idbrand)}
-                      onMouseLeave={() => toggle("")}
+                      onMouseLeave={() => toggle('')}
                       style={{
-                        textAlign: "center",
-                        width: "70%",
+                        textAlign: 'center',
+                        width: '70%',
                       }}
                     >
                       {category &&

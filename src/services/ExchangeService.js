@@ -25,4 +25,23 @@ exchangeService.countWantSell = function (userId) {
   });
 };
 
+exchangeService.acceptExchange = function (data, jwtToken) {
+  return axios({
+    method: 'post',
+    url: `${API_ENDPOINT}/api/exchange/acceptChange`,
+    data,
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+    },
+  });
+};
+
+exchangeService.cancelExchange = function (data) {
+  return axios({
+    method: 'post',
+    url: `${API_ENDPOINT}/api/exchange/cancelExchange`,
+    data,
+  });
+};
+
 export default exchangeService;

@@ -1,4 +1,10 @@
 import {
+  ACCEPT_EXCHANGE_FAIL,
+  ACCEPT_EXCHANGE_REQUEST,
+  ACCEPT_EXCHANGE_SUCCESS,
+  CANCEL_EXCHANGE_FAIL,
+  CANCEL_EXCHANGE_REQUEST,
+  CANCEL_EXCHANGE_SUCCESS,
   COUNT_WANT_PURCHASE_FAIL,
   COUNT_WANT_PURCHASE_REQUEST,
   COUNT_WANT_PURCHASE_SUCCESS,
@@ -116,6 +122,46 @@ const exchange = (state = initState, action) => {
       return {
         ...state,
         loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case ACCEPT_EXCHANGE_REQUEST: {
+      return {
+        ...state,
+        exchangeLoading: true,
+      };
+    }
+    case ACCEPT_EXCHANGE_SUCCESS:
+      return {
+        ...state,
+        exchangeLoading: false,
+        exchangeAccept: action.product,
+        type: action.type,
+      };
+    case ACCEPT_EXCHANGE_FAIL:
+      return {
+        ...state,
+        exchangeLoading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case CANCEL_EXCHANGE_REQUEST: {
+      return {
+        ...state,
+        exchangeLoading: true,
+      };
+    }
+    case CANCEL_EXCHANGE_SUCCESS:
+      return {
+        ...state,
+        exchangeLoading: false,
+        exchangeCancel: action.product,
+        type: action.type,
+      };
+    case CANCEL_EXCHANGE_FAIL:
+      return {
+        ...state,
+        exchangeLoading: false,
         message: action.error,
         type: action.type,
       };

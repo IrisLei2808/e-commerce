@@ -14,6 +14,11 @@ import {
   purchaseRequest,
   resetOrderType,
 } from '../../../../redux/actions/Order';
+import {
+  countWantPurchase,
+  wantChangePurchase,
+  resetExchangeType,
+} from '../../../../redux/actions/Exchange';
 import { CANCEL_ORDER_SUCCESS } from '../../../../redux/constants/Order';
 import Cancelled from './Cancelled';
 import CompleteDelivery from './CompleteDelivery';
@@ -22,6 +27,10 @@ import Return from './Return';
 import WaitingConfirm from './WaitingConfirm';
 import WaitingDelivery from './WaitingDelivery';
 import Exchange from './Exchange';
+import {
+  CANCEL_EXCHANGE_FAIL,
+  CANCEL_EXCHANGE_SUCCESS,
+} from '../../../../redux/constants/Exchange';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -62,12 +71,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ScrollableTabsButtonAuto = (props) => {
-  const { type, purchaseRequest, countPurchase } = props;
+  const {
+    type,
+    exchangeType,
+    purchaseRequest,
+    countPurchase,
+    countWantPurchase,
+    wantChangePurchase,
+    resetExchangeType,
+  } = props;
   const own = JSON.parse(localStorage.getItem('userInfo'));
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const notifyCancel = () => toast.success('Đã hủy đơn hàng!');
+  const notifyCancelExchange = () => toast.success('Đã hủy yêu cầu trao đổi!');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -90,6 +108,24 @@ const ScrollableTabsButtonAuto = (props) => {
       resetOrderType();
     };
   }, [type]);
+
+  useEffect(() => {
+    switch (exchangeType) {
+      case CANCEL_EXCHANGE_SUCCESS:
+        wantChangePurchase(own && own.id, {
+          page: 1,
+          limit: 5,
+        });
+        countWantPurchase(own && own.id);
+        notifyCancelExchange();
+        break;
+      default:
+        break;
+    }
+    return function cleanup() {
+      resetExchangeType();
+    };
+  }, [exchangeType]);
 
   return (
     <div className={classes.root}>
@@ -150,9 +186,10 @@ const ScrollableTabsButtonAuto = (props) => {
   );
 };
 
-const mapStateToProps = ({ order }) => {
+const mapStateToProps = ({ order, exchange }) => {
   return {
     type: order && order.type,
+    exchangeType: exchange && exchange.type,
   };
 };
 
@@ -160,6 +197,9 @@ const mapDispatchToProps = {
   resetOrderType,
   purchaseRequest,
   countPurchase,
+  countWantPurchase,
+  wantChangePurchase,
+  resetExchangeType,
 };
 
 export default connect(

@@ -14,23 +14,25 @@ import {
   exchangeRequest,
   resetExchangeType,
 } from '../../../redux/actions/Exchange';
+import { getMappingList } from '../../../redux/actions/Mapping';
 import {
   fetchProductDetails,
-  fetchProductOwn,
   resetProductType,
 } from '../../../redux/actions/Product';
-import { getMappingList } from '../../../redux/actions/Mapping';
 import { EXCHANGE_SUCCESS } from '../../../redux/constants/Exchange';
 import { formatMoney } from '../../../utils/formatText';
+import { getMappingListStatus } from '../../../utils/status';
+import { useLocalStorage } from '../../../utils/utilities';
+import Chip from '@material-ui/core/Chip';
 
-const LoadingButton = ({ title, loading, handleClickOpen, disabled }) => {
+const LoadingButton = ({ title, loading, handleClickOpen, disabled, id }) => {
   return (
     <div>
       <Button
         className="btn btn-primary btn-block"
         type="submit"
         disabled={disabled || loading}
-        onClick={handleClickOpen}
+        onClick={() => handleClickOpen(id)}
         style={{ padding: '10px 0px' }}
       >
         <span
@@ -50,6 +52,7 @@ const MappingListScreen = (props) => {
   const [name, setName] = useState('Bạn chưa chọn sản phẩm nào');
   const [price, setPrice] = useState();
   const [image, setImage] = useState();
+  const [status, setStatus] = useState();
   const [active, setActive] = useState();
   const [disabled, setDisabled] = useState(false);
   const [idProduct, setIdProduct] = useState();
@@ -80,12 +83,10 @@ const MappingListScreen = (props) => {
   const productId = match.params.id;
   const qty = location.search ? Number(location.search.split('=')[1]) : 1;
 
-  const userInfo = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo'))
-    : [];
+  const [userInfo, setUserInfo] = useLocalStorage('userInfo');
 
-  const exchangeHandler = () => {
-    exchangeRequest(userInfo && userInfo.id, productId, idProduct);
+  const exchangeHandler = (id) => {
+    history.push(`/mapping-list/${id}`);
   };
 
   const viewProductDetail = (id) => {
@@ -98,6 +99,7 @@ const MappingListScreen = (props) => {
     setImage(item.image);
     setActive(item.id);
     setIdProduct(item.idProduct);
+    setStatus(item.status);
     setDisabled(true);
   };
 
@@ -147,7 +149,7 @@ const MappingListScreen = (props) => {
     <Row>
       <Col md={8}>
         <h4>
-          {listSuggest && listSuggest.length > 0
+          {listOwn && listOwn.length > 0
             ? 'Chọn 1 sản phẩm để xem gợi ý trao đổi'
             : 'Bạn không có sản phẩm được gợi ý trao đổi'}
         </h4>
@@ -160,7 +162,8 @@ const MappingListScreen = (props) => {
             {listOwn &&
               listOwn.map(
                 (item, index) =>
-                  (item.status === 'EXCHANGE' || item.status === 'BOTH') && (
+                  (item.product.status === 'EXCHANGE' ||
+                    item.product.status === 'BOTH') && (
                     <ListGroup.Item
                       style={{ background: index === active && '#DCDEE6' }}
                     >
@@ -169,28 +172,43 @@ const MappingListScreen = (props) => {
                           <Image
                             src={
                               item &&
-                              item.Images &&
-                              item.Images[0] &&
-                              item.Images[0].address
-                                ? item.Images[0].address
+                              item.product &&
+                              item.product.Images &&
+                              item.product.Images[0] &&
+                              item.product.Images[0].address
+                                ? item &&
+                                  item.product &&
+                                  item.product.Images[0].address
                                 : defaultImage
                             }
-                            alt={item && item.name}
+                            alt={item && item.product && item.product.name}
                             fluid
                             rounded
                             style={{ height: 75 }}
                           />
                         </Col>
                         <Col md={2}>
-                          <Link to={`/product/${item.idProduct}`}>
-                            {item.name}
+                          <Link
+                            to={`/product/${
+                              item && item.product && item.product.idProduct
+                            }`}
+                          >
+                            {item && item.product && item.product.name}
                           </Link>
                         </Col>
-                        <Col md={2}>{formatMoney(item.price)}</Col>
+                        <Col md={2}>
+                          {formatMoney(
+                            item && item.product && item.product.price
+                          )}
+                        </Col>
                         <Col md={3}>
                           <Button
                             type="button"
-                            onClick={() => viewProductDetail(item.idProduct)}
+                            onClick={() =>
+                              viewProductDetail(
+                                item && item.product && item.product.idProduct
+                              )
+                            }
                             className="w-100"
                             variant="light"
                           >
@@ -205,10 +223,13 @@ const MappingListScreen = (props) => {
                             onClick={() =>
                               selectProduct({
                                 id: index,
-                                name: item.name,
-                                image: item.Images[0] && item.Images[0].address,
-                                price: item.price,
-                                idProduct: item.idProduct,
+                                name: item.product.name,
+                                image:
+                                  item.product.Images[0] &&
+                                  item.product.Images[0].address,
+                                price: item.product.price,
+                                idProduct: item.product.idProduct,
+                                status: item.statusRequestProduct,
                               })
                             }
                             className="w-100"
@@ -240,6 +261,20 @@ const MappingListScreen = (props) => {
                   {name}
                 </h4>
                 {price && formatMoney(price)}
+                {status && (
+                  <span style={{ textAlign: 'center' }} className="mt-2">
+                    <Chip
+                      size="small"
+                      label={`${getMappingListStatus(status)}`}
+                      style={{
+                        padding: '15px 5px',
+                        background: '#2ECC40',
+                        color: '#fff',
+                        fontWeight: 'bold',
+                      }}
+                    />
+                  </span>
+                )}
                 <Col className="w-80 mt-3">
                   {image && (
                     <Card.Img
@@ -254,6 +289,7 @@ const MappingListScreen = (props) => {
             <ListGroup.Item>
               <LoadingButton
                 handleClickOpen={exchangeHandler}
+                id={idProduct && idProduct}
                 disabled={!disabled}
                 title="Xem gợi ý trao đổi"
                 loading={exchangeLoading}
@@ -279,9 +315,8 @@ const mapStateToProps = ({ cart, product, exchange, mapping }) => {
     cartType: cart.type,
     productDetails: product.productDetails,
     cartItemsFromStorage: cart.cartItemsFromStorage,
-    listSuggest: product.mappingList,
-    loading: product.isLoading,
-    exchangeLoading: exchange.loading,
+    listOwn: mapping.mappingList,
+    loading: mapping.loading,
     exchangeType: exchange.type,
     exchangeMsg: exchange.exchangeMsg,
   };

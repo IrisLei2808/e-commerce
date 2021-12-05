@@ -3,6 +3,9 @@ import {
   MAPPING_LIST_REQUEST,
   MAPPING_LIST_SUCCESS,
   RESET_MAPPING,
+  SUGGEST_LIST_FAIL,
+  SUGGEST_LIST_REQUEST,
+  SUGGEST_LIST_SUCCESS,
 } from '../constants/Mapping';
 
 const initState = {
@@ -27,6 +30,26 @@ const mapping = (state = initState, action) => {
         type: action.type,
       };
     case MAPPING_LIST_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case SUGGEST_LIST_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case SUGGEST_LIST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        suggestList: action.product,
+        type: action.type,
+      };
+    case SUGGEST_LIST_FAIL:
       return {
         ...state,
         loading: false,

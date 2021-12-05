@@ -14,4 +14,12 @@ mappingService.mapping = function (jwtToken, params) {
   });
 };
 
+mappingService.suggestListProduct = function (id, params) {
+  return axios({
+    method: 'get',
+    url: `${API_ENDPOINT}/api/suggestMapping/listSuggestForProduct/${id}`,
+    params,
+  });
+};
+
 export default mappingService;

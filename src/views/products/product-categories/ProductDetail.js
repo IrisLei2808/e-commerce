@@ -196,13 +196,18 @@ const ProductDetail = (props) => {
                       <i class="fas fa-store mr-2"></i>Xem shop
                     </span>
                   </span>
-                  {!isOwn && (
+                  {!isOwn ? (
                     <span
                       className={styles.rating}
                       style={{ marginLeft: 'auto' }}
                     >
                       {getStatus(product && product.status)}
                     </span>
+                  ) : (
+                    <span
+                      className={styles.rating}
+                      style={{ marginLeft: 'auto' }}
+                    ></span>
                   )}
                 </Row>
                 <p className={styles.description}>

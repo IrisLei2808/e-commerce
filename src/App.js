@@ -15,6 +15,7 @@ import PlaceOrderScreen from './views/products/cart/PlaceOrderScreen';
 import PurchaseScreen from './views/orders/order/PurchaseScreen';
 import SellScreen from './views/orders/order/SellScreen';
 import MappingScreen from './views/products/mapping/MappingListScreen';
+import SuggestListScreen from './views/products/mapping/SuggestListScreen';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route path="/purchase" component={PurchaseScreen} />
           <Route path="/sell" component={SellScreen} />
           <Route path="/mapping" component={MappingScreen} />
+          <Route path="/mapping-list/:id" component={SuggestListScreen} />
         </Container>
       </main>
       <Footer />

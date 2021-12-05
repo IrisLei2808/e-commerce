@@ -223,28 +223,32 @@ const ProductPost = (props) => {
           required
           onChange={(e) => setName(e.target.value)}
         />
-        <Autocomplete
-          id="combo-box-demo"
-          options={brand}
-          getOptionLabel={(option) => option.brandname}
-          style={{ width: 300 }}
-          renderInput={(params) => (
-            <TextField {...params} label="Tên hãng" variant="outlined" />
-          )}
-          className="mt-4 w-50"
-          onChange={handleBrandChange}
-        />
-        <Autocomplete
-          id="combo-box-demo"
-          options={category}
-          getOptionLabel={(option) => option.name}
-          style={{ width: 300 }}
-          renderInput={(params) => (
-            <TextField {...params} label="Loại sản phẩm" variant="outlined" />
-          )}
-          className="mt-4 w-50"
-          onChange={handleCategoryChange}
-        />
+        {brand.length > 0 && (
+          <Autocomplete
+            id="combo-box-demo"
+            options={brand}
+            getOptionLabel={(option) => option.brandname}
+            style={{ width: 300 }}
+            renderInput={(params) => (
+              <TextField {...params} label="Tên hãng" variant="outlined" />
+            )}
+            className="mt-4 w-50"
+            onChange={handleBrandChange}
+          />
+        )}
+        {category.length > 0 && (
+          <Autocomplete
+            id="combo-box-demo"
+            options={category}
+            getOptionLabel={(option) => option.name}
+            style={{ width: 300 }}
+            renderInput={(params) => (
+              <TextField {...params} label="Loại sản phẩm" variant="outlined" />
+            )}
+            className="mt-4 w-50"
+            onChange={handleCategoryChange}
+          />
+        )}
         <Form.Control
           as="textarea"
           placeholder="Mô tả"
@@ -298,40 +302,42 @@ const ProductPost = (props) => {
             </MenuItem>
           ))}
         </TextField>
-        {wantChangeStatus && (
-          <>
-            <Autocomplete
-              id="combo-box-demo"
-              options={brandWantChange}
-              getOptionLabel={(option) => option.brandname}
-              style={{ width: 300 }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Brand want change"
-                  variant="outlined"
-                />
-              )}
-              className="mt-4 w-50"
-              onChange={handleBrandWantChange}
-            />
-            <Autocomplete
-              id="combo-box-demo"
-              options={categoryWantChange}
-              getOptionLabel={(option) => option.name}
-              style={{ width: 300 }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Category want change"
-                  variant="outlined"
-                />
-              )}
-              className="mt-4 w-50"
-              onChange={handleCategoryWantChange}
-            />
-          </>
-        )}
+        {wantChangeStatus &&
+          brandWantChange.length > 0 &&
+          categoryWantChange.length > 0 && (
+            <>
+              <Autocomplete
+                id="combo-box-demo"
+                options={brandWantChange}
+                getOptionLabel={(option) => option.brandname}
+                style={{ width: 300 }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Brand want change"
+                    variant="outlined"
+                  />
+                )}
+                className="mt-4 w-50"
+                onChange={handleBrandWantChange}
+              />
+              <Autocomplete
+                id="combo-box-demo"
+                options={categoryWantChange}
+                getOptionLabel={(option) => option.name}
+                style={{ width: 300 }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Category want change"
+                    variant="outlined"
+                  />
+                )}
+                className="mt-4 w-50"
+                onChange={handleCategoryWantChange}
+              />
+            </>
+          )}
         <LoadingButton loading={loading} title="Đăng sản phẩm" />
       </Form>
       <ProductModal

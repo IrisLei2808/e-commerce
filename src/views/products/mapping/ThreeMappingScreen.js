@@ -1,13 +1,37 @@
 import { Box } from '@material-ui/core';
-import React from 'react';
-import { ListGroup, Row, Image, Col } from 'react-bootstrap';
-import MappingItem from './MappingItem';
-import { Link } from 'react-router-dom';
-import { formatMoney } from '../../../utils/formatText';
+import React, { useEffect, useState } from 'react';
+import { Image, ListGroup, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import ThreeMappingDialog from '../../../components/layout-components/ThreeMappingDialog';
+import {
+  getSuggestList,
+  resetMappingType,
+} from '../../../redux/actions/Mapping';
+import {
+  CANCEL_JOIN_EXCHANGE_SUCCESS,
+  JOIN_EXCHANGE_SUCCESS,
+} from '../../../redux/constants/Mapping';
+import MappingItem from './MappingItem';
+import SuccessModal from '../../../components/shared-components/SuccessModal';
+import { useHistory } from 'react-router-dom';
 
-const ThreeMappingScreen = ({ index, item, item1, item2, item3 }) => {
+const ThreeMappingScreen = ({
+  index,
+  item,
+  item1,
+  item2,
+  item3,
+  id,
+  type,
+  joinResult,
+  cancelResult,
+}) => {
+  let history = useHistory();
+
+  const [message, setMessage] = useState('');
+  const [title, setTitle] = useState('');
   const [open, setOpen] = React.useState(false);
+  const [openModal, setOpenModal] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -15,6 +39,40 @@ const ThreeMappingScreen = ({ index, item, item1, item2, item3 }) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleClickOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const goToDetail = () => {
+    history.push('/mapping');
+  };
+
+  const goToPurchase = () => {
+    history.push('/purchase');
+  };
+
+  useEffect(() => {
+    switch (type) {
+      case JOIN_EXCHANGE_SUCCESS:
+        handleClickOpenModal();
+        setMessage(joinResult);
+        setTitle('Tham gia trao đổi');
+        break;
+      case CANCEL_JOIN_EXCHANGE_SUCCESS:
+        handleClickOpenModal();
+        setMessage(cancelResult);
+        setTitle('Từ chối tham gia trao đổi');
+        break;
+      default:
+        break;
+    }
+    resetMappingType();
+  }, [type]);
 
   return (
     <Box
@@ -82,8 +140,30 @@ const ThreeMappingScreen = ({ index, item, item1, item2, item3 }) => {
         item2={item2}
         item3={item3}
       />
+      <SuccessModal
+        show={openModal}
+        goToDetail={goToDetail}
+        handleClose={handleCloseModal}
+        message={message && message}
+        goToPurchase={goToPurchase}
+        title={title}
+      />
     </Box>
   );
 };
 
-export default ThreeMappingScreen;
+const mapStateToProps = ({ mapping }) => {
+  return {
+    loading: mapping.loading,
+    type: mapping.type,
+    joinResult: mapping.joinResult,
+    cancelResult: mapping.cancelResult,
+  };
+};
+
+const mapDispatchToProps = {
+  resetMappingType,
+  getSuggestList,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ThreeMappingScreen);

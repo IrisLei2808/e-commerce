@@ -1,7 +1,14 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const ProductModal = ({ show, handleClose, goToDetail }) => {
+const SuccessModal = ({
+  show,
+  handleClose,
+  goToDetail,
+  message,
+  title,
+  goToPurchase,
+}) => {
   return (
     <div>
       <Modal
@@ -11,21 +18,21 @@ const ProductModal = ({ show, handleClose, goToDetail }) => {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Đăng sản phẩm</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ display: 'flex', alignItems: 'center' }}>
           <i
             className="fas fa-check-circle mr-2"
             style={{ color: 'green', fontSize: 25 }}
           ></i>
-          Đăng sản phẩm thành công!
+          {message}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
-            Quay về trang chủ
-          </Button>
           <Button variant="primary" onClick={goToDetail}>
-            Xem chi tiết sản phẩm
+            Quay về trang gợi ý
+          </Button>
+          <Button variant="primary" onClick={goToPurchase}>
+            Xem đơn trao đổi
           </Button>
         </Modal.Footer>
       </Modal>
@@ -33,4 +40,4 @@ const ProductModal = ({ show, handleClose, goToDetail }) => {
   );
 };
 
-export default ProductModal;
+export default SuccessModal;

@@ -1,27 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import FormContainer from '../../components/layout-components/FormContainer';
+import DateFnsUtils from '@date-io/date-fns';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import React, { useEffect, useState } from 'react';
+import { Col, Form, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import AvatarUpload from '../../components/layout-components/AvatarUpload';
+import FormContainer from '../../components/layout-components/FormContainer';
 import Message from '../../components/shared-components/ErrorMessage';
 import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-import Grid from '@material-ui/core/Grid';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  resetAuthType,
-  register,
   avatarUpload,
+  register,
+  resetAuthType,
 } from '../../redux/actions/Auth';
-import Loader from '../../components/shared-components/Spinner';
-import AvatarUpload from '../../components/layout-components/AvatarUpload';
 import {
-  AVATAR_UPLOAD_FAIL,
   AVATAR_UPLOAD_SUCCESS,
   USER_REGISTER_SUCCESS,
 } from '../../redux/constants/Auth';

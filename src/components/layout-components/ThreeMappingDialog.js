@@ -1,13 +1,17 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
+import React from 'react';
+import { connect } from 'react-redux';
+import { cancelJoinExchange, joinExchange } from '../../redux/actions/Mapping';
+import { useLocalStorage } from '../../utils/utilities';
+import ConfirmDialog from './ConfirmDialog';
 
 const styles = (theme) => ({
   root: {
@@ -53,7 +57,7 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-export default function ThreeMappingDialog(props) {
+function ThreeMappingDialog(props) {
   const {
     open,
     setOpen,
@@ -64,7 +68,41 @@ export default function ThreeMappingDialog(props) {
     item1,
     item2,
     item3,
+    cancelJoinExchange,
+    joinExchange,
+    loading,
+    type,
   } = props;
+
+  const [user, setUser] = useLocalStorage('userInfo');
+
+  const handleJoinExchange = () => {
+    joinExchange(user.token, item && item.tradeMappingCode);
+  };
+
+  const handleCancelJoinExchange = () => {
+    cancelJoinExchange(user.token, item && item.tradeMappingCode);
+  };
+
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
+  const [denyOpen, setDenyOpen] = React.useState(false);
+
+  const handleConfirmClickOpen = () => {
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmClose = () => {
+    setConfirmOpen(false);
+  };
+
+  const handleDenyClickOpen = () => {
+    setDenyOpen(true);
+  };
+
+  const handleDenyClose = () => {
+    setDenyOpen(false);
+  };
+
   return (
     <div>
       <Dialog
@@ -117,14 +155,51 @@ export default function ThreeMappingDialog(props) {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Hủy gợi ý trao đổi
+          <Button onClick={() => handleDenyClickOpen()} color="primary">
+            Từ chối trao đổi
           </Button>
-          <Button autoFocus onClick={handleClose} color="primary">
-            Tham gia trao đổi nhóm
+          <Button
+            autoFocus
+            onClick={handleClose}
+            color="primary"
+            onClick={() => handleConfirmClickOpen()}
+          >
+            Tham gia trao đổi
           </Button>
         </DialogActions>
       </Dialog>
+      <ConfirmDialog
+        open={confirmOpen}
+        setOpen={setConfirmOpen}
+        handleClickOpen={handleConfirmClickOpen}
+        handleClose={handleConfirmClose}
+        accept={true}
+        joinExchange={handleJoinExchange}
+        loading={loading}
+      />
+      <ConfirmDialog
+        open={denyOpen}
+        setOpen={setDenyOpen}
+        handleClickOpen={handleDenyClickOpen}
+        handleClose={handleDenyClose}
+        accept={false}
+        joinExchange={handleCancelJoinExchange}
+        loading={loading}
+      />
     </div>
   );
 }
+
+const mapStateToProps = ({ mapping }) => {
+  return {
+    loading: mapping.loading,
+    type: mapping.type,
+  };
+};
+
+const mapDispatchToProps = {
+  joinExchange,
+  cancelJoinExchange,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ThreeMappingDialog);

@@ -30,6 +30,7 @@ const SuggestListScreen = (props) => {
         <TwoMappingScreen
           index={index}
           item={item}
+          id={id}
           item1={
             item.listProductInCircle &&
             item.listProductInCircle.find(
@@ -69,9 +70,9 @@ const SuggestListScreen = (props) => {
             item.listProductInCircle.find(
               (product) =>
                 product.own !== userInfo.id &&
-                product.fromRequestID ===
+                product.fromRequestID !==
                   item.listProductInCircle.find(
-                    (product) => product.own !== userInfo.id
+                    (product) => product.own === userInfo.id
                   ).toRequestID
             )
           }

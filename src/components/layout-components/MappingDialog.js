@@ -1,13 +1,21 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
+import React from 'react';
+import { connect } from 'react-redux';
+import {
+  joinExchange,
+  cancelJoinExchange,
+  resetMappingType,
+} from '../../redux/actions/Mapping';
+import { useLocalStorage } from '../../utils/utilities';
+import TwoConfirmDialog from './TwoConfirmDialog';
 
 const styles = (theme) => ({
   root: {
@@ -53,7 +61,7 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-export default function MappingDialog(props) {
+function MappingDialog(props) {
   const {
     open,
     setOpen,
@@ -63,7 +71,40 @@ export default function MappingDialog(props) {
     item,
     item1,
     item2,
+    joinExchange,
+    cancelJoinExchange,
+    loading,
+    type,
   } = props;
+
+  const [user, setUser] = useLocalStorage('userInfo');
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
+  const [denyOpen, setDenyOpen] = React.useState(false);
+
+  const handleConfirmClickOpen = () => {
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmClose = () => {
+    setConfirmOpen(false);
+  };
+
+  const handleDenyClickOpen = () => {
+    setDenyOpen(true);
+  };
+
+  const handleDenyClose = () => {
+    setDenyOpen(false);
+  };
+
+  const handleJoinExchange = () => {
+    joinExchange(user.token, item && item.tradeMappingCode);
+  };
+
+  const handleCancelJoinExchange = () => {
+    cancelJoinExchange(user.token, item && item.tradeMappingCode);
+  };
+
   return (
     <div>
       <Dialog
@@ -105,11 +146,53 @@ export default function MappingDialog(props) {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
-            Tham gia trao đổi
+          <Button onClick={() => handleDenyClickOpen()} color="primary">
+            Từ chối trao đổi
           </Button>
+          {item1 && item1.status == 1 && (
+            <Button
+              onClick={() => handleConfirmClickOpen()}
+              autoFocus
+              color="primary"
+            >
+              Tham gia trao đổi
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
+      <TwoConfirmDialog
+        open={confirmOpen}
+        setOpen={setConfirmOpen}
+        handleClickOpen={handleConfirmClickOpen}
+        handleClose={handleConfirmClose}
+        accept={true}
+        joinExchange={handleJoinExchange}
+        loading={loading}
+      />
+      <TwoConfirmDialog
+        open={denyOpen}
+        setOpen={setDenyOpen}
+        handleClickOpen={handleDenyClickOpen}
+        handleClose={handleDenyClose}
+        accept={false}
+        joinExchange={handleCancelJoinExchange}
+        loading={loading}
+      />
     </div>
   );
 }
+
+const mapStateToProps = ({ mapping }) => {
+  return {
+    loading: mapping.loading,
+    type: mapping.type,
+  };
+};
+
+const mapDispatchToProps = {
+  joinExchange,
+  cancelJoinExchange,
+  resetMappingType,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MappingDialog);

@@ -69,7 +69,7 @@ export const joinExchange = (jwtToken, params) => {
 export const joinExchangeSuccess = (product) => {
   return {
     type: JOIN_EXCHANGE_SUCCESS,
-    product: product.data,
+    product: product.data.result,
   };
 };
 
@@ -102,7 +102,7 @@ export const cancelJoinExchangeFail = (error) => {
   };
 };
 
-export const resetProductType = () => {
+export const resetMappingType = () => {
   return {
     type: RESET_MAPPING,
   };

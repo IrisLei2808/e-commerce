@@ -1,0 +1,29 @@
+.avatar {
+   background-color: white;
+   height: 150px;
+   border-right: 1px solid #eee;
+}
+.title {
+    margin-top: 0px;
+}
+.follow {
+    margin-top: 50px;
+    margin-left: -180px;
+}
+.following {
+    margin-top: 50px;
+    margin-left: 50px
+}
+.product {
+    margin-left: 10px;
+}
+.price {
+    margin-top: 40px;
+    margin-left: -237px;
+    color: red;
+}
+.date {
+    margin-top: 90px;
+    margin-left: -97px;
+    font-size: 13px;
+}

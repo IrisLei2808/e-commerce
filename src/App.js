@@ -16,6 +16,7 @@ import PurchaseScreen from './views/orders/order/PurchaseScreen';
 import SellScreen from './views/orders/order/SellScreen';
 import MappingScreen from './views/products/mapping/MappingListScreen';
 import SuggestListScreen from './views/products/mapping/SuggestListScreen';
+import ProfileScreen from './views/profile/Profile';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="/sell" component={SellScreen} />
           <Route path="/mapping" component={MappingScreen} />
           <Route path="/mapping-list/:id" component={SuggestListScreen} />
+          <Route path="/profile" component={ProfileScreen} />
         </Container>
       </main>
       <Footer />

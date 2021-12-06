@@ -1,4 +1,10 @@
 import {
+  CANCEL_JOIN_EXCHANGE_FAIL,
+  CANCEL_JOIN_EXCHANGE_REQUEST,
+  CANCEL_JOIN_EXCHANGE_SUCCESS,
+  JOIN_EXCHANGE_FAIL,
+  JOIN_EXCHANGE_REQUEST,
+  JOIN_EXCHANGE_SUCCESS,
   MAPPING_LIST_FAIL,
   MAPPING_LIST_REQUEST,
   MAPPING_LIST_SUCCESS,
@@ -50,6 +56,46 @@ const mapping = (state = initState, action) => {
         type: action.type,
       };
     case SUGGEST_LIST_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case JOIN_EXCHANGE_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case JOIN_EXCHANGE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        joinResult: action.product,
+        type: action.type,
+      };
+    case JOIN_EXCHANGE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case CANCEL_JOIN_EXCHANGE_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case CANCEL_JOIN_EXCHANGE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        cancelResult: action.product,
+        type: action.type,
+      };
+    case CANCEL_JOIN_EXCHANGE_FAIL:
       return {
         ...state,
         loading: false,

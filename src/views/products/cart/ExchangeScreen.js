@@ -140,7 +140,7 @@ const ExchangeScreen = (props) => {
   ) : (
     <Row>
       <Col md={8}>
-        <h1>Chọn 1 sản phẩm để trao đổi</h1>
+        <h4>Chọn 1 sản phẩm để trao đổi</h4>
         {listOwn && listOwn.length <= 0 ? (
           <ErrorMessage>
             Bạn chưa có sản phẩm nào để trao đổi <Link to="/">Quay lại</Link>

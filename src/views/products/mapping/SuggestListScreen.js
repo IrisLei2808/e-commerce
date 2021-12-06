@@ -1,14 +1,17 @@
-import { Box } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { getSuggestList } from '../../../redux/actions/Mapping';
 import Loader from '../../../components/shared-components/Spinner';
+import { getSuggestList } from '../../../redux/actions/Mapping';
 import NoMappingScreen from './NoMappingScreen';
+import TwoMappingScreen from './TwoMappingScreen';
+import ThreeMappingScreen from './ThreeMappingScreen';
+import { useLocalStorage } from '../../../utils/utilities';
 
 const SuggestListScreen = (props) => {
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
   const { getSuggestList, suggestList, match, loading } = props;
+  const [userInfo, setUserInfo] = useLocalStorage('userInfo');
 
   const { id } = match.params;
 
@@ -18,23 +21,63 @@ const SuggestListScreen = (props) => {
       limit: limit,
     });
   }, []);
-  console.log('L: ', suggestList);
+
   return loading ? (
     <Loader />
   ) : suggestList && suggestList.length > 0 ? (
-    <Box
-      sx={{
-        backgroundColor: '#fff',
-        boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
-        '&:hover': {
-          backgroundColor: 'primary.main',
-          opacity: [0.9, 0.8, 0.7],
-        },
-        borderRadius: 5,
-        padding: '20px 0px',
-        justifyContent: 'space-around',
-      }}
-    ></Box>
+    suggestList.map((item, index) =>
+      item.peopleInCircle === 2 ? (
+        <TwoMappingScreen
+          index={index}
+          item={item}
+          item1={
+            item.listProductInCircle &&
+            item.listProductInCircle.find(
+              (product) => product.own === userInfo.id
+            )
+          }
+          item2={
+            item.listProductInCircle &&
+            item.listProductInCircle.find(
+              (product) => product.own !== userInfo.id
+            )
+          }
+        />
+      ) : (
+        <ThreeMappingScreen
+          index={index}
+          item={item}
+          item1={
+            item.listProductInCircle &&
+            item.listProductInCircle.find(
+              (product) => product.own === userInfo.id
+            )
+          }
+          item2={
+            item.listProductInCircle &&
+            item.listProductInCircle.find(
+              (product) =>
+                product.own !== userInfo.id &&
+                product.fromRequestID ===
+                  item.listProductInCircle.find(
+                    (product) => product.own === userInfo.id
+                  ).toRequestID
+            )
+          }
+          item3={
+            item.listProductInCircle &&
+            item.listProductInCircle.find(
+              (product) =>
+                product.own !== userInfo.id &&
+                product.fromRequestID ===
+                  item.listProductInCircle.find(
+                    (product) => product.own !== userInfo.id
+                  ).toRequestID
+            )
+          }
+        />
+      )
+    )
   ) : (
     <NoMappingScreen />
   );

@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   addToCart,
   removeFromCart,
   resetCartType,
-} from "../../../redux/actions/Cart";
+} from '../../../redux/actions/Cart';
 import {
   fetchProductDetails,
   resetProductType,
-} from "../../../redux/actions/Product";
-import { connect } from "react-redux";
+} from '../../../redux/actions/Product';
+import { connect } from 'react-redux';
 import {
   Row,
   Col,
@@ -17,13 +17,13 @@ import {
   Form,
   Button,
   Card,
-} from "react-bootstrap";
-import ErrorMessage from "../../../components/shared-components/ErrorMessage";
-import { Link } from "react-router-dom";
-import { formatMoney } from "../../../utils/formatText";
-import { PRODUCT_DETAILS_SUCCESS } from "../../../redux/constants/Product";
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../../../redux/constants/Cart";
-import { useHistory } from "react-router-dom";
+} from 'react-bootstrap';
+import ErrorMessage from '../../../components/shared-components/ErrorMessage';
+import { Link } from 'react-router-dom';
+import { formatMoney } from '../../../utils/formatText';
+import { PRODUCT_DETAILS_SUCCESS } from '../../../redux/constants/Product';
+import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../../../redux/constants/Cart';
+import { useHistory } from 'react-router-dom';
 
 const CartScreen = (props) => {
   let history = useHistory();
@@ -41,23 +41,23 @@ const CartScreen = (props) => {
     cartType,
   } = props;
   const defaultImage =
-    "https://cdn.tgdd.vn/Products/Images/42/228744/iphone-12-pro-max-512gb-191020-021035-200x200.jpg";
+    'https://cdn.tgdd.vn/Products/Images/42/228744/iphone-12-pro-max-512gb-191020-021035-200x200.jpg';
   const productId = match.params.id;
-  const qty = location.search ? Number(location.search.split("=")[1]) : 1;
+  const qty = location.search ? Number(location.search.split('=')[1]) : 1;
   const [cartStorage, setCartStorage] = useState(
-    localStorage.getItem("productCartItems")
-      ? JSON.parse(localStorage.getItem("productCartItems"))
+    localStorage.getItem('productCartItems')
+      ? JSON.parse(localStorage.getItem('productCartItems'))
       : []
   );
-  const userInfo = localStorage.getItem("userInfo")
-    ? JSON.parse(localStorage.getItem("userInfo"))
+  const userInfo = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
     : [];
 
   const checkoutHandler = () => {
     if (!userInfo) {
-      history.push("/login?redirect=placeorder");
+      history.push('/login?redirect=placeorder');
     } else {
-      history.push("/placeorder");
+      history.push('/placeorder');
     }
   };
 
@@ -80,15 +80,15 @@ const CartScreen = (props) => {
   useEffect(() => {
     switch (cartType) {
       case CART_ADD_ITEM:
-        localStorage.setItem("productCartItems", JSON.stringify(cartItems));
+        localStorage.setItem('productCartItems', JSON.stringify(cartItems));
         setCartStorage(
-          JSON.parse(localStorage.getItem("productCartItems")) || []
+          JSON.parse(localStorage.getItem('productCartItems')) || []
         );
         break;
       case CART_REMOVE_ITEM:
-        localStorage.setItem("productCartItems", JSON.stringify(cartItems));
+        localStorage.setItem('productCartItems', JSON.stringify(cartItems));
         setCartStorage(
-          JSON.parse(localStorage.getItem("productCartItems")) || []
+          JSON.parse(localStorage.getItem('productCartItems')) || []
         );
         break;
       default:
@@ -102,7 +102,7 @@ const CartScreen = (props) => {
   return (
     <Row>
       <Col md={8}>
-        <h1>Giỏ hàng</h1>
+        <h4>Giỏ hàng</h4>
         {cartStorage.length === 0 ? (
           <ErrorMessage>
             Chưa có sản phẩm nào <Link to="/">Quay lại</Link>
@@ -170,10 +170,10 @@ const CartScreen = (props) => {
         <Card>
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h2>
+              <h4>
                 Tổng ({cartStorage.reduce((acc, item) => acc + item.qty, 0)})
                 Sản phẩm
-              </h2>
+              </h4>
               {formatMoney(
                 cartStorage.reduce(
                   (acc, item) => acc + item.qty * item.price,

@@ -22,4 +22,26 @@ mappingService.suggestListProduct = function (id, params) {
   });
 };
 
+mappingService.joinExchange = function (jwtToken, data) {
+  return axios({
+    method: 'post',
+    url: `${API_ENDPOINT}/api/suggestMapping/joinCirleExchange`,
+    data,
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+    },
+  });
+};
+
+mappingService.cancelJoinExchange = function (jwtToken, data) {
+  return axios({
+    method: 'post',
+    url: `${API_ENDPOINT}/api/suggestMapping/cancelCirleExchange`,
+    data,
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+    },
+  });
+};
+
 export default mappingService;

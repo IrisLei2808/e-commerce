@@ -1,4 +1,4 @@
-@import "react-slideshow-image/dist/styles.css";
+@import 'react-slideshow-image/dist/styles.css';
 
 main {
   min-height: 80vh;
@@ -27,7 +27,14 @@ a:hover {
   font-weight: bold;
 }
 
-@media screen and (max-width: 1024px) {
+.suggest:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 1200px) {
+  .arrowImage {
+    visibility: hidden;
+  }
 }
 @media screen and (max-width: 768px) {
 }

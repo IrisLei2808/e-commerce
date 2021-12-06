@@ -158,14 +158,15 @@ function ThreeMappingDialog(props) {
           <Button onClick={() => handleDenyClickOpen()} color="primary">
             Từ chối trao đổi
           </Button>
-          <Button
-            autoFocus
-            onClick={handleClose}
-            color="primary"
-            onClick={() => handleConfirmClickOpen()}
-          >
-            Tham gia trao đổi
-          </Button>
+          {item1 && item1.status == 1 && (
+            <Button
+              onClick={() => handleConfirmClickOpen()}
+              autoFocus
+              color="primary"
+            >
+              Tham gia trao đổi
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
       <ConfirmDialog

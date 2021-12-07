@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import OrderDialog from '../../../../components/shared-components/OrderDialog';
 import { acceptOrder, cancelOrder } from '../../../../redux/actions/Order';
 import { formatMoney } from '../../../../utils/formatText';
+import Chip from '@material-ui/core/Chip';
 
 const LoadingButton = ({ title, loading, accept, handleClickOpen }) => {
   return (
@@ -120,17 +121,17 @@ const WaitingConfirm = ({
                 {item && item.user && item.user[0] && item.user[0].fullName}
               </span>
               {status === 2 && (
-                <span
-                  className="ml-auto d-flex"
+                <Chip
+                  size="small"
+                  label={`Đang chờ lấy hàng`}
                   style={{
-                    background: '#D21404',
-                    color: 'white',
-                    padding: '5px 15px',
-                    borderRadius: 4,
+                    padding: '15px 5px',
+                    background: '#E98621',
+                    color: '#fff',
+                    fontWeight: 'bold',
                   }}
-                >
-                  Đang chờ lấy hàng
-                </span>
+                  className="ml-auto"
+                />
               )}
               {status === 1 && (
                 <span className="ml-auto d-flex">
@@ -149,30 +150,30 @@ const WaitingConfirm = ({
                 </span>
               )}
               {status === 4 && (
-                <span
-                  className="ml-auto d-flex align-items-center"
+                <Chip
+                  size="small"
+                  label={`Đã giao`}
                   style={{
-                    background: '#00A86B',
-                    color: 'white',
-                    padding: '5px 15px',
-                    borderRadius: 4,
+                    padding: '15px 5px',
+                    background: '#3D9970',
+                    color: '#fff',
+                    fontWeight: 'bold',
                   }}
-                >
-                  Đã giao
-                </span>
+                  className="ml-auto"
+                />
               )}
               {status === 5 && (
-                <span
-                  className="ml-auto d-flex align-items-center"
+                <Chip
+                  size="small"
+                  label={`Đã hủy`}
                   style={{
+                    padding: '15px 5px',
                     background: '#D21404',
-                    color: 'white',
-                    padding: '5px 15px',
-                    borderRadius: 4,
+                    color: '#fff',
+                    fontWeight: 'bold',
                   }}
-                >
-                  Đã hủy
-                </span>
+                  className="ml-auto"
+                />
               )}
               {status === 6 && (
                 <span

@@ -108,11 +108,10 @@ export const cancelJoinExchangeFail = (error) => {
   };
 };
 
-export const sellRefundRequest = (userId, status, params) => {
+export const sellRefundRequest = (userId, params) => {
   return {
     type: SELL_REFUND_REQUEST,
     userId,
-    status,
     params,
   };
 };

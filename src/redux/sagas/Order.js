@@ -608,7 +608,7 @@ export function* refundProduct() {
 }
 
 export function* getRefundRequest() {
-  yield takeEvery(GET_REFUND_REQUEST, function* ({ userId, status, params }) {
+  yield takeEvery(GET_REFUND_REQUEST, function* ({ userId, params }) {
     const { page, limit } = params;
     const product = {
       page: page,
@@ -616,10 +616,9 @@ export function* getRefundRequest() {
     };
     try {
       const productData = yield call(
-        orderService.purchase,
+        orderService.refundPurchase,
         {
           id: userId,
-          status,
         },
         product
       );
@@ -631,11 +630,10 @@ export function* getRefundRequest() {
 }
 
 export function* countRefundRequest() {
-  yield takeEvery(COUNT_REFUND_REQUEST, function* ({ userId, status }) {
+  yield takeEvery(COUNT_REFUND_REQUEST, function* ({ userId }) {
     try {
-      const productData = yield call(orderService.countPurchase, {
+      const productData = yield call(orderService.countRefundPurchase, {
         id: userId,
-        status,
       });
       yield put(countRefundRequestSuccess(productData));
     } catch (err) {

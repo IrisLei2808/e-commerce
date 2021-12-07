@@ -31,6 +31,40 @@ orderService.countPurchase = function (data, params) {
   });
 };
 
+orderService.refundPurchase = function (data, params) {
+  return axios({
+    method: 'post',
+    url: `${API_ENDPOINT}/api/refund/getListRefundPurcharse`,
+    data,
+    params,
+  });
+};
+
+orderService.countRefundPurchase = function (data) {
+  return axios({
+    method: 'post',
+    url: `${API_ENDPOINT}/api/refund/countListRefundPurcharse`,
+    data,
+  });
+};
+
+orderService.refundSell = function (data, params) {
+  return axios({
+    method: 'post',
+    url: `${API_ENDPOINT}/api/refund/getListRefundSeller`,
+    data,
+    params,
+  });
+};
+
+orderService.countRefundSell = function (data) {
+  return axios({
+    method: 'post',
+    url: `${API_ENDPOINT}/api/refund/countListRefundSeller`,
+    data,
+  });
+};
+
 orderService.sell = function (data, params) {
   return axios({
     method: 'post',

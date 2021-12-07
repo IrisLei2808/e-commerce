@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { REFUND, WAITING_FOR_CONFIRM } from '../../../../configs/Constants';
+import { WAITING_FOR_CONFIRM } from '../../../../configs/Constants';
 import {
   countWantSell,
   resetExchangeType,
@@ -135,19 +135,19 @@ const ScrollableTabsButtonAuto = (props) => {
         notifyCancel();
         break;
       case ACCEPT_REFUND_SUCCESS:
-        sellRefundRequest(user.id, REFUND, {
+        sellRefundRequest(user.id, {
           page: 1,
           limit: 5,
         });
-        countSellRefund(user.id, REFUND);
+        countSellRefund(user.id);
         notifyRefund();
         break;
       case CANCEL_REFUND_SUCCESS:
-        sellRefundRequest(user.id, REFUND, {
+        sellRefundRequest(user.id, {
           page: 1,
           limit: 5,
         });
-        countSellRefund(user.id, REFUND);
+        countSellRefund(user.id);
         notifyRefundCancel();
         break;
       default:

@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 import WantChangeDialog from '../../../../components/layout-components/WantChangeDialog';
 import { cancelExchange } from '../../../../redux/actions/Exchange';
 import { formatMoney } from '../../../../utils/formatText';
+import Chip from '@material-ui/core/Chip';
 
 const LoadingButton = ({ title, loading, accept, handleClickOpen }) => {
   return (
@@ -148,17 +149,17 @@ const ExchangeItem = ({ item, status, cancelExchange, loading }) => {
                     <i class="fas fa-sync-alt mr-1"></i>Thông tin trao đổi
                   </Link>
                 </OverlayTrigger>
-                <span
+                <Chip
+                  size="small"
+                  label={`Đang chờ xác nhận trao đổi`}
                   style={{
-                    background: '#2ab7ca',
-                    color: 'white',
-                    padding: '5px 15px',
-                    borderRadius: 4,
+                    padding: '15px 5px',
+                    background: '#00B4AB',
+                    color: '#fff',
+                    fontWeight: 'bold',
                   }}
                   className="ml-5"
-                >
-                  Đang chờ xác nhận trao đổi
-                </span>
+                />
               </span>
             </Row>
             <Row style={{ borderBottom: '1px solid #E8E9EB', padding: 20 }}>

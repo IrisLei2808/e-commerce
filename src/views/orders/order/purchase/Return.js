@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Col, ListGroup, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import Paging from '../../../../components/shared-components/Paging';
+import Paging from '../../../../components/shared-components/RefundPaging';
 import { REFUND } from '../../../../configs/Constants';
 import {
   getRefundRequest,
   countRefundRequest,
 } from '../../../../redux/actions/Order';
 import NoOrderScreen from '../NoOrderScreen';
-import PurchaseItem from './PurchaseItem';
+import PurchaseItem from './RefundItem';
 import Loader from '../../../../components/shared-components/Spinner';
 import { useLocalStorage } from '../../../../utils/utilities';
 
@@ -26,14 +26,14 @@ const Return = (props) => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    getRefundRequest(user.id, REFUND, {
+    getRefundRequest(user.id, {
       page: page,
       limit: limit,
     });
   }, []);
 
   useEffect(() => {
-    countRefundRequest(user.id, REFUND);
+    countRefundRequest(user.id);
   }, []);
 
   return loading ? (

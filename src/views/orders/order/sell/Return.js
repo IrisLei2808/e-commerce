@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Col, ListGroup, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import Paging from '../../../../components/shared-components/Paging';
+import Paging from '../../../../components/shared-components/RefundPaging';
 import { REFUND } from '../../../../configs/Constants';
 import {
   sellRefundRequest,
@@ -26,14 +26,14 @@ const Return = (props) => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    sellRefundRequest(user.id, REFUND, {
+    sellRefundRequest(user.id, {
       page: page,
       limit: limit,
     });
   }, []);
 
   useEffect(() => {
-    countSellRefund(user.id, REFUND);
+    countSellRefund(user.id);
   }, []);
 
   return loading ? (

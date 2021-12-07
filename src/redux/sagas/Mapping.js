@@ -102,7 +102,7 @@ export function* cancelJoinExchange() {
 }
 
 export function* sellRefundRequest() {
-  yield takeEvery(SELL_REFUND_REQUEST, function* ({ userId, status, params }) {
+  yield takeEvery(SELL_REFUND_REQUEST, function* ({ userId, params }) {
     const { page, limit } = params;
     const product = {
       page: page,
@@ -110,10 +110,9 @@ export function* sellRefundRequest() {
     };
     try {
       const productData = yield call(
-        orderService.sell,
+        orderService.refundSell,
         {
           id: userId,
-          status,
         },
         product
       );
@@ -127,11 +126,10 @@ export function* sellRefundRequest() {
 }
 
 export function* countSellRefund() {
-  yield takeEvery(COUNT_SELL_REFUND, function* ({ userId, status }) {
+  yield takeEvery(COUNT_SELL_REFUND, function* ({ userId }) {
     try {
-      const productData = yield call(orderService.countSell, {
+      const productData = yield call(orderService.countRefundSell, {
         id: userId,
-        status,
       });
       yield put(countSellRefundSuccess(productData));
     } catch (err) {

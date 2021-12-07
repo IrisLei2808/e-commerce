@@ -21,6 +21,7 @@ import {
 } from '../../../../redux/actions/Order';
 import ReceiveProductModal from '../../../../components/shared-components/ReceiveProductModal';
 import RefundDialog from '../../../../components/layout-components/RefundDialog';
+import Chip from '@material-ui/core/Chip';
 
 const LoadingButton = ({ title, loading, accept, handleClickOpen }) => {
   return (
@@ -156,17 +157,17 @@ const WaitingConfirm = ({
                       <i class="fas fa-truck mr-1"></i>Trạng thái giao hàng
                     </Link>
                   </OverlayTrigger>
-                  <span
+                  <Chip
+                    size="small"
+                    label={`Đang giao`}
                     style={{
-                      background: '#00A86B',
-                      color: 'white',
-                      padding: '5px 15px',
-                      borderRadius: 4,
+                      padding: '15px 5px',
+                      background: '#2ECC40',
+                      color: '#fff',
+                      fontWeight: 'bold',
                     }}
-                    className="ml-5 "
-                  >
-                    Đang giao
-                  </span>
+                    className="ml-5"
+                  />
                 </span>
               )}
             </Row>

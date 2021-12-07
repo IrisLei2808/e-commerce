@@ -679,11 +679,10 @@ export const refundProductFail = (error) => {
   };
 };
 
-export const getRefundRequest = (userId, status, params) => {
+export const getRefundRequest = (userId, params) => {
   return {
     type: GET_REFUND_REQUEST,
     userId,
-    status,
     params,
   };
 };

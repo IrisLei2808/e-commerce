@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
-import { connect } from "react-redux";
-import ProductCategory from "../../../components/layout-components/ProductCategory";
-import Loader from "../../../components/shared-components/Spinner";
+import React, { useEffect, useState } from 'react';
+import { Col, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import ProductCategory from '../../../components/layout-components/ProductCategory';
+import Loader from '../../../components/shared-components/Spinner';
 import {
   fetchCategoryByBrand,
   fetchProductByBrand,
   resetProductType,
-} from "../../../redux/actions/Product";
+} from '../../../redux/actions/Product';
 import {
   CATEGORY_BY_BRAND_SUCCESS,
   PRODUCT_BY_BRAND_SUCCESS,
-} from "../../../redux/constants/Product";
-import ViewMoreButton from "../../../components/shared-components/ViewMoreButton";
+} from '../../../redux/constants/Product';
+import ViewMoreButton from '../../../components/shared-components/ViewMoreButton';
 
 const ProductByBrandScreen = (props) => {
   const [product, setProduct] = useState(null);
@@ -71,8 +71,8 @@ const ProductByBrandScreen = (props) => {
           {product !== null && (
             <Row>
               {product &&
-                product.Products &&
-                product.Products.slice(0, visible).map((pro) => (
+                product.products &&
+                product.products.slice(0, visible).map((pro) => (
                   <Col sm={12} md={6} lg={4} xl={3}>
                     <ProductCategory product={pro} />
                   </Col>
@@ -87,8 +87,8 @@ const ProductByBrandScreen = (props) => {
                 visible >=
                 parseInt(
                   productList &&
-                    productList.Products &&
-                    productList.Products.length
+                    productList.products &&
+                    productList.products.length
                 )
                   ? true
                   : false

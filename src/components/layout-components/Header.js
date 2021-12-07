@@ -210,8 +210,8 @@ const Header = (props) => {
                       }}
                     >
                       {category &&
-                        category.Categories &&
-                        category.Categories.map((item) => (
+                        category.categories &&
+                        category.categories.map((item) => (
                           <NavDropdown.Item
                             onClick={() => {
                               history.push(`/category/${item.idcategory}`);

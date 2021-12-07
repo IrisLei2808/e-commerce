@@ -1,7 +1,7 @@
-import React from "react";
-import { Col, Row } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
-import CollectionItem from "./CollectionItem";
+import React from 'react';
+import { Col, Row } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+import CollectionItem from './CollectionItem';
 
 const ProductCollection = ({ collection }) => {
   let history = useHistory();
@@ -12,7 +12,7 @@ const ProductCollection = ({ collection }) => {
       </h3>
       <Row>
         {collection &&
-          collection.Products.map((product) => (
+          collection.products.map((product) => (
             <Col sm={12} md={8} lg={4} xl={3} className="mb-4">
               <CollectionItem product={product} />
             </Col>

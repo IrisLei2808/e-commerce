@@ -22,8 +22,8 @@ const ProductCategory = (props) => {
       >
         <Card.Img
           src={
-            product && product.Images && product.Images[0]
-              ? product.Images[0].address
+            product && product.images && product.images[0]
+              ? product.images[0].address
               : defaultImage
           }
           variant="top"

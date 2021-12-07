@@ -191,8 +191,8 @@ const ExchangeItem = ({
                 <Image
                   src={
                     myproduct &&
-                    myproduct.Images[0] &&
-                    myproduct.Images[0].address
+                    myproduct.images[0] &&
+                    myproduct.images[0].address
                   }
                   fluid
                   rounded
@@ -216,8 +216,8 @@ const ExchangeItem = ({
                   src={
                     item &&
                     item.productExchange &&
-                    item.productExchange.Images[0] &&
-                    item.productExchange.Images[0].address
+                    item.productExchange.images[0] &&
+                    item.productExchange.images[0].address
                   }
                   fluid
                   rounded

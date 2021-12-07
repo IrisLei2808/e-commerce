@@ -173,12 +173,12 @@ const MappingListScreen = (props) => {
                             src={
                               item &&
                               item.product &&
-                              item.product.Images &&
-                              item.product.Images[0] &&
-                              item.product.Images[0].address
+                              item.product.images &&
+                              item.product.images[0] &&
+                              item.product.images[0].address
                                 ? item &&
                                   item.product &&
-                                  item.product.Images[0].address
+                                  item.product.images[0].address
                                 : defaultImage
                             }
                             alt={item && item.product && item.product.name}
@@ -225,8 +225,8 @@ const MappingListScreen = (props) => {
                                 id: index,
                                 name: item.product.name,
                                 image:
-                                  item.product.Images[0] &&
-                                  item.product.Images[0].address,
+                                  item.product.images[0] &&
+                                  item.product.images[0].address,
                                 price: item.product.price,
                                 idProduct: item.product.idProduct,
                                 status: item.statusRequestProduct,

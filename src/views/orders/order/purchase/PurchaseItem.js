@@ -175,9 +175,9 @@ const WaitingConfirm = ({ item, status, notify, loading, cancelOrder }) => {
                     item &&
                     item.product &&
                     item.product[0] &&
-                    item.product[0].Images &&
-                    item.product[0].Images[0] &&
-                    item.product[0].Images[0].address
+                    item.product[0].images &&
+                    item.product[0].images[0] &&
+                    item.product[0].images[0].address
                   }
                   fluid
                   rounded

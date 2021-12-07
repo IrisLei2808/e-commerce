@@ -128,10 +128,8 @@ const RefundItem = ({ item, status, acceptRefund, cancelRefund, loading }) => {
                   src={
                     item &&
                     item.product &&
-                    item.product[0] &&
-                    item.product[0].Images &&
-                    item.product[0].Images[0] &&
-                    item.product[0].Images[0].address
+                    item.product.images[0] &&
+                    item.product.images[0].address
                   }
                   fluid
                   rounded
@@ -140,10 +138,7 @@ const RefundItem = ({ item, status, acceptRefund, cancelRefund, loading }) => {
               </Col>
               <Col>
                 <Row>
-                  {item &&
-                    item.product &&
-                    item.product[0] &&
-                    item.product[0].name}
+                  {item && item.product && item.product && item.product.name}
                 </Row>
                 <Row className="mt-2">x{item && item.quantity}</Row>
               </Col>

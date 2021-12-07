@@ -1,7 +1,15 @@
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { Button, Col, Image, ListGroup, Row } from 'react-bootstrap';
+import {
+  Button,
+  Col,
+  Image,
+  ListGroup,
+  Row,
+  PopoverContent,
+  PopoverTitle,
+} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import CancelRefundDialog from '../../../../components/layout-components/CancelRefundDialog';
 import WantRefundDialog from '../../../../components/layout-components/WantRefundDialog';
@@ -9,6 +17,9 @@ import { acceptRefund, cancelRefund } from '../../../../redux/actions/Order';
 import { formatMoney } from '../../../../utils/formatText';
 import { useLocalStorage } from '../../../../utils/utilities';
 import Chip from '@material-ui/core/Chip';
+import { Link } from 'react-router-dom';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
 
 const LoadingButton = ({ title, loading, accept, handleClickOpen }) => {
   return (
@@ -25,7 +36,7 @@ const LoadingButton = ({ title, loading, accept, handleClickOpen }) => {
         onClick={handleClickOpen}
         style={{ padding: '10px 0px' }}
       >
-        <i class="fas fa-times mr-2"></i>
+        <i class="fas fa-flag mr-2"></i>
         {title}
       </Button>
     </div>
@@ -56,6 +67,23 @@ const RefundItem = ({ item, status, acceptRefund, cancelRefund, loading }) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const popover = (
+    <Popover id="popover-basic">
+      <PopoverTitle>
+        <i class="fas fa-exclamation mr-2"></i>Lưu ý
+      </PopoverTitle>
+      <PopoverContent>
+        Nếu người bán từ chối yêu cầu đổi trả, bạn vui lòng click vào nút "Khiếu
+        nại" để gửi khiếu nại đến hệ thống. Sau ngày{' '}
+        <span style={{ fontWeight: 'bold' }}>
+          {item && item.timeLimitAccept}
+        </span>{' '}
+        , nếu không khiếu nại, hệ thống sẽ tự xác nhận là giao dịch thành công
+        và trả tiền cho người bán
+      </PopoverContent>
+    </Popover>
+  );
 
   const handleAccept = () => {
     acceptRefund(item && item.idOrderDetail, user && user.token);
@@ -128,10 +156,8 @@ const RefundItem = ({ item, status, acceptRefund, cancelRefund, loading }) => {
                   src={
                     item &&
                     item.product &&
-                    item.product[0] &&
-                    item.product[0].Images &&
-                    item.product[0].Images[0] &&
-                    item.product[0].Images[0].address
+                    item.product.images[0] &&
+                    item.product.images[0].address
                   }
                   fluid
                   rounded
@@ -140,10 +166,7 @@ const RefundItem = ({ item, status, acceptRefund, cancelRefund, loading }) => {
               </Col>
               <Col>
                 <Row>
-                  {item &&
-                    item.product &&
-                    item.product[0] &&
-                    item.product[0].name}
+                  {item && item.product && item.product && item.product.name}
                 </Row>
                 <Row className="mt-2">x{item && item.quantity}</Row>
               </Col>
@@ -152,18 +175,25 @@ const RefundItem = ({ item, status, acceptRefund, cancelRefund, loading }) => {
               </Col>
             </Row>
             <Row style={{ padding: 20 }}>
-              <Col style={{ display: 'flex' }}>
-                <LoadingButton
-                  title="Hủy yêu cầu trả hàng"
-                  accept={true}
-                  handleClickOpen={handleDenyOpen}
-                />
-                <LoadingButton
-                  title="Đồng ý yêu cầu trả hàng"
-                  accept={false}
-                  handleClickOpen={handleClickOpen}
-                />
-              </Col>
+              {item && item.status == 11 && (
+                <Col style={{ display: 'flex', alignItems: 'center' }}>
+                  <LoadingButton
+                    title="Khiếu nại"
+                    accept={true}
+                    handleClickOpen={handleDenyOpen}
+                  />
+                  <OverlayTrigger
+                    trigger="hover"
+                    placement="bottom"
+                    overlay={popover}
+                  >
+                    <Link style={{ textDecoration: 'none', fontSize: 15 }}>
+                      <i class="fas fa-info-circle mr-1"></i>Lưu ý khi đơn hàng
+                      bị từ chối đổi trả
+                    </Link>
+                  </OverlayTrigger>
+                </Col>
+              )}
               <div
                 className="d-flex justify-content-center align-items-center"
                 style={{ marginLeft: 'auto' }}

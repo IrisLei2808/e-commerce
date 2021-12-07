@@ -1,22 +1,28 @@
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Col, Image, ListGroup, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import FeedBackDialog from '../../../../components/layout-components/FeedBackDialog';
-import OrderDialog from '../../../../components/shared-components/OrderDialog';
-import { cancelOrder } from '../../../../redux/actions/Order';
+import CancelRefundDialog from '../../../../components/layout-components/CancelRefundDialog';
+import WantRefundDialog from '../../../../components/layout-components/WantRefundDialog';
+import { acceptRefund, cancelRefund } from '../../../../redux/actions/Order';
 import { formatMoney } from '../../../../utils/formatText';
+import { useLocalStorage } from '../../../../utils/utilities';
 
 const LoadingButton = ({ title, loading, accept, handleClickOpen }) => {
   return (
     <div>
       <Button
-        className="btn btn-primary px-3 py-2"
+        className={
+          accept
+            ? 'btn btn-primary px-3 py-2 mr-3'
+            : 'btn btn-primary px-3 py-2'
+        }
         type="submit"
         disabled={loading}
-        variant={accept ? 'success' : 'danger'}
+        variant={accept ? 'danger' : 'success'}
         onClick={handleClickOpen}
+        style={{ padding: '10px 0px' }}
       >
         <i class="fas fa-times mr-2"></i>
         {title}
@@ -42,12 +48,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WaitingConfirm = ({ item, status, notify, loading, cancelOrder }) => {
-  const [open, setOpen] = useState(false);
+const RefundItem = ({ item, status, acceptRefund, cancelRefund, loading }) => {
+  const [user, setUser] = useLocalStorage('userInfo');
+  const [open, setOpen] = React.useState(false);
   const [denyOpen, setDenyOpen] = React.useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-  const handleDenyOpen = () => {
-    setDenyOpen(true);
+  const handleAccept = () => {
+    acceptRefund(item && item.idOrderDetail, user && user.token);
   };
 
   const handleDenyClose = () => {
@@ -55,16 +65,15 @@ const WaitingConfirm = ({ item, status, notify, loading, cancelOrder }) => {
   };
 
   const handleDeny = () => {
-    cancelOrder(item && item.idOrderDetail);
-    setOpen(false);
+    cancelRefund(item && item.idOrderDetail, user && user.token);
   };
 
-  const handleOpenModal = () => {
+  const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setOpen(false);
+  const handleDenyOpen = () => {
+    setDenyOpen(true);
   };
 
   const classes = useStyles();
@@ -100,71 +109,19 @@ const WaitingConfirm = ({ item, status, notify, loading, cancelOrder }) => {
               >
                 {item && item.user && item.user[0] && item.user[0].fullName}
               </span>
-              {status === 2 && (
+              <span className="ml-auto d-flex align-items-center">
                 <span
-                  className="ml-auto d-flex"
                   style={{
                     background: '#2ab7ca',
                     color: 'white',
                     padding: '5px 15px',
                     borderRadius: 4,
                   }}
+                  className="ml-5"
                 >
-                  Đang chờ lấy hàng
+                  Đang chờ xác nhận đổi trả
                 </span>
-              )}
-              {status === 1 && (
-                <span
-                  className="ml-auto d-flex"
-                  style={{
-                    background: '#2ab7ca',
-                    color: 'white',
-                    padding: '5px 15px',
-                    borderRadius: 4,
-                  }}
-                >
-                  Đang chờ xác nhận
-                </span>
-              )}
-              {status === 4 && (
-                <span
-                  className="ml-auto d-flex align-items-center"
-                  style={{
-                    background: '#00A86B',
-                    color: 'white',
-                    padding: '5px 15px',
-                    borderRadius: 4,
-                  }}
-                >
-                  Đã giao
-                </span>
-              )}
-              {status === 5 && (
-                <span
-                  className="ml-auto d-flex align-items-center"
-                  style={{
-                    background: '#D21404',
-                    color: 'white',
-                    padding: '5px 15px',
-                    borderRadius: 4,
-                  }}
-                >
-                  Đã hủy
-                </span>
-              )}
-              {status === 6 && (
-                <span
-                  className="ml-auto d-flex"
-                  style={{
-                    background: '#2ab7ca',
-                    color: 'white',
-                    padding: '5px 15px',
-                    borderRadius: 4,
-                  }}
-                >
-                  Đang đợi xác nhận đổi trả
-                </span>
-              )}
+              </span>
             </Row>
             <Row style={{ borderBottom: '1px solid #E8E9EB', padding: 20 }}>
               <Col md={2}>
@@ -195,25 +152,19 @@ const WaitingConfirm = ({ item, status, notify, loading, cancelOrder }) => {
                 {formatMoney(item && item.price)}
               </Col>
             </Row>
-            <Row style={{ padding: 20, alignItems: 'center' }}>
-              {status === 4 && (
-                <Col>
-                  <a
-                    onClickCapture={handleOpenModal}
-                    style={{ color: '#00A86B' }}
-                  >
-                    <i class="far fa-comments mr-2"></i>Đánh giá sản phẩm ?
-                  </a>
-                </Col>
-              )}
-              {status === 1 && (
-                <Col>
-                  <LoadingButton
-                    title="Hủy đơn hàng"
-                    handleClickOpen={handleDenyOpen}
-                  />
-                </Col>
-              )}
+            <Row style={{ padding: 20 }}>
+              <Col style={{ display: 'flex' }}>
+                <LoadingButton
+                  title="Hủy yêu cầu trả hàng"
+                  accept={true}
+                  handleClickOpen={handleDenyOpen}
+                />
+                <LoadingButton
+                  title="Đồng ý yêu cầu trả hàng"
+                  accept={false}
+                  handleClickOpen={handleClickOpen}
+                />
+              </Col>
               <div
                 className="d-flex justify-content-center align-items-center"
                 style={{ marginLeft: 'auto' }}
@@ -230,20 +181,21 @@ const WaitingConfirm = ({ item, status, notify, loading, cancelOrder }) => {
             </Row>
           </>
         </ListGroup>
-        <FeedBackDialog
-          handleOpenModal={handleOpenModal}
-          handleCloseModal={handleCloseModal}
-          open={open}
-          item={item}
-          notify={notify}
-        />
       </ListGroup.Item>
-      <OrderDialog
+      <WantRefundDialog
+        open={open}
+        handleClose={handleClose}
+        handleAccept={handleAccept}
+        loading={loading}
+        accept={true}
+      />
+      <CancelRefundDialog
         open={denyOpen}
         handleClose={handleDenyClose}
         handleDeny={handleDeny}
         loading={loading}
         accept={false}
+        item={item}
       />
     </>
   );
@@ -256,7 +208,8 @@ const mapStateToProps = ({ order }) => {
 };
 
 const mapDispatchToProps = {
-  cancelOrder,
+  acceptRefund,
+  cancelRefund,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(WaitingConfirm);
+export default connect(mapStateToProps, mapDispatchToProps)(RefundItem);

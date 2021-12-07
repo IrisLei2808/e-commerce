@@ -8,9 +8,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { WAITING_FOR_CONFIRM } from '../../../../configs/Constants';
+import { WAITING_FOR_CONFIRM, DELIVERY } from '../../../../configs/Constants';
 import {
+  countDelivery,
   countPurchase,
+  deliveryRequest,
   purchaseRequest,
   resetOrderType,
 } from '../../../../redux/actions/Order';
@@ -19,7 +21,11 @@ import {
   wantChangePurchase,
   resetExchangeType,
 } from '../../../../redux/actions/Exchange';
-import { CANCEL_ORDER_SUCCESS } from '../../../../redux/constants/Order';
+import {
+  CANCEL_ORDER_SUCCESS,
+  RECEIVE_PRODUCT_SUCCESS,
+  REFUND_PRODUCT_SUCCESS,
+} from '../../../../redux/constants/Order';
 import Cancelled from './Cancelled';
 import CompleteDelivery from './CompleteDelivery';
 import Delivery from './Delivery';
@@ -27,10 +33,8 @@ import Return from './Return';
 import WaitingConfirm from './WaitingConfirm';
 import WaitingDelivery from './WaitingDelivery';
 import Exchange from './Exchange';
-import {
-  CANCEL_EXCHANGE_FAIL,
-  CANCEL_EXCHANGE_SUCCESS,
-} from '../../../../redux/constants/Exchange';
+import { CANCEL_EXCHANGE_SUCCESS } from '../../../../redux/constants/Exchange';
+import { useLocalStorage } from '../../../../utils/utilities';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -77,15 +81,22 @@ const ScrollableTabsButtonAuto = (props) => {
     purchaseRequest,
     countPurchase,
     countWantPurchase,
+    deliveryRequest,
+    countDelivery,
     wantChangePurchase,
     resetExchangeType,
   } = props;
   const own = JSON.parse(localStorage.getItem('userInfo'));
+  const [user, setUser] = useLocalStorage('userInfo');
+
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const notifyCancel = () => toast.success('Đã hủy đơn hàng!');
   const notifyCancelExchange = () => toast.success('Đã hủy yêu cầu trao đổi!');
+  const receiveProduct = () =>
+    toast.success('Cảm ơn bạn đã xác nhận đơn hàng này!');
+  const refundProduct = () => toast.success('Đã gửi yêu cầu trả hàng!');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -100,6 +111,22 @@ const ScrollableTabsButtonAuto = (props) => {
         });
         countPurchase(own && own.id, WAITING_FOR_CONFIRM);
         notifyCancel();
+        break;
+      case RECEIVE_PRODUCT_SUCCESS:
+        deliveryRequest(user.id, DELIVERY, {
+          page: 1,
+          limit: 5,
+        });
+        countDelivery(user.id, DELIVERY);
+        receiveProduct();
+        break;
+      case REFUND_PRODUCT_SUCCESS:
+        deliveryRequest(user.id, DELIVERY, {
+          page: 1,
+          limit: 5,
+        });
+        countDelivery(user.id, DELIVERY);
+        refundProduct();
         break;
       default:
         break;
@@ -198,6 +225,8 @@ const mapDispatchToProps = {
   purchaseRequest,
   countPurchase,
   countWantPurchase,
+  deliveryRequest,
+  countDelivery,
   wantChangePurchase,
   resetExchangeType,
 };

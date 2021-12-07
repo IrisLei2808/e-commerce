@@ -1,12 +1,16 @@
-import { all, call, fork, put, takeEvery } from "redux-saga/effects";
-import orderService from "../../services/OrderService";
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
+import orderService from '../../services/OrderService';
 import {
   acceptOrderFail,
   acceptOrderSuccess,
+  acceptRefundFail,
+  acceptRefundSuccess,
   cancelledFail,
   cancelledSuccess,
   cancelOrderFail,
   cancelOrderSuccess,
+  cancelRefundFail,
+  cancelRefundSuccess,
   completeDeliveryFail,
   completeDeliverySuccess,
   countCancelledFail,
@@ -17,6 +21,8 @@ import {
   countDeliverySuccess,
   countPurchaseFail,
   countPurchaseSuccess,
+  countRefundRequestFail,
+  countRefundRequestSuccess,
   countSellCancelledFail,
   countSellCancelledSuccess,
   countSellFail,
@@ -29,10 +35,16 @@ import {
   deliveryInfoRequestSuccess,
   deliveryRequestFail,
   deliveryRequestSuccess,
+  getRefundRequestFail,
+  getRefundRequestSuccess,
   orderRequestFail,
   orderRequestSuccess,
   purchaseRequestFail,
   purchaseRequestSuccess,
+  receiveProductFail,
+  receiveProductSuccess,
+  refundProductFail,
+  refundProductSuccess,
   sellCancelledFail,
   sellCancelledSuccess,
   sellCompleteDeliveryFail,
@@ -49,16 +61,19 @@ import {
   sellWaitingDeliverySuccess,
   waitingDeliveryRequestFail,
   waitingDeliveryRequestSuccess,
-} from "../actions/Order";
+} from '../actions/Order';
 import {
   ACCEPT_ORDER_REQUEST,
+  ACCEPT_REFUND_REQUEST,
   CANCELLED_REQUEST,
   CANCEL_ORDER_REQUEST,
+  CANCEL_REFUND_REQUEST,
   COMPLETE_DELIVERY_REQUEST,
   COUNT_CANCELLED,
   COUNT_COMPLETE_DELIVERY,
   COUNT_DELIVERY,
   COUNT_PURCHASE,
+  COUNT_REFUND_REQUEST,
   COUNT_SELL,
   COUNT_SELL_CANCELLED,
   COUNT_SELL_COMPLETE_DELIVERY,
@@ -66,8 +81,11 @@ import {
   COUNT_WAITING_DELIVERY,
   DELIVERY_INFO_REQUEST,
   DELIVERY_REQUEST,
+  GET_REFUND_REQUEST,
   ORDER_CREATE_REQUEST,
   PURCHASE_REQUEST,
+  RECEIVE_PRODUCT_REQUEST,
+  REFUND_PRODUCT_REQUEST,
   SELL_CANCELLED_REQUEST,
   SELL_COMPLETE_DELIVERY,
   SELL_COUNT_DELIVERY,
@@ -75,7 +93,7 @@ import {
   SELL_REQUEST,
   SELL_WAITING_DELIVERY,
   WAITING_DELIVERY_REQUEST,
-} from "../constants/Order";
+} from '../constants/Order';
 
 export function* orderRequest() {
   yield takeEvery(ORDER_CREATE_REQUEST, function* ({ data }) {
@@ -97,7 +115,7 @@ export function* orderRequest() {
         token
       );
       yield put(orderRequestSuccess(productData));
-      localStorage.removeItem("productCartItems");
+      localStorage.removeItem('productCartItems');
     } catch (err) {
       yield put(orderRequestFail(err.response && err.response.data.result));
     }
@@ -554,6 +572,122 @@ export function* cancelOrder() {
   });
 }
 
+export function* receiveProduct() {
+  yield takeEvery(RECEIVE_PRODUCT_REQUEST, function* ({ idOrderDetail }) {
+    try {
+      const productData = yield call(orderService.receiveProduct, {
+        idOrderDetail,
+      });
+      yield put(receiveProductSuccess(productData));
+    } catch (err) {
+      yield put(receiveProductFail(err.response && err.response.data.result));
+    }
+  });
+}
+
+export function* refundProduct() {
+  yield takeEvery(
+    REFUND_PRODUCT_REQUEST,
+    function* ({ reason, idOrderDetail, image, token }) {
+      try {
+        const product = yield call(
+          orderService.refundProduct,
+          {
+            reason,
+            idOrderDetail,
+            image,
+          },
+          token
+        );
+        yield put(refundProductSuccess(product.data));
+      } catch (err) {
+        yield put(refundProductFail(err.response && err.response.data));
+      }
+    }
+  );
+}
+
+export function* getRefundRequest() {
+  yield takeEvery(GET_REFUND_REQUEST, function* ({ userId, status, params }) {
+    const { page, limit } = params;
+    const product = {
+      page: page,
+      limit: limit,
+    };
+    try {
+      const productData = yield call(
+        orderService.purchase,
+        {
+          id: userId,
+          status,
+        },
+        product
+      );
+      yield put(getRefundRequestSuccess(productData));
+    } catch (err) {
+      yield put(getRefundRequestFail(err.response && err.response.data.result));
+    }
+  });
+}
+
+export function* countRefundRequest() {
+  yield takeEvery(COUNT_REFUND_REQUEST, function* ({ userId, status }) {
+    try {
+      const productData = yield call(orderService.countPurchase, {
+        id: userId,
+        status,
+      });
+      yield put(countRefundRequestSuccess(productData));
+    } catch (err) {
+      yield put(
+        countRefundRequestFail(err.response && err.response.data.result)
+      );
+    }
+  });
+}
+
+export function* acceptRefund() {
+  yield takeEvery(
+    ACCEPT_REFUND_REQUEST,
+    function* ({ idOrderDetail, jwtToken }) {
+      try {
+        const productData = yield call(
+          orderService.acceptRefund,
+          {
+            idOrderDetail,
+          },
+          jwtToken
+        );
+        yield put(acceptRefundSuccess(productData));
+      } catch (err) {
+        yield put(acceptRefundFail(err.response && err.response.data.result));
+      }
+    }
+  );
+}
+
+export function* cancelRefund() {
+  yield takeEvery(
+    CANCEL_REFUND_REQUEST,
+    function* ({ idOrderDetail, reasonReject, token }) {
+      console.log(idOrderDetail, reasonReject);
+      try {
+        const productData = yield call(
+          orderService.cancelRefund,
+          {
+            idOrderDetail,
+            reasonReject,
+          },
+          token
+        );
+        yield put(cancelRefundSuccess(productData));
+      } catch (err) {
+        yield put(cancelRefundFail(err.response && err.response.data.result));
+      }
+    }
+  );
+}
+
 export default function* rootSaga() {
   yield all([
     fork(orderRequest),
@@ -580,5 +714,11 @@ export default function* rootSaga() {
     fork(sellCountCompleteDelivery),
     fork(sellCancelled),
     fork(sellCountCancell),
+    fork(receiveProduct),
+    fork(refundProduct),
+    fork(getRefundRequest),
+    fork(countRefundRequest),
+    fork(acceptRefund),
+    fork(cancelRefund),
   ]);
 }

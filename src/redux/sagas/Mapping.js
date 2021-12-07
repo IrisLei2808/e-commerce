@@ -1,19 +1,26 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import mappingService from '../../services/MappingService';
+import orderService from '../../services/OrderService';
 import {
   cancelJoinExchangeFail,
   cancelJoinExchangeSuccess,
+  countSellRefundFail,
+  countSellRefundSuccess,
   getMappingListFail,
   getMappingListSuccess,
   getSuggestListFail,
   getSuggestListSuccess,
   joinExchangeFail,
   joinExchangeSuccess,
+  sellRefundRequestFail,
+  sellRefundRequestSuccess,
 } from '../actions/Mapping';
 import {
   CANCEL_JOIN_EXCHANGE_REQUEST,
+  COUNT_SELL_REFUND,
   JOIN_EXCHANGE_REQUEST,
   MAPPING_LIST_REQUEST,
+  SELL_REFUND_REQUEST,
   SUGGEST_LIST_REQUEST,
 } from '../constants/Mapping';
 
@@ -94,11 +101,52 @@ export function* cancelJoinExchange() {
   );
 }
 
+export function* sellRefundRequest() {
+  yield takeEvery(SELL_REFUND_REQUEST, function* ({ userId, status, params }) {
+    const { page, limit } = params;
+    const product = {
+      page: page,
+      limit: limit,
+    };
+    try {
+      const productData = yield call(
+        orderService.sell,
+        {
+          id: userId,
+          status,
+        },
+        product
+      );
+      yield put(sellRefundRequestSuccess(productData));
+    } catch (err) {
+      yield put(
+        sellRefundRequestFail(err.response && err.response.data.result)
+      );
+    }
+  });
+}
+
+export function* countSellRefund() {
+  yield takeEvery(COUNT_SELL_REFUND, function* ({ userId, status }) {
+    try {
+      const productData = yield call(orderService.countSell, {
+        id: userId,
+        status,
+      });
+      yield put(countSellRefundSuccess(productData));
+    } catch (err) {
+      yield put(countSellRefundFail(err.response && err.response.data.result));
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
     fork(getMappingList),
     fork(getSuggestList),
     fork(joinExchange),
     fork(cancelJoinExchange),
+    fork(sellRefundRequest),
+    fork(countSellRefund),
   ]);
 }

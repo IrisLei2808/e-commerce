@@ -2,6 +2,9 @@ import {
   CANCEL_JOIN_EXCHANGE_FAIL,
   CANCEL_JOIN_EXCHANGE_REQUEST,
   CANCEL_JOIN_EXCHANGE_SUCCESS,
+  COUNT_SELL_REFUND,
+  COUNT_SELL_REFUND_FAIL,
+  COUNT_SELL_REFUND_SUCCESS,
   JOIN_EXCHANGE_FAIL,
   JOIN_EXCHANGE_REQUEST,
   JOIN_EXCHANGE_SUCCESS,
@@ -9,6 +12,9 @@ import {
   MAPPING_LIST_REQUEST,
   MAPPING_LIST_SUCCESS,
   RESET_MAPPING,
+  SELL_REFUND_FAIL,
+  SELL_REFUND_REQUEST,
+  SELL_REFUND_SUCCESS,
   SUGGEST_LIST_FAIL,
   SUGGEST_LIST_REQUEST,
   SUGGEST_LIST_SUCCESS,
@@ -98,6 +104,51 @@ export const cancelJoinExchangeSuccess = (product) => {
 export const cancelJoinExchangeFail = (error) => {
   return {
     type: CANCEL_JOIN_EXCHANGE_FAIL,
+    error,
+  };
+};
+
+export const sellRefundRequest = (userId, status, params) => {
+  return {
+    type: SELL_REFUND_REQUEST,
+    userId,
+    status,
+    params,
+  };
+};
+
+export const sellRefundRequestSuccess = (product) => {
+  return {
+    type: SELL_REFUND_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const sellRefundRequestFail = (error) => {
+  return {
+    type: SELL_REFUND_FAIL,
+    error,
+  };
+};
+
+export const countSellRefund = (userId, status) => {
+  return {
+    type: COUNT_SELL_REFUND,
+    userId,
+    status,
+  };
+};
+
+export const countSellRefundSuccess = (product) => {
+  return {
+    type: COUNT_SELL_REFUND_SUCCESS,
+    product: product.data.Count,
+  };
+};
+
+export const countSellRefundFail = (error) => {
+  return {
+    type: COUNT_SELL_REFUND_FAIL,
     error,
   };
 };

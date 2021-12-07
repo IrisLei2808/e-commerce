@@ -80,4 +80,45 @@ orderService.getWantChangeSell = function (userId, params) {
   });
 };
 
+orderService.receiveProduct = function (data) {
+  return axios({
+    method: 'post',
+    url: `${API_ENDPOINT}/api/orderDetail/receiveProduct`,
+    data,
+  });
+};
+
+orderService.refundProduct = function (data, jwtToken) {
+  return axios({
+    method: 'post',
+    url: `${API_ENDPOINT}/api/refund/requestRefund`,
+    data,
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+    },
+  });
+};
+
+orderService.acceptRefund = function (data, jwtToken) {
+  return axios({
+    method: 'post',
+    url: `${API_ENDPOINT}/api/orderDetail/acceptRefund`,
+    data,
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+    },
+  });
+};
+
+orderService.cancelRefund = function (data, jwtToken) {
+  return axios({
+    method: 'post',
+    url: `${API_ENDPOINT}/api/refund/shopRejectRefund`,
+    data,
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+    },
+  });
+};
+
 export default orderService;

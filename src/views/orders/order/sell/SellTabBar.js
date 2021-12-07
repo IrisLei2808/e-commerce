@@ -8,33 +8,40 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { WAITING_FOR_CONFIRM } from '../../../../configs/Constants';
+import { REFUND, WAITING_FOR_CONFIRM } from '../../../../configs/Constants';
 import {
-  resetOrderType,
-  sellRequest,
-  countSell,
-} from '../../../../redux/actions/Order';
-import {
-  wantChangeSell,
   countWantSell,
   resetExchangeType,
+  wantChangeSell,
 } from '../../../../redux/actions/Exchange';
 import {
-  ACCEPT_ORDER_SUCCESS,
-  CANCEL_ORDER_SUCCESS,
-} from '../../../../redux/constants/Order';
-import Cancelled from './Cancelled';
-import CompleteDelivery from './CompleteDelivery';
-import Delivery from './Delivery';
-import Return from './Return';
-import WaitingConfirm from './WaitingConfirm';
-import WaitingDelivery from './WaitingDelivery';
-import Exchange from './Exchange';
-import { useLocalStorage } from '../../../../utils/utilities';
+  countSellRefund,
+  resetMappingType,
+  sellRefundRequest,
+} from '../../../../redux/actions/Mapping';
+import {
+  countSell,
+  resetOrderType,
+  sellRequest,
+} from '../../../../redux/actions/Order';
 import {
   ACCEPT_EXCHANGE_SUCCESS,
   CANCEL_EXCHANGE_SUCCESS,
 } from '../../../../redux/constants/Exchange';
+import {
+  ACCEPT_ORDER_SUCCESS,
+  ACCEPT_REFUND_SUCCESS,
+  CANCEL_ORDER_SUCCESS,
+  CANCEL_REFUND_SUCCESS,
+} from '../../../../redux/constants/Order';
+import { useLocalStorage } from '../../../../utils/utilities';
+import Cancelled from './Cancelled';
+import CompleteDelivery from './CompleteDelivery';
+import Delivery from './Delivery';
+import Exchange from './Exchange';
+import Return from './Return';
+import WaitingConfirm from './WaitingConfirm';
+import WaitingDelivery from './WaitingDelivery';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -84,6 +91,11 @@ const ScrollableTabsButtonAuto = (props) => {
     countWantSell,
     resetExchangeType,
     exchangeType,
+    resetMappingType,
+    sellRefundRequest,
+    countSellRefund,
+    mappingType,
+    resetOrderType,
   } = props;
   const [user, setUser] = useLocalStorage('userInfo');
   const own = JSON.parse(localStorage.getItem('userInfo'));
@@ -95,6 +107,10 @@ const ScrollableTabsButtonAuto = (props) => {
 
   const notifyWant = () => toast.success('Đã đồng ý yêu cầu trao đổi!');
   const notifyWantCancel = () => toast.success('Đã hủy yêu cầu trao đổi!');
+
+  const notifyRefund = () => toast.success('Đã đồng ý yêu cầu trả hàng!');
+  const notifyRefundCancel = () =>
+    toast.success('Đã từ chối yêu cầu trả hàng!');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -117,6 +133,22 @@ const ScrollableTabsButtonAuto = (props) => {
         });
         countSell(own && own.id, WAITING_FOR_CONFIRM);
         notifyCancel();
+        break;
+      case ACCEPT_REFUND_SUCCESS:
+        sellRefundRequest(user.id, REFUND, {
+          page: 1,
+          limit: 5,
+        });
+        countSellRefund(user.id, REFUND);
+        notifyRefund();
+        break;
+      case CANCEL_REFUND_SUCCESS:
+        sellRefundRequest(user.id, REFUND, {
+          page: 1,
+          limit: 5,
+        });
+        countSellRefund(user.id, REFUND);
+        notifyRefundCancel();
         break;
       default:
         break;
@@ -211,10 +243,11 @@ const ScrollableTabsButtonAuto = (props) => {
   );
 };
 
-const mapStateToProps = ({ order, exchange }) => {
+const mapStateToProps = ({ order, exchange, mapping }) => {
   return {
     type: order && order.type,
     exchangeType: exchange && exchange.type,
+    mappingType: mapping && mapping.type,
   };
 };
 
@@ -225,6 +258,9 @@ const mapDispatchToProps = {
   wantChangeSell,
   countWantSell,
   resetExchangeType,
+  resetMappingType,
+  sellRefundRequest,
+  countSellRefund,
 };
 
 export default connect(

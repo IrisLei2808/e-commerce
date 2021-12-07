@@ -71,7 +71,25 @@ import {
   COUNT_SELL_CANCELLED,
   COUNT_SELL_CANCELLED_SUCCESS,
   COUNT_SELL_CANCELLED_FAIL,
-} from "../constants/Order";
+  RECEIVE_PRODUCT_REQUEST,
+  RECEIVE_PRODUCT_SUCCESS,
+  RECEIVE_PRODUCT_FAIL,
+  REFUND_PRODUCT_REQUEST,
+  REFUND_PRODUCT_SUCCESS,
+  REFUND_PRODUCT_FAIL,
+  GET_REFUND_REQUEST,
+  GET_REFUND_SUCCESS,
+  GET_REFUND_FAIL,
+  COUNT_REFUND_REQUEST,
+  COUNT_REFUND_REQUEST_SUCCESS,
+  COUNT_REFUND_REQUEST_FAIL,
+  ACCEPT_REFUND_REQUEST,
+  ACCEPT_REFUND_SUCCESS,
+  ACCEPT_REFUND_FAIL,
+  CANCEL_REFUND_REQUEST,
+  CANCEL_REFUND_SUCCESS,
+  CANCEL_REFUND_FAIL,
+} from '../constants/Order';
 
 export const orderRequest = (data, jwtToken) => {
   return {
@@ -612,6 +630,140 @@ export const cancelOrderSuccess = (product) => {
 export const cancelOrderFail = (error) => {
   return {
     type: CANCEL_ORDER_FAIL,
+    error,
+  };
+};
+
+export const receiveProduct = (idOrderDetail) => {
+  return {
+    type: RECEIVE_PRODUCT_REQUEST,
+    idOrderDetail,
+  };
+};
+
+export const receiveProductSuccess = (product) => {
+  return {
+    type: RECEIVE_PRODUCT_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const receiveProductFail = (error) => {
+  return {
+    type: RECEIVE_PRODUCT_FAIL,
+    error,
+  };
+};
+
+export const refundProduct = (reason, idOrderDetail, image, token) => {
+  return {
+    type: REFUND_PRODUCT_REQUEST,
+    reason,
+    idOrderDetail,
+    image,
+    token,
+  };
+};
+
+export const refundProductSuccess = (product) => {
+  return {
+    type: REFUND_PRODUCT_SUCCESS,
+    product,
+  };
+};
+
+export const refundProductFail = (error) => {
+  return {
+    type: REFUND_PRODUCT_FAIL,
+    error,
+  };
+};
+
+export const getRefundRequest = (userId, status, params) => {
+  return {
+    type: GET_REFUND_REQUEST,
+    userId,
+    status,
+    params,
+  };
+};
+
+export const getRefundRequestSuccess = (product) => {
+  return {
+    type: GET_REFUND_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const getRefundRequestFail = (error) => {
+  return {
+    type: GET_REFUND_FAIL,
+    error,
+  };
+};
+
+export const countRefundRequest = (userId, status) => {
+  return {
+    type: COUNT_REFUND_REQUEST,
+    userId,
+    status,
+  };
+};
+
+export const countRefundRequestSuccess = (product) => {
+  return {
+    type: COUNT_REFUND_REQUEST_SUCCESS,
+    product: product.data.Count,
+  };
+};
+
+export const countRefundRequestFail = (error) => {
+  return {
+    type: COUNT_REFUND_REQUEST_FAIL,
+    error,
+  };
+};
+
+export const acceptRefund = (idOrderDetail, jwtToken) => {
+  return {
+    type: ACCEPT_REFUND_REQUEST,
+    idOrderDetail,
+    jwtToken,
+  };
+};
+
+export const acceptRefundSuccess = (product) => {
+  return {
+    type: ACCEPT_REFUND_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const acceptRefundFail = (error) => {
+  return {
+    type: ACCEPT_REFUND_FAIL,
+    error,
+  };
+};
+
+export const cancelRefund = (idOrderDetail, reasonReject) => {
+  return {
+    type: CANCEL_REFUND_REQUEST,
+    idOrderDetail,
+    reasonReject,
+  };
+};
+
+export const cancelRefundSuccess = (product) => {
+  return {
+    type: CANCEL_REFUND_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const cancelRefundFail = (error) => {
+  return {
+    type: CANCEL_REFUND_FAIL,
     error,
   };
 };

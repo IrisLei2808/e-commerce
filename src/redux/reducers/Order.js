@@ -2,12 +2,18 @@ import {
   ACCEPT_ORDER_FAIL,
   ACCEPT_ORDER_REQUEST,
   ACCEPT_ORDER_SUCCESS,
+  ACCEPT_REFUND_FAIL,
+  ACCEPT_REFUND_REQUEST,
+  ACCEPT_REFUND_SUCCESS,
   CANCELLED_FAIL,
   CANCELLED_REQUEST,
   CANCELLED_SUCCESS,
   CANCEL_ORDER_FAIL,
   CANCEL_ORDER_REQUEST,
   CANCEL_ORDER_SUCCESS,
+  CANCEL_REFUND_FAIL,
+  CANCEL_REFUND_REQUEST,
+  CANCEL_REFUND_SUCCESS,
   COMPLETE_DELIVERY_FAIL,
   COMPLETE_DELIVERY_REQUEST,
   COMPLETE_DELIVERY_SUCCESS,
@@ -23,6 +29,9 @@ import {
   COUNT_PURCHASE,
   COUNT_PURCHASE_FAIL,
   COUNT_PURCHASE_SUCCESS,
+  COUNT_REFUND_REQUEST,
+  COUNT_REFUND_REQUEST_FAIL,
+  COUNT_REFUND_REQUEST_SUCCESS,
   COUNT_SELL,
   COUNT_SELL_CANCELLED,
   COUNT_SELL_CANCELLED_FAIL,
@@ -44,12 +53,21 @@ import {
   DELIVERY_INFO_SUCCESS,
   DELIVERY_REQUEST,
   DELIVERY_SUCCESS,
+  GET_REFUND_FAIL,
+  GET_REFUND_REQUEST,
+  GET_REFUND_SUCCESS,
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
   PURCHASE_FAIL,
   PURCHASE_REQUEST,
   PURCHASE_SUCCESS,
+  RECEIVE_PRODUCT_FAIL,
+  RECEIVE_PRODUCT_REQUEST,
+  RECEIVE_PRODUCT_SUCCESS,
+  REFUND_PRODUCT_FAIL,
+  REFUND_PRODUCT_REQUEST,
+  REFUND_PRODUCT_SUCCESS,
   SELL_CANCELLED_FAIL,
   SELL_CANCELLED_REQUEST,
   SELL_CANCELLED_SUCCESS,
@@ -556,6 +574,126 @@ const order = (state = initState, action) => {
         type: action.type,
       };
     case CANCEL_ORDER_FAIL:
+      return {
+        ...state,
+        orderLoading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case RECEIVE_PRODUCT_REQUEST: {
+      return {
+        ...state,
+        orderLoading: true,
+      };
+    }
+    case RECEIVE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        orderLoading: false,
+        purchase: action.product,
+        type: action.type,
+      };
+    case RECEIVE_PRODUCT_FAIL:
+      return {
+        ...state,
+        orderLoading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case REFUND_PRODUCT_REQUEST: {
+      return {
+        ...state,
+        orderLoading: true,
+      };
+    }
+    case REFUND_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        orderLoading: false,
+        refundMessage: action.product,
+        type: action.type,
+      };
+    case REFUND_PRODUCT_FAIL:
+      return {
+        ...state,
+        orderLoading: false,
+        error: action.error,
+        type: action.type,
+      };
+    case GET_REFUND_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case GET_REFUND_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        refundList: action.product,
+        type: action.type,
+      };
+    case GET_REFUND_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case COUNT_REFUND_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case COUNT_REFUND_REQUEST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        countRefund: action.product,
+        type: action.type,
+      };
+    case COUNT_REFUND_REQUEST_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case ACCEPT_REFUND_REQUEST: {
+      return {
+        ...state,
+        orderLoading: true,
+      };
+    }
+    case ACCEPT_REFUND_SUCCESS:
+      return {
+        ...state,
+        orderLoading: false,
+        exchangeAccept: action.product,
+        type: action.type,
+      };
+    case ACCEPT_REFUND_FAIL:
+      return {
+        ...state,
+        orderLoading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case CANCEL_REFUND_REQUEST: {
+      return {
+        ...state,
+        orderLoading: true,
+      };
+    }
+    case CANCEL_REFUND_SUCCESS:
+      return {
+        ...state,
+        orderLoading: false,
+        exchangeCancel: action.product,
+        type: action.type,
+      };
+    case CANCEL_REFUND_FAIL:
       return {
         ...state,
         orderLoading: false,

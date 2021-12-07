@@ -174,6 +174,19 @@ const WaitingConfirm = ({
                   Đã hủy
                 </span>
               )}
+              {status === 6 && (
+                <span
+                  className="ml-auto d-flex"
+                  style={{
+                    background: '#2ab7ca',
+                    color: 'white',
+                    padding: '5px 15px',
+                    borderRadius: 4,
+                  }}
+                >
+                  Đang đợi xác nhận đổi trả
+                </span>
+              )}
             </Row>
             <Row style={{ borderBottom: '1px solid #E8E9EB', padding: 20 }}>
               <Col md={2}>

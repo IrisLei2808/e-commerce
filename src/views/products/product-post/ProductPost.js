@@ -111,7 +111,7 @@ const ProductPost = (props) => {
 
   const handleBrandChange = (e, value) => {
     if (value) {
-      setCategory(value && value.Categories);
+      setCategory(value && value.categories);
     } else {
       setCategory(allCategory);
     }
@@ -119,7 +119,7 @@ const ProductPost = (props) => {
 
   const handleBrandWantChange = (e, value) => {
     if (value) {
-      setCategoryWantChange(value && value.Categories);
+      setCategoryWantChange(value && value.categories);
     } else {
       setCategoryWantChange(allCategory);
     }
@@ -314,7 +314,7 @@ const ProductPost = (props) => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Brand want change"
+                    label="Hãng muốn trao đổi"
                     variant="outlined"
                   />
                 )}
@@ -329,7 +329,7 @@ const ProductPost = (props) => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Category want change"
+                    label="Loại sản phẩm muốn trao đổi"
                     variant="outlined"
                   />
                 )}

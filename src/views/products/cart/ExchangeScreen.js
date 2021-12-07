@@ -159,10 +159,10 @@ const ExchangeScreen = (props) => {
                           <Image
                             src={
                               item &&
-                              item.Images &&
-                              item.Images[0] &&
-                              item.Images[0].address
-                                ? item.Images[0].address
+                              item.images &&
+                              item.images[0] &&
+                              item.images[0].address
+                                ? item.images[0].address
                                 : defaultImage
                             }
                             alt={item && item.name}
@@ -196,7 +196,7 @@ const ExchangeScreen = (props) => {
                               selectProduct({
                                 id: index,
                                 name: item.name,
-                                image: item.Images[0] && item.Images[0].address,
+                                image: item.images[0] && item.images[0].address,
                                 price: item.price,
                                 idProduct: item.idProduct,
                               })

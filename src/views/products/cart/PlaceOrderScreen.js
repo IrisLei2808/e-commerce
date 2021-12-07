@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { Card, Col, Image, ListGroup, Row } from "react-bootstrap";
-import { connect } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
-import Message from "../../../components/shared-components/ErrorMessage";
-import PlaceOrderModal from "../../../components/shared-components/PlaceOrderModal";
-import { orderRequest, resetOrderType } from "../../../redux/actions/Order";
-import { cartClearItems } from "../../../redux/actions/Cart";
-import { getProfile } from "../../../redux/actions/Auth";
+import React, { useEffect, useState } from 'react';
+import { Card, Col, Image, ListGroup, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import Message from '../../../components/shared-components/ErrorMessage';
+import PlaceOrderModal from '../../../components/shared-components/PlaceOrderModal';
+import { orderRequest, resetOrderType } from '../../../redux/actions/Order';
+import { cartClearItems } from '../../../redux/actions/Cart';
+import { getProfile } from '../../../redux/actions/Auth';
 import {
   ORDER_CREATE_FAIL,
   ORDER_CREATE_SUCCESS,
-} from "../../../redux/constants/Order";
-import { formatMoney } from "../../../utils/formatText";
+} from '../../../redux/constants/Order';
+import { formatMoney } from '../../../utils/formatText';
 
 const PlaceOrderScreen = (props) => {
   const {
@@ -25,19 +25,19 @@ const PlaceOrderScreen = (props) => {
   } = props;
   const [show, setShow] = useState(false);
   const handleClose = () => {
-    history.push("/purchase");
+    history.push('/purchase');
   };
   const goToHomePage = () => {
-    history.push("/");
+    history.push('/');
   };
-  const own = JSON.parse(localStorage.getItem("userInfo"));
+  const own = JSON.parse(localStorage.getItem('userInfo'));
   let history = useHistory();
   const defaultImage =
-    "https://cdn.tgdd.vn/Products/Images/42/228744/iphone-12-pro-max-512gb-191020-021035-200x200.jpg";
+    'https://cdn.tgdd.vn/Products/Images/42/228744/iphone-12-pro-max-512gb-191020-021035-200x200.jpg';
 
   const [cartStorage, setCartStorage] = useState(
-    localStorage.getItem("productCartItems")
-      ? JSON.parse(localStorage.getItem("productCartItems"))
+    localStorage.getItem('productCartItems')
+      ? JSON.parse(localStorage.getItem('productCartItems'))
       : []
   );
 
@@ -49,13 +49,13 @@ const PlaceOrderScreen = (props) => {
     });
   };
 
-  const userInfo = localStorage.getItem("userInfo")
-    ? JSON.parse(localStorage.getItem("userInfo"))
+  const userInfo = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
     : [];
 
   useEffect(() => {
     if (userInfo.length === 0) {
-      history.push("/login");
+      history.push('/login');
     }
   });
 
@@ -114,7 +114,7 @@ const PlaceOrderScreen = (props) => {
                           />
                         </Col>
                         <Col>
-                          <Link to={`/product/${item.product}`}>
+                          <Link to={`/product/${item.idProduct}`}>
                             {item.name}
                           </Link>
                         </Col>
@@ -157,12 +157,12 @@ const PlaceOrderScreen = (props) => {
                 >
                   <span
                     className={
-                      loading ? "spinner-border spinner-border-sm" : ""
+                      loading ? 'spinner-border spinner-border-sm' : ''
                     }
                     role="status"
                     aria-hidden="true"
                   ></span>
-                  {loading ? "Loading..." : "Đặt hàng"}
+                  {loading ? 'Loading...' : 'Đặt hàng'}
                 </button>
               </ListGroup.Item>
             </ListGroup>

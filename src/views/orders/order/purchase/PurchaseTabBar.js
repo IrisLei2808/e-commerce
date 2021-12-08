@@ -8,33 +8,36 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { WAITING_FOR_CONFIRM, DELIVERY } from '../../../../configs/Constants';
+import { DELIVERY, WAITING_FOR_CONFIRM } from '../../../../configs/Constants';
+import {
+  countWantPurchase,
+  resetExchangeType,
+  wantChangePurchase,
+} from '../../../../redux/actions/Exchange';
 import {
   countDelivery,
   countPurchase,
+  countRefundRequest,
   deliveryRequest,
+  getRefundRequest,
   purchaseRequest,
   resetOrderType,
 } from '../../../../redux/actions/Order';
-import {
-  countWantPurchase,
-  wantChangePurchase,
-  resetExchangeType,
-} from '../../../../redux/actions/Exchange';
+import { CANCEL_EXCHANGE_SUCCESS } from '../../../../redux/constants/Exchange';
 import {
   CANCEL_ORDER_SUCCESS,
   RECEIVE_PRODUCT_SUCCESS,
   REFUND_PRODUCT_SUCCESS,
+  REPORT_ADMIN_SUCCESS,
 } from '../../../../redux/constants/Order';
+import { useLocalStorage } from '../../../../utils/utilities';
 import Cancelled from './Cancelled';
 import CompleteDelivery from './CompleteDelivery';
 import Delivery from './Delivery';
+import Exchange from './Exchange';
 import Return from './Return';
 import WaitingConfirm from './WaitingConfirm';
 import WaitingDelivery from './WaitingDelivery';
-import Exchange from './Exchange';
-import { CANCEL_EXCHANGE_SUCCESS } from '../../../../redux/constants/Exchange';
-import { useLocalStorage } from '../../../../utils/utilities';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -85,6 +88,8 @@ const ScrollableTabsButtonAuto = (props) => {
     countDelivery,
     wantChangePurchase,
     resetExchangeType,
+    getRefundRequest,
+    countRefundRequest,
   } = props;
   const own = JSON.parse(localStorage.getItem('userInfo'));
   const [user, setUser] = useLocalStorage('userInfo');
@@ -97,6 +102,8 @@ const ScrollableTabsButtonAuto = (props) => {
   const receiveProduct = () =>
     toast.success('Cảm ơn bạn đã xác nhận đơn hàng này!');
   const refundProduct = () => toast.success('Đã gửi yêu cầu trả hàng!');
+  const report = () =>
+    toast.success('Khiếu nại của bạn đã được gửi lên hệ thống để xét duyệt!');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -127,6 +134,14 @@ const ScrollableTabsButtonAuto = (props) => {
         });
         countDelivery(user.id, DELIVERY);
         refundProduct();
+        break;
+      case REPORT_ADMIN_SUCCESS:
+        getRefundRequest(user.id, {
+          page: 1,
+          limit: 5,
+        });
+        countRefundRequest(user.id);
+        report();
         break;
       default:
         break;
@@ -229,6 +244,8 @@ const mapDispatchToProps = {
   countDelivery,
   wantChangePurchase,
   resetExchangeType,
+  getRefundRequest,
+  countRefundRequest,
 };
 
 export default connect(

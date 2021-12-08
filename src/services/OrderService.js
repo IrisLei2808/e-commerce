@@ -155,4 +155,12 @@ orderService.cancelRefund = function (data, jwtToken) {
   });
 };
 
+orderService.reportAdmin = function (data) {
+  return axios({
+    method: 'post',
+    url: `${API_ENDPOINT}/api/refund/reportAdmin`,
+    data,
+  });
+};
+
 export default orderService;

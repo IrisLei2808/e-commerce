@@ -76,7 +76,7 @@ const ExchangeItem = ({ item, status, cancelExchange, loading }) => {
   const popover = (
     <Popover id="popover-basic">
       <PopoverTitle>Trao đổi</PopoverTitle>
-      <PopoverContent>
+      <PopoverContent style={{ fontSize: 15 }}>
         Bạn đã gửi yêu cầu trao đổi sản phẩm{' '}
         <span style={{ fontWeight: 'bold' }}>
           {myproduct && myproduct.name}
@@ -98,7 +98,7 @@ const ExchangeItem = ({ item, status, cancelExchange, loading }) => {
       <PopoverTitle>
         <i class="fas fa-exclamation mr-2"></i>Lưu ý
       </PopoverTitle>
-      <PopoverContent>
+      <PopoverContent style={{ fontSize: 15 }}>
         Vui lòng kiểm tra tất cả các sản phẩm trong đơn hàng trước khi xác nhận
         đã nhận hàng, nếu phát sinh vấn đề, bạn có thể yêu cầu trả hàng/hoàn
         tiền cho đến ngày {item && item.timeLimitAccept}. Sau ngày này, bạn sẽ
@@ -145,9 +145,12 @@ const ExchangeItem = ({ item, status, cancelExchange, loading }) => {
                   placement="bottom"
                   overlay={popover}
                 >
-                  <Link style={{ textDecoration: 'none', fontSize: 15 }}>
+                  <a
+                    style={{ textDecoration: 'none', fontSize: 15 }}
+                    className="suggest"
+                  >
                     <i class="fas fa-sync-alt mr-1"></i>Thông tin trao đổi
-                  </Link>
+                  </a>
                 </OverlayTrigger>
                 <Chip
                   size="small"

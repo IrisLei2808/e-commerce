@@ -89,6 +89,9 @@ import {
   CANCEL_REFUND_REQUEST,
   CANCEL_REFUND_SUCCESS,
   CANCEL_REFUND_FAIL,
+  REPORT_ADMIN_REQUEST,
+  REPORT_ADMIN_SUCCESS,
+  REPORT_ADMIN_FAIL,
 } from '../constants/Order';
 
 export const orderRequest = (data, jwtToken) => {
@@ -763,6 +766,27 @@ export const cancelRefundSuccess = (product) => {
 export const cancelRefundFail = (error) => {
   return {
     type: CANCEL_REFUND_FAIL,
+    error,
+  };
+};
+
+export const reportAdmin = (idOrderDetail) => {
+  return {
+    type: REPORT_ADMIN_REQUEST,
+    idOrderDetail,
+  };
+};
+
+export const reportAdminSuccess = (product) => {
+  return {
+    type: REPORT_ADMIN_SUCCESS,
+    product: product.data,
+  };
+};
+
+export const reportAdminFail = (error) => {
+  return {
+    type: REPORT_ADMIN_FAIL,
     error,
   };
 };

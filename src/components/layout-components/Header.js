@@ -92,7 +92,7 @@ const Header = (props) => {
               {userInfoFromStorage ? (
                 <>
                   <NavDropdown
-                    title={userInfoFromStorage.userName}
+                    title={userInfoFromStorage.fullName}
                     id="username"
                     className="ml-3"
                   >

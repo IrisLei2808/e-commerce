@@ -1,4 +1,5 @@
 import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import {
@@ -6,20 +7,23 @@ import {
   Col,
   Image,
   ListGroup,
-  Row,
   PopoverContent,
   PopoverTitle,
+  Row,
 } from 'react-bootstrap';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
 import { connect } from 'react-redux';
 import CancelRefundDialog from '../../../../components/layout-components/CancelRefundDialog';
 import WantRefundDialog from '../../../../components/layout-components/WantRefundDialog';
-import { acceptRefund, cancelRefund } from '../../../../redux/actions/Order';
+import ConfirmModal from '../../../../components/screen-components/ConfirmModal';
+import {
+  acceptRefund,
+  cancelRefund,
+  reportAdmin,
+} from '../../../../redux/actions/Order';
 import { formatMoney } from '../../../../utils/formatText';
 import { useLocalStorage } from '../../../../utils/utilities';
-import Chip from '@material-ui/core/Chip';
-import { Link } from 'react-router-dom';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Popover from 'react-bootstrap/Popover';
 
 const LoadingButton = ({ title, loading, accept, handleClickOpen }) => {
   return (
@@ -60,9 +64,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RefundItem = ({ item, status, acceptRefund, cancelRefund, loading }) => {
+const RefundItem = ({
+  item,
+  status,
+  acceptRefund,
+  cancelRefund,
+  reportAdmin,
+  loading,
+}) => {
   const [user, setUser] = useLocalStorage('userInfo');
   const [open, setOpen] = React.useState(false);
+  const [reportOpen, setReportOpen] = React.useState(false);
   const [denyOpen, setDenyOpen] = React.useState(false);
   const handleClose = () => {
     setOpen(false);
@@ -73,7 +85,7 @@ const RefundItem = ({ item, status, acceptRefund, cancelRefund, loading }) => {
       <PopoverTitle>
         <i class="fas fa-exclamation mr-2"></i>Lưu ý
       </PopoverTitle>
-      <PopoverContent>
+      <PopoverContent style={{ fontSize: 15 }}>
         Nếu người bán từ chối yêu cầu đổi trả, bạn vui lòng click vào nút "Khiếu
         nại" để gửi khiếu nại đến hệ thống. Sau ngày{' '}
         <span style={{ fontWeight: 'bold' }}>
@@ -81,6 +93,17 @@ const RefundItem = ({ item, status, acceptRefund, cancelRefund, loading }) => {
         </span>{' '}
         , nếu không khiếu nại, hệ thống sẽ tự xác nhận là giao dịch thành công
         và trả tiền cho người bán
+      </PopoverContent>
+    </Popover>
+  );
+
+  const reason = (
+    <Popover id="popover-basic">
+      <PopoverTitle>
+        <i class="fas fa-exclamation mr-2"></i>Lý do từ chối đổi trả
+      </PopoverTitle>
+      <PopoverContent style={{ fontSize: 15 }}>
+        {item && item.description}
       </PopoverContent>
     </Popover>
   );
@@ -103,6 +126,18 @@ const RefundItem = ({ item, status, acceptRefund, cancelRefund, loading }) => {
 
   const handleDenyOpen = () => {
     setDenyOpen(true);
+  };
+
+  const handleReportOpen = () => {
+    setReportOpen(true);
+  };
+
+  const handleReportClose = () => {
+    setReportOpen(false);
+  };
+
+  const handleReport = () => {
+    reportAdmin(item && item.idOrderDetail);
   };
 
   const classes = useStyles();
@@ -138,17 +173,104 @@ const RefundItem = ({ item, status, acceptRefund, cancelRefund, loading }) => {
               >
                 {item && item.user && item.user[0] && item.user[0].fullName}
               </span>
-              <Chip
-                size="small"
-                label={`Bị từ chối đổi trả`}
-                style={{
-                  padding: '15px 5px',
-                  background: '#D21404',
-                  color: '#fff',
-                  fontWeight: 'bold',
-                }}
-                className="ml-auto"
-              />
+              {item && item.status == 11 && (
+                <span className="ml-auto d-flex align-items-center">
+                  <OverlayTrigger
+                    trigger="hover"
+                    placement="bottom"
+                    overlay={reason}
+                  >
+                    <a
+                      style={{
+                        textDecoration: 'none',
+                        fontSize: 15,
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                      className="suggest"
+                    >
+                      <i class="fas fa-comment-alt mr-1"></i>Xem lý do từ chối
+                      đổi trả
+                    </a>
+                  </OverlayTrigger>
+                  <Chip
+                    size="small"
+                    label={`Đã bị từ chối đổi trả`}
+                    style={{
+                      padding: '15px 5px',
+                      background: '#D21404',
+                      color: '#fff',
+                      fontWeight: 'bold',
+                    }}
+                    className="ml-5"
+                  />
+                </span>
+              )}
+              {item && item.status == 6 && (
+                <Chip
+                  size="small"
+                  label={`Đang chờ người bán xác nhận`}
+                  style={{
+                    padding: '15px 5px',
+                    background: '#fe4a49',
+                    color: '#fff',
+                    fontWeight: 'bold',
+                  }}
+                  className="ml-auto"
+                />
+              )}
+              {item && item.status == 9 && (
+                <Chip
+                  size="small"
+                  label={`Người giao đã lấy đơn hàng đổi trả`}
+                  style={{
+                    padding: '15px 5px',
+                    background: '#2ECC40',
+                    color: '#fff',
+                    fontWeight: 'bold',
+                  }}
+                  className="ml-auto"
+                />
+              )}
+              {item && item.status == 10 && (
+                <Chip
+                  size="small"
+                  label={`Đơn hàng đổi trả đã được giao thành công`}
+                  style={{
+                    padding: '15px 5px',
+                    background: '#3D9970',
+                    color: '#fff',
+                    fontWeight: 'bold',
+                  }}
+                  className="ml-auto"
+                />
+              )}
+              {item && item.status == 12 && (
+                <Chip
+                  size="small"
+                  label={`Đang chờ hệ thống giải quyết`}
+                  style={{
+                    padding: '15px 5px',
+                    background: '#2ab7ca',
+                    color: '#fff',
+                    fontWeight: 'bold',
+                  }}
+                  className="ml-auto"
+                />
+              )}
+              {item && item.status == 8 && (
+                <Chip
+                  size="small"
+                  label={`Đã được chấp nhận đổi trả`}
+                  style={{
+                    padding: '15px 5px',
+                    background: '#3D9970',
+                    color: '#fff',
+                    fontWeight: 'bold',
+                  }}
+                  className="ml-auto"
+                />
+              )}
             </Row>
             <Row style={{ borderBottom: '1px solid #E8E9EB', padding: 20 }}>
               <Col md={2}>
@@ -180,17 +302,20 @@ const RefundItem = ({ item, status, acceptRefund, cancelRefund, loading }) => {
                   <LoadingButton
                     title="Khiếu nại"
                     accept={true}
-                    handleClickOpen={handleDenyOpen}
+                    handleClickOpen={handleReportOpen}
                   />
                   <OverlayTrigger
                     trigger="hover"
                     placement="bottom"
                     overlay={popover}
                   >
-                    <Link style={{ textDecoration: 'none', fontSize: 15 }}>
+                    <a
+                      style={{ textDecoration: 'none', fontSize: 15 }}
+                      className="suggest"
+                    >
                       <i class="fas fa-info-circle mr-1"></i>Lưu ý khi đơn hàng
                       bị từ chối đổi trả
-                    </Link>
+                    </a>
                   </OverlayTrigger>
                 </Col>
               )}
@@ -226,6 +351,12 @@ const RefundItem = ({ item, status, acceptRefund, cancelRefund, loading }) => {
         accept={false}
         item={item}
       />
+      <ConfirmModal
+        open={reportOpen}
+        handleClose={handleReportClose}
+        loading={loading}
+        reportAdmin={handleReport}
+      />
     </>
   );
 };
@@ -239,6 +370,7 @@ const mapStateToProps = ({ order }) => {
 const mapDispatchToProps = {
   acceptRefund,
   cancelRefund,
+  reportAdmin,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RefundItem);

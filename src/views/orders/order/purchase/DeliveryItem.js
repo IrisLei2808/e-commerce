@@ -93,7 +93,9 @@ const WaitingConfirm = ({
       <PopoverTitle>
         <i class="fas fa-shipping-fast mr-2"></i>Đang giao
       </PopoverTitle>
-      <PopoverContent>{item && item.transport}</PopoverContent>
+      <PopoverContent style={{ fontSize: 15 }}>
+        {item && item.transport}
+      </PopoverContent>
     </Popover>
   );
 
@@ -102,7 +104,7 @@ const WaitingConfirm = ({
       <PopoverTitle>
         <i class="fas fa-exclamation mr-2"></i>Lưu ý
       </PopoverTitle>
-      <PopoverContent>
+      <PopoverContent style={{ fontSize: 15 }}>
         Vui lòng kiểm tra tất cả các sản phẩm trong đơn hàng trước khi xác nhận
         đã nhận hàng, nếu phát sinh vấn đề, bạn có thể yêu cầu trả hàng/hoàn
         tiền cho đến ngày{' '}
@@ -153,9 +155,12 @@ const WaitingConfirm = ({
                     placement="bottom"
                     overlay={popover}
                   >
-                    <Link style={{ textDecoration: 'none', fontSize: 15 }}>
+                    <a
+                      style={{ textDecoration: 'none', fontSize: 15 }}
+                      className="suggest"
+                    >
                       <i class="fas fa-truck mr-1"></i>Trạng thái giao hàng
-                    </Link>
+                    </a>
                   </OverlayTrigger>
                   <Chip
                     size="small"
@@ -219,7 +224,7 @@ const WaitingConfirm = ({
                         placement="bottom"
                         overlay={timePopover}
                       >
-                        <Link>{item.timeLimitAccept}</Link>
+                        <a className="suggest">{item.timeLimitAccept}</a>
                       </OverlayTrigger>
                     </span>
                   </Col>

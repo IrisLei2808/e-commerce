@@ -68,6 +68,9 @@ import {
   REFUND_PRODUCT_FAIL,
   REFUND_PRODUCT_REQUEST,
   REFUND_PRODUCT_SUCCESS,
+  REPORT_ADMIN_FAIL,
+  REPORT_ADMIN_REQUEST,
+  REPORT_ADMIN_SUCCESS,
   SELL_CANCELLED_FAIL,
   SELL_CANCELLED_REQUEST,
   SELL_CANCELLED_SUCCESS,
@@ -698,6 +701,26 @@ const order = (state = initState, action) => {
         ...state,
         orderLoading: false,
         message: action.error,
+        type: action.type,
+      };
+    case REPORT_ADMIN_REQUEST: {
+      return {
+        ...state,
+        orderLoading: true,
+      };
+    }
+    case REPORT_ADMIN_SUCCESS:
+      return {
+        ...state,
+        orderLoading: false,
+        reportMessage: action.product,
+        type: action.type,
+      };
+    case REPORT_ADMIN_FAIL:
+      return {
+        ...state,
+        orderLoading: false,
+        error: action.error,
         type: action.type,
       };
     case RESET_ORDER_TYPE:

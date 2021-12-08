@@ -45,6 +45,8 @@ import {
   receiveProductSuccess,
   refundProductFail,
   refundProductSuccess,
+  reportAdminFail,
+  reportAdminSuccess,
   sellCancelledFail,
   sellCancelledSuccess,
   sellCompleteDeliveryFail,
@@ -86,6 +88,7 @@ import {
   PURCHASE_REQUEST,
   RECEIVE_PRODUCT_REQUEST,
   REFUND_PRODUCT_REQUEST,
+  REPORT_ADMIN_REQUEST,
   SELL_CANCELLED_REQUEST,
   SELL_COMPLETE_DELIVERY,
   SELL_COUNT_DELIVERY,
@@ -686,6 +689,19 @@ export function* cancelRefund() {
   );
 }
 
+export function* reportAdmin() {
+  yield takeEvery(REPORT_ADMIN_REQUEST, function* ({ idOrderDetail }) {
+    try {
+      const product = yield call(orderService.reportAdmin, {
+        idOrderDetail,
+      });
+      yield put(reportAdminSuccess(product.data));
+    } catch (err) {
+      yield put(reportAdminFail(err.response && err.response.data));
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
     fork(orderRequest),
@@ -718,5 +734,6 @@ export default function* rootSaga() {
     fork(countRefundRequest),
     fork(acceptRefund),
     fork(cancelRefund),
+    fork(reportAdmin),
   ]);
 }

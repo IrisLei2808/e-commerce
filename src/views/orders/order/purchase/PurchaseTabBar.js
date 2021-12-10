@@ -171,6 +171,14 @@ const ScrollableTabsButtonAuto = (props) => {
 
   return (
     <div className={classes.root}>
+      <div
+        style={{
+          textAlign: 'center',
+          background: 'linear-gradient(to right, #7b4397, #dc2430)',
+        }}
+      >
+        <h3 style={{ color: '#fff', fontSize: 23 }}>Đơn mua hàng</h3>
+      </div>
       <AppBar position="static" color="default">
         <Tabs
           value={value}

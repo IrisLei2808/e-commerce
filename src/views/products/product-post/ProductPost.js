@@ -1,9 +1,9 @@
 import { Box, MenuItem, TextField } from '@material-ui/core';
 import Badge from '@material-ui/core/Badge';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 import React, { useEffect, useState } from 'react';
 import { Col, Form, Image, Row } from 'react-bootstrap';
-import CurrencyInput from 'react-currency-input-field';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -14,6 +14,7 @@ import ProductModal from '../../../components/shared-components/Modal';
 import {
   createProduct,
   fetchCategoryByBrand,
+  fetchSuggestPrice,
   getAllCategory,
   imageRemove,
   resetProductType,
@@ -25,6 +26,7 @@ import {
   IMAGE_REMOVE_SUCCESS,
 } from '../../../redux/constants/Product';
 import { useLocalStorage } from '../../../utils/utilities';
+import { formatMoney } from '../../../utils/formatText';
 
 const currencies = [
   {
@@ -53,6 +55,8 @@ const ProductPost = (props) => {
     newProductId,
     loading,
     type,
+    fetchSuggestPrice,
+    suggestPrice,
   } = props;
   let history = useHistory();
   const [show, setShow] = useState(false);
@@ -60,6 +64,7 @@ const ProductPost = (props) => {
   const handleClose = () => history.push('/');
   const goToDetail = () => history.push(`/product/${newProductId}`);
 
+  const [isSuggest, setIsSuggest] = useState(false);
   const [image, setImage] = useState([]);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -103,6 +108,12 @@ const ProductPost = (props) => {
 
   const handleCategoryChange = (e, value) => {
     setCategoryId(value && value.idcategory);
+    if (value) {
+      fetchSuggestPrice(value && value.idcategory);
+      setIsSuggest(true);
+    } else {
+      setIsSuggest(false);
+    }
   };
 
   const handleCategoryWantChange = (e, value) => {
@@ -218,7 +229,6 @@ const ProductPost = (props) => {
           id="outlined-basic"
           label="Tên sản phẩm"
           variant="outlined"
-          color="secondary"
           className="mt-3 w-50"
           required
           onChange={(e) => setName(e.target.value)}
@@ -262,7 +272,6 @@ const ProductPost = (props) => {
           type="number"
           label="Số lượng"
           variant="outlined"
-          color="secondary"
           className="mt-4 w-50"
           required
           onChange={(e) => setQuantity(e.target.value)}
@@ -270,7 +279,7 @@ const ProductPost = (props) => {
           value={quantity}
           disabled={wantChangeStatus}
         />
-        <CurrencyInput
+        {/* <CurrencyInput
           suffix=" VND"
           id="input-example"
           name="input-name"
@@ -284,6 +293,26 @@ const ProductPost = (props) => {
             border: '1px solid #bfbfbf',
           }}
           required
+        /> */}
+        <CurrencyTextField
+          variant="standard"
+          currencySymbol="VNĐ"
+          outputFormat="string"
+          variant="outlined"
+          className="mt-4 w-50"
+          minimumValue="0"
+          digitGroupSeparator=","
+          decimalPlaces="0"
+          placeholder="Giá *"
+          required
+          onChange={(event, value) => setPrice(value)}
+          helperText={
+            isSuggest
+              ? suggestPrice && suggestPrice !== 0
+                ? `Mặt hàng này có giá khoảng ${formatMoney(suggestPrice)}`
+                : 'Mặt hàng này chưa có gợi ý giá'
+              : ''
+          }
         />
         <TextField
           id="outlined-select-currency"
@@ -291,7 +320,6 @@ const ProductPost = (props) => {
           variant="outlined"
           label="Hình thức"
           value={currency}
-          color="secondary"
           onChange={handleStatusChange}
           className="mt-4 w-50"
           required
@@ -362,6 +390,7 @@ const mapStateToProps = ({ product }) => {
       product.newProductId &&
       product.newProductId.data &&
       product.newProductId.data.idProduct,
+    suggestPrice: product && product.suggestPrice,
   };
 };
 
@@ -371,6 +400,7 @@ const mapDispatchToProps = {
   getAllCategory,
   resetProductType,
   createProduct,
+  fetchSuggestPrice,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductPost);

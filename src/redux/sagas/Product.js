@@ -252,9 +252,11 @@ export function* feedbackProduct() {
 }
 
 export function* suggestPrice() {
-  yield takeEvery(FETCH_SUGGEST_PRICE_REQUEST, function* () {
+  yield takeEvery(FETCH_SUGGEST_PRICE_REQUEST, function* ({ data }) {
     try {
-      const product = yield call(productService.suggestPrice);
+      const product = yield call(productService.suggestPrice, {
+        idCategory: data,
+      });
       yield put(fetchSuggestPriceSuccess(product));
     } catch (error) {
       yield put(fetchSuggestPriceFail(error));

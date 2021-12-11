@@ -3,15 +3,18 @@ import {
   CART_REMOVE_ITEM,
   RESET_CART_TYPE,
   CART_CLEAR_ITEMS,
-} from "../constants/Cart";
+  ADD_MONEY,
+  ADD_MONEY_SUCCESS,
+  ADD_MONEY_FAIL,
+} from '../constants/Cart';
 
-const cartStorage = localStorage.getItem("productCartItems")
-  ? JSON.parse(localStorage.getItem("productCartItems"))
+const cartStorage = localStorage.getItem('productCartItems')
+  ? JSON.parse(localStorage.getItem('productCartItems'))
   : [];
 
 const initState = {
   loading: false,
-  message: "",
+  message: '',
   showMessage: false,
   cartItems: [],
   cartItemsFromStorage: [],
@@ -52,6 +55,26 @@ const cart = (state = initState, action) => {
       return {
         ...state,
         cartItems: [],
+      };
+    case ADD_MONEY: {
+      return {
+        ...state,
+        transactionLoading: true,
+      };
+    }
+    case ADD_MONEY_SUCCESS:
+      return {
+        ...state,
+        transactionLoading: false,
+        url: action.product,
+        type: action.type,
+      };
+    case ADD_MONEY_FAIL:
+      return {
+        ...state,
+        transactionLoading: false,
+        error: action.error,
+        type: action.type,
       };
     case RESET_CART_TYPE:
       return {

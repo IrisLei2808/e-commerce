@@ -338,15 +338,16 @@ export const imageRemoveFailed = (message) => {
   };
 };
 
-export const fetchSuggestPrice = () => {
+export const fetchSuggestPrice = (data) => {
   return {
     type: FETCH_SUGGEST_PRICE_REQUEST,
+    data,
   };
 };
 export const fetchSuggestPriceSuccess = (suggestPrice) => {
   return {
     type: FETCH_SUGGEST_PRICE_SUCCESS,
-    suggestPrice: suggestPrice.data,
+    suggestPrice: suggestPrice.data.priceSuggest,
   };
 };
 

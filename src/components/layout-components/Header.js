@@ -133,6 +133,15 @@ const Header = (props) => {
                         Hồ sơ cá nhân
                       </NavDropdown.Item>
                     </LinkContainer>
+                    <LinkContainer to="/transaction">
+                      <NavDropdown.Item>
+                        <i
+                          className="fas fa-hand-holding-usd mr-2"
+                          style={{ width: 25 }}
+                        ></i>
+                        Nạp tiền
+                      </NavDropdown.Item>
+                    </LinkContainer>
                     <NavDropdown.Divider />
                     <NavDropdown.Item onClick={handleLogout}>
                       <i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất

@@ -18,6 +18,7 @@ import MappingScreen from './views/products/mapping/MappingListScreen';
 import SuggestListScreen from './views/products/mapping/SuggestListScreen';
 import ProfileScreen from './views/profile/Profile';
 import TransactionScreen from './views/products/transaction/MomoTransaction';
+import SuccessScreen from './views/products/transaction/TransactionSuccess';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
           <Route path="/mapping-list/:id" component={SuggestListScreen} />
           <Route path="/profile" component={ProfileScreen} />
           <Route path="/transaction" component={TransactionScreen} />
+          <Route path="/add-transaction/success" component={SuccessScreen} />
         </Container>
       </main>
       <Footer />

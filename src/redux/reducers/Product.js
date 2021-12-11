@@ -17,6 +17,9 @@ import {
   FEED_BACK_FAIL,
   FEED_BACK_REQUEST,
   FEED_BACK_SUCCESS,
+  FETCH_SUGGEST_PRICE_FAIL,
+  FETCH_SUGGEST_PRICE_REQUEST,
+  FETCH_SUGGEST_PRICE_SUCCESS,
   IMAGE_REMOVE_FAIL,
   IMAGE_REMOVE_REQUEST,
   IMAGE_REMOVE_SUCCESS,
@@ -304,6 +307,25 @@ const product = (state = initState, action) => {
         loading: false,
         error: action.error,
         type: action.type,
+      };
+    case FETCH_SUGGEST_PRICE_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        type: action.type,
+      };
+    case FETCH_SUGGEST_PRICE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        suggestPrice: action.suggestPrice,
+        type: action.type,
+      };
+    case FETCH_SUGGEST_PRICE_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.message,
       };
     case RESET_PRODUCT_TYPE:
       return {

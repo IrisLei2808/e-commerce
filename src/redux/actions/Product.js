@@ -39,6 +39,9 @@ import {
   PRODUCT_OWN_REQUEST,
   PRODUCT_OWN_SUCCESS,
   PRODUCT_OWN_FAIL,
+  FETCH_SUGGEST_PRICE_REQUEST,
+  FETCH_SUGGEST_PRICE_SUCCESS,
+  FETCH_SUGGEST_PRICE_FAIL,
 } from '../constants/Product';
 
 export const fetchProductList = (params) => {
@@ -331,6 +334,25 @@ export const imageRemoveSuccess = (file) => {
 export const imageRemoveFailed = (message) => {
   return {
     type: IMAGE_REMOVE_FAIL,
+    message,
+  };
+};
+
+export const fetchSuggestPrice = () => {
+  return {
+    type: FETCH_SUGGEST_PRICE_REQUEST,
+  };
+};
+export const fetchSuggestPriceSuccess = (suggestPrice) => {
+  return {
+    type: FETCH_SUGGEST_PRICE_SUCCESS,
+    suggestPrice: suggestPrice.data,
+  };
+};
+
+export const fetchSuggestPriceFail = (message) => {
+  return {
+    type: FETCH_SUGGEST_PRICE_FAIL,
     message,
   };
 };

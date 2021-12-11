@@ -106,4 +106,12 @@ productService.getFeedback = function (productId) {
   });
 };
 
+productService.suggestPrice = function (data) {
+  return axios({
+    url: `${API_ENDPOINT}/api/crawlData/suggestPrice`,
+    method: 'post',
+    data,
+  });
+};
+
 export default productService;

@@ -6,6 +6,7 @@ import {
   CREATE_PRODUCT_REQUEST,
   FEEDBACK_PRODUCT_REQUEST,
   FEED_BACK_REQUEST,
+  FETCH_SUGGEST_PRICE_REQUEST,
   IMAGE_REMOVE_REQUEST,
   IMAGE_UPLOAD_REQUEST,
   PRODUCT_BY_BRAND_REQUEST,
@@ -41,6 +42,8 @@ import {
   getFeedbackSuccess,
   fetchProductOwnSuccess,
   fetchProductOwnFailed,
+  fetchSuggestPriceSuccess,
+  fetchSuggestPriceFail,
 } from '../actions/Product';
 import productService from '../../services/ProductService';
 
@@ -248,6 +251,17 @@ export function* feedbackProduct() {
   );
 }
 
+export function* suggestPrice() {
+  yield takeEvery(FETCH_SUGGEST_PRICE_REQUEST, function* () {
+    try {
+      const product = yield call(productService.suggestPrice);
+      yield put(fetchSuggestPriceSuccess(product));
+    } catch (error) {
+      yield put(fetchSuggestPriceFail(error));
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
     fork(fetchProductList),
@@ -263,5 +277,6 @@ export default function* rootSaga() {
     fork(feedbackProduct),
     fork(getFeedback),
     fork(fetchProductOwn),
+    fork(suggestPrice),
   ]);
 }

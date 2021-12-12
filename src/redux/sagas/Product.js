@@ -3,6 +3,8 @@ import {
   ALL_CATEGORY_REQUEST,
   CATEGORY_BY_BRAND_REQUEST,
   CATEGORY_NAME_REQUEST,
+  COUNT_PRODUCT_BY_BRAND_REQUEST,
+  COUNT_PRODUCT_BY_CATEGORY_REQUEST,
   CREATE_PRODUCT_REQUEST,
   FEEDBACK_PRODUCT_REQUEST,
   FEED_BACK_REQUEST,
@@ -44,6 +46,10 @@ import {
   fetchProductOwnFailed,
   fetchSuggestPriceSuccess,
   fetchSuggestPriceFail,
+  countProductByCategorySuccess,
+  countProductByCategoryFail,
+  countProductByBrandFail,
+  countProductByBrandSuccess,
 } from '../actions/Product';
 import productService from '../../services/ProductService';
 
@@ -81,12 +87,16 @@ export function* fetchAllCategory() {
 }
 
 export function* fetchProductByCategory() {
-  yield takeEvery(PRODUCT_BY_CATEGORY_REQUEST, function* (params) {
-    const { categoryId } = params;
+  yield takeEvery(PRODUCT_BY_CATEGORY_REQUEST, function* (data) {
+    const { categoryId, params } = data;
     try {
       const product = yield call(
         productService.getProductByCategoryId,
-        categoryId
+        categoryId,
+        {
+          page: params.page,
+          limit: params.limit,
+        }
       );
       yield put(fetchProductByCategorySuccess(product));
     } catch (error) {
@@ -95,14 +105,52 @@ export function* fetchProductByCategory() {
   });
 }
 
+export function* countProductByCategory() {
+  yield takeEvery(
+    COUNT_PRODUCT_BY_CATEGORY_REQUEST,
+    function* ({ categoryId }) {
+      try {
+        const productData = yield call(
+          productService.countProductByCategoryId,
+          categoryId
+        );
+        yield put(countProductByCategorySuccess(productData));
+      } catch (err) {
+        yield put(
+          countProductByCategoryFail(err.response && err.response.data.result)
+        );
+      }
+    }
+  );
+}
+
 export function* fetchProductByBrand() {
-  yield takeEvery(PRODUCT_BY_BRAND_REQUEST, function* (params) {
-    const { brandId } = params;
+  yield takeEvery(PRODUCT_BY_BRAND_REQUEST, function* (data) {
+    const { brandId, params } = data;
     try {
-      const product = yield call(productService.getProductByBrand, brandId);
+      const product = yield call(productService.getProductByBrand, brandId, {
+        page: params.page,
+        limit: params.limit,
+      });
       yield put(fetchProductByBrandSuccess(product));
     } catch (error) {
       yield put(fetchProductByBrandFail(error));
+    }
+  });
+}
+
+export function* countProductByBrand() {
+  yield takeEvery(COUNT_PRODUCT_BY_BRAND_REQUEST, function* ({ brandId }) {
+    try {
+      const productData = yield call(
+        productService.countProductByBrand,
+        brandId
+      );
+      yield put(countProductByBrandSuccess(productData));
+    } catch (err) {
+      yield put(
+        countProductByBrandFail(err.response && err.response.data.result)
+      );
     }
   });
 }
@@ -280,5 +328,7 @@ export default function* rootSaga() {
     fork(getFeedback),
     fork(fetchProductOwn),
     fork(suggestPrice),
+    fork(countProductByBrand),
+    fork(countProductByCategory),
   ]);
 }

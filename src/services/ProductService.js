@@ -64,17 +64,33 @@ productService.getAllCategory = function (data) {
   });
 };
 
-productService.getProductByCategoryId = function (categoryId) {
+productService.getProductByCategoryId = function (categoryId, params) {
   return axios({
     method: 'get',
     url: `${API_ENDPOINT}/api/categories/${categoryId}`,
+    params,
   });
 };
 
-productService.getProductByBrand = function (brandId) {
+productService.countProductByCategoryId = function (categoryId) {
+  return axios({
+    method: 'get',
+    url: `${API_ENDPOINT}/api/categories/countProductByCategory/${categoryId}`,
+  });
+};
+
+productService.getProductByBrand = function (brandId, params) {
   return axios({
     method: 'get',
     url: `${API_ENDPOINT}/api/products/brand/${brandId}`,
+    params,
+  });
+};
+
+productService.countProductByBrand = function (brandId) {
+  return axios({
+    method: 'get',
+    url: `${API_ENDPOINT}/api/products/countProductByBrand/${brandId}`,
   });
 };
 

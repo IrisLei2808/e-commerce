@@ -8,6 +8,12 @@ import {
   CATEGORY_NAME_FAIL,
   CATEGORY_NAME_REQUEST,
   CATEGORY_NAME_SUCCESS,
+  COUNT_PRODUCT_BY_BRAND_FAIL,
+  COUNT_PRODUCT_BY_BRAND_REQUEST,
+  COUNT_PRODUCT_BY_BRAND_SUCCESS,
+  COUNT_PRODUCT_BY_CATEGORY_FAIL,
+  COUNT_PRODUCT_BY_CATEGORY_REQUEST,
+  COUNT_PRODUCT_BY_CATEGORY_SUCCESS,
   CREATE_PRODUCT_FAIL,
   CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
@@ -326,6 +332,46 @@ const product = (state = initState, action) => {
         ...state,
         isLoading: false,
         error: action.message,
+      };
+    case COUNT_PRODUCT_BY_CATEGORY_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case COUNT_PRODUCT_BY_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        countProductCategory: action.product,
+        type: action.type,
+      };
+    case COUNT_PRODUCT_BY_CATEGORY_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
+      };
+    case COUNT_PRODUCT_BY_BRAND_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case COUNT_PRODUCT_BY_BRAND_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        countProductBrand: action.product,
+        type: action.type,
+      };
+    case COUNT_PRODUCT_BY_BRAND_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.error,
+        type: action.type,
       };
     case RESET_PRODUCT_TYPE:
       return {

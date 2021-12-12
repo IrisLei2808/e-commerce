@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { Col, Row, Button } from "react-bootstrap";
-import { connect } from "react-redux";
-import ProductCategory from "../../../components/layout-components/ProductCategory";
-import Loader from "../../../components/shared-components/Spinner";
+import React, { useEffect, useState } from 'react';
+import { Col, Row, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import ProductCategory from '../../../components/layout-components/ProductCategory';
+import Loader from '../../../components/shared-components/Spinner';
 import {
   fetchProductByCategory,
+  countProductByCategory,
   fetchCategoryByBrand,
   fetchCategoryName,
   resetProductType,
-} from "../../../redux/actions/Product";
-import { PRODUCT_BY_CATEGORY_SUCCESS } from "../../../redux/constants/Product";
-import ViewMoreButton from "../../../components/shared-components/ViewMoreButton";
+} from '../../../redux/actions/Product';
+import { PRODUCT_BY_CATEGORY_SUCCESS } from '../../../redux/constants/Product';
+import ViewMoreButton from '../../../components/shared-components/ViewMoreButton';
 
 const CategoryScreen = (props) => {
+  const [limit, setLimit] = useState(8);
+  const [page, setPage] = useState(1);
   const [product, setProduct] = useState(null);
   const {
     fetchProductByCategory,
@@ -25,11 +28,13 @@ const CategoryScreen = (props) => {
     resetProductType,
     fetchCategoryName,
     categoryName,
+    count,
+    countProductByCategory,
   } = props;
 
   const [visible, setVisible] = useState(12);
   const [viewLoading, setViewLoading] = useState(false);
-
+  console.log('F: ', count);
   const showMoreItems = () => {
     setViewLoading(true);
     setTimeout(() => {
@@ -43,7 +48,14 @@ const CategoryScreen = (props) => {
   }, [match]);
 
   useEffect(() => {
-    fetchProductByCategory(match && match.params.id);
+    fetchProductByCategory(match && match.params.id, {
+      page: page,
+      limit: limit,
+    });
+  }, [match]);
+
+  useEffect(() => {
+    countProductByCategory(match && match.params.id);
   }, [match]);
 
   useEffect(() => {
@@ -74,17 +86,14 @@ const CategoryScreen = (props) => {
                 </Col>
               ))}
           </Row>
-          {product !== null && (
-            <ViewMoreButton
-              viewLoading={viewLoading}
-              showMoreItems={showMoreItems}
-              hide={
-                visible >= parseInt(productList && productList.length)
-                  ? true
-                  : false
-              }
-            />
-          )}
+          <ViewMoreButton
+            count={count && count}
+            page={page}
+            setPage={setPage}
+            limit={limit}
+            purchaseRequest={fetchProductByCategory}
+            id={match && match.params.id}
+          />
         </>
       )}
     </>
@@ -97,6 +106,7 @@ const mapStateToProps = ({ product }) => {
     loading: product.isLoading,
     type: product.type,
     categoryName: product.categoryName,
+    count: product.countProductCategory,
   };
 };
 
@@ -105,6 +115,7 @@ const mapDispatchToProps = {
   fetchCategoryByBrand,
   resetProductType,
   fetchCategoryName,
+  countProductByCategory,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryScreen);

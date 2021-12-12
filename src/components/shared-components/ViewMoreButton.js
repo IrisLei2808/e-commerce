@@ -1,24 +1,58 @@
-import React from "react";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Pagination from '@material-ui/lab/Pagination';
+import { WAITING_FOR_CONFIRM } from '../../configs/Constants';
 
-const ViewMoreButton = ({ viewLoading, showMoreItems, hide }) => {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+      justifyContent: 'center',
+      display: 'flex',
+      flexDirection: 'row',
+    },
+  },
+}));
+
+export default function PaginationControlled({
+  page,
+  setPage,
+  count,
+  limit,
+  purchaseRequest,
+  id,
+}) {
+  const classes = useStyles();
+
+  const numberOfRecords = Math.ceil(count / limit);
+
+  const handleChange = (event, value) => {
+    setPage(value);
+    purchaseRequest(id, {
+      page: value,
+      limit: limit,
+    });
+  };
+
   return (
-    <div>
-      <button
-        className="btn btn-primary btn-block mt-3 mb-3 btn-lg"
-        type="submit"
-        disabled={viewLoading}
-        style={{ margin: "auto", width: "30%", display: hide ? "none" : "" }}
-        onClick={showMoreItems}
-      >
-        <span
-          className={viewLoading ? "spinner-border spinner-border-sm" : ""}
-          role="status"
-          aria-hidden="true"
-        ></span>
-        {viewLoading ? "Loading..." : "View more"}
-      </button>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Typography className="mr-4">Page: {page}</Typography>
+      <Pagination
+        count={numberOfRecords}
+        page={page}
+        onChange={handleChange}
+        size="large"
+        showFirstButton
+        showLastButton
+      />
     </div>
   );
-};
-
-export default ViewMoreButton;
+}

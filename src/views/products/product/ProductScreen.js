@@ -42,42 +42,35 @@ const CollectionsComponent = (props) => {
           <Slide easing="ease">
             <div className="each-slide">
               <img
-                src="https://icms-image.slatic.net/images/ims-web/944bd03d-d056-40c3-a1e3-d011e3c27b1b.jpg"
+                src="https://dlcdnwebimgs.asus.com/gain/E55ABADE-0A1A-4C98-8336-49057F2F9614"
                 alt=""
                 style={{ width: "100%", height: "600px" }}
               />
             </div>
             <div className="each-slide">
               <img
-                src="https://icms-image.slatic.net/images/ims-web/0363fda9-2679-4199-9a13-b88a71346eac.jpg"
+                src="https://about.att.com/ecms/dam/snr/2020/November2020/StoryLevelBanner/11042020_iPhoneProMax_STORY_LEVEL_BANNER_1600x483.jpg"
                 alt=""
                 style={{ width: "100%", height: "600px" }}
               />
             </div>
             <div className="each-slide">
               <img
-                src="https://icms-image.slatic.net/images/ims-web/400f5904-113b-4953-a7ba-0c726900b46b.jpg"
+                src="https://dlcdnwebimgs.asus.com/gain/F955B4D4-D01F-4290-BF49-909F4A71055B"
                 alt=""
                 style={{ width: "100%", height: "600px" }}
               />
             </div>
             <div className="each-slide">
               <img
-                src="https://icms-image.slatic.net/images/ims-web/402e3c85-6d4f-45ca-b8ff-f1dc23551eb0.jpg"
+                src="https://cdn.tgdd.vn/Products/Images/44/260171/dell-gaming-g15-5515-r5-p105f004dgr-05.jpg"
                 alt=""
                 style={{ width: "100%", height: "600px" }}
               />
             </div>
             <div className="each-slide">
               <img
-                src="https://icms-image.slatic.net/images/ims-web/944bd03d-d056-40c3-a1e3-d011e3c27b1b.jpg"
-                alt=""
-                style={{ width: "100%", height: "600px" }}
-              />
-            </div>
-            <div className="each-slide">
-              <img
-                src="https://icms-image.slatic.net/images/ims-web/e6301d5b-fb4f-4f01-951a-ddc8941ccf99.jpg"
+                src="https://thumbs.dreamstime.com/b/vinnytsia-ukraine-september-vector-banner-iphone-vector-illustration-app-web-presentation-design-vector-banner-iphone-230042240.jpg"
                 alt=""
                 style={{ width: "100%", height: "600px" }}
               />

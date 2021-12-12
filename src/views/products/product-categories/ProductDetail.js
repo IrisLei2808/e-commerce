@@ -193,7 +193,7 @@ const ProductDetail = (props) => {
                       {product && product.fullName}
                     </span>
                     <span style={{ cursor: 'pointer' }}>
-                      <i class="fas fa-store mr-2"></i>Xem shop
+                      <i class="fas fa-store mr-2"></i>Xem thông tin
                     </span>
                   </span>
                   {!isOwn ? (

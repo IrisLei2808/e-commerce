@@ -2,7 +2,14 @@ import React from 'react';
 
 const Rating = ({ value, text, color, fontSize }) => {
   return (
-    <div className="rating" style={{ display: 'flex', alignItems: 'center' }}>
+    <div
+      className="rating"
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       <span>
         <i
           style={{ color, fontSize }}
@@ -63,7 +70,6 @@ const Rating = ({ value, text, color, fontSize }) => {
           }
         ></i>
       </span>
-      <span className="ml-3">{text && text}</span>
     </div>
   );
 };

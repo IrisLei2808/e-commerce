@@ -36,12 +36,14 @@ const ProductCategory = (props) => {
             <strong>{formatText(product && product.name)}</strong>
           </Card.Title>
         </Link>
-        {/* <Card.Text as="div">
-          <div className="my-3">
-            <Rating value={5} text={`${5} reviews`} />
+        <Card.Text as="div">
+          <div className="my-3" style={{ textAlign: 'center' }}>
+            <Rating value={product && product.star} />
           </div>
-        </Card.Text> */}
-        <Card.Text as="h4">{formatMoney(product && product.price)}</Card.Text>
+        </Card.Text>
+        <Card.Text as="h4" style={{ textAlign: 'center' }}>
+          {formatMoney(product && product.price)}
+        </Card.Text>
       </Card.Body>
     </Card>
   );

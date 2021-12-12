@@ -7,6 +7,7 @@ import {
   fetchCategoryByBrand,
   fetchProductByBrand,
   resetProductType,
+  countProductByBrand,
 } from '../../../redux/actions/Product';
 import {
   CATEGORY_BY_BRAND_SUCCESS,
@@ -15,6 +16,8 @@ import {
 import ViewMoreButton from '../../../components/shared-components/ViewMoreButton';
 
 const ProductByBrandScreen = (props) => {
+  const [limit, setLimit] = useState(8);
+  const [page, setPage] = useState(1);
   const [product, setProduct] = useState(null);
   const [category, setCategory] = useState(null);
   const [items, setItems] = useState([]);
@@ -39,10 +42,16 @@ const ProductByBrandScreen = (props) => {
     type,
     resetProductType,
     brand,
+    countProductByBrand,
+    count,
   } = props;
 
   useEffect(() => {
-    fetchProductByBrand(match && match.params.id);
+    fetchProductByBrand(match && match.params.id, { page: page, limit: limit });
+  }, [match]);
+
+  useEffect(() => {
+    countProductByBrand(match && match.params.id);
   }, [match]);
 
   useEffect(() => {
@@ -67,12 +76,11 @@ const ProductByBrandScreen = (props) => {
         <Loader />
       ) : (
         <>
-          <h2>Trending {brand && brand[0].brandname}</h2>
+          <h2>Trending {brand && brand}</h2>
           {product !== null && (
             <Row>
               {product &&
-                product.products &&
-                product.products.slice(0, visible).map((pro) => (
+                product.slice(0, visible).map((pro) => (
                   <Col sm={12} md={6} lg={4} xl={3}>
                     <ProductCategory product={pro} />
                   </Col>
@@ -81,18 +89,12 @@ const ProductByBrandScreen = (props) => {
           )}
           {product !== null && (
             <ViewMoreButton
-              viewLoading={viewLoading}
-              showMoreItems={showMoreItems}
-              hide={
-                visible >=
-                parseInt(
-                  productList &&
-                    productList.products &&
-                    productList.products.length
-                )
-                  ? true
-                  : false
-              }
+              count={count && count}
+              page={page}
+              setPage={setPage}
+              limit={limit}
+              purchaseRequest={fetchProductByBrand}
+              id={match && match.params.id}
             />
           )}
         </>
@@ -108,6 +110,7 @@ const mapStateToProps = ({ product }) => {
     loading: product.isLoading,
     type: product.type,
     brand: product.brand,
+    count: product.countProductBrand,
   };
 };
 
@@ -115,6 +118,7 @@ const mapDispatchToProps = {
   fetchProductByBrand,
   fetchCategoryByBrand,
   resetProductType,
+  countProductByBrand,
 };
 
 export default connect(

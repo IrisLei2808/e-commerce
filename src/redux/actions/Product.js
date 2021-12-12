@@ -42,6 +42,12 @@ import {
   FETCH_SUGGEST_PRICE_REQUEST,
   FETCH_SUGGEST_PRICE_SUCCESS,
   FETCH_SUGGEST_PRICE_FAIL,
+  COUNT_PRODUCT_BY_CATEGORY_REQUEST,
+  COUNT_PRODUCT_BY_CATEGORY_SUCCESS,
+  COUNT_PRODUCT_BY_CATEGORY_FAIL,
+  COUNT_PRODUCT_BY_BRAND_REQUEST,
+  COUNT_PRODUCT_BY_BRAND_SUCCESS,
+  COUNT_PRODUCT_BY_BRAND_FAIL,
 } from '../constants/Product';
 
 export const fetchProductList = (params) => {
@@ -158,10 +164,11 @@ export const feedbackProductFail = (error) => {
   };
 };
 
-export const fetchProductByCategory = (categoryId) => {
+export const fetchProductByCategory = (categoryId, params) => {
   return {
     type: PRODUCT_BY_CATEGORY_REQUEST,
     categoryId,
+    params,
   };
 };
 export const fetchProductByCategorySuccess = (product) => {
@@ -178,17 +185,39 @@ export const fetchProductByCategoryFail = (message) => {
   };
 };
 
-export const fetchProductByBrand = (brandId) => {
+export const countProductByCategory = (categoryId) => {
+  return {
+    type: COUNT_PRODUCT_BY_CATEGORY_REQUEST,
+    categoryId,
+  };
+};
+
+export const countProductByCategorySuccess = (product) => {
+  return {
+    type: COUNT_PRODUCT_BY_CATEGORY_SUCCESS,
+    product: product.data.Count,
+  };
+};
+
+export const countProductByCategoryFail = (error) => {
+  return {
+    type: COUNT_PRODUCT_BY_CATEGORY_FAIL,
+    error,
+  };
+};
+
+export const fetchProductByBrand = (brandId, params) => {
   return {
     type: PRODUCT_BY_BRAND_REQUEST,
     brandId,
+    params,
   };
 };
 export const fetchProductByBrandSuccess = (product) => {
   return {
     type: PRODUCT_BY_BRAND_SUCCESS,
-    productList: product.data && product.data[0],
-    brand: product.data && product.data,
+    productList: product.data && product.data.products,
+    brand: product.data && product.data.brandname,
   };
 };
 
@@ -196,6 +225,27 @@ export const fetchProductByBrandFail = (message) => {
   return {
     type: PRODUCT_BY_BRAND_FAIL,
     message,
+  };
+};
+
+export const countProductByBrand = (brandId) => {
+  return {
+    type: COUNT_PRODUCT_BY_BRAND_REQUEST,
+    brandId,
+  };
+};
+
+export const countProductByBrandSuccess = (product) => {
+  return {
+    type: COUNT_PRODUCT_BY_BRAND_SUCCESS,
+    product: product.data.Count,
+  };
+};
+
+export const countProductByBrandFail = (error) => {
+  return {
+    type: COUNT_PRODUCT_BY_BRAND_FAIL,
+    error,
   };
 };
 
